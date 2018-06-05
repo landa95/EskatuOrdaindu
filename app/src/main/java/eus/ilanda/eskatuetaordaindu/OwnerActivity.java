@@ -1,6 +1,5 @@
 package eus.ilanda.eskatuetaordaindu;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -8,48 +7,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
-public class SignInActivity extends AppCompatActivity {
-
-    TextView userEmail;
-    TextView userName;
+public class OwnerActivity extends AppCompatActivity {
 
     Button signOut;
-
-
-
-    final FirebaseUser currentUser =FirebaseAuth.getInstance().getCurrentUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in);
-        final FirebaseUser currentUser =FirebaseAuth.getInstance().getCurrentUser();
-        if(!currentUser.isEmailVerified()){
-            currentUser.sendEmailVerification();
-        }
+        setContentView(R.layout.activity_owner);
         setUpControls();
     }
 
-    private void setUpControls(){
-
-        userEmail = (TextView) findViewById(R.id.user_email);
-        userName = (TextView) findViewById(R.id.user_display_name);
-
-        signOut = (Button) findViewById(R.id.btnSignOut);
-
-        userEmail.setText(currentUser.getEmail().toString());
-        userName.setText(currentUser.getDisplayName().toString());
-
+    public void setUpControls(){
+        signOut = (Button) findViewById(R.id.btn_Owner_SignOut);
         signOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,17 +40,17 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
-                    startActivity(MainActivity.createIntent(SignInActivity.this));
+                    startActivity(MainActivity.createIntent(OwnerActivity.this));
                 }else{ //sign out failed
-                    Toast.makeText(SignInActivity.this, "Sign out failed", Toast.LENGTH_SHORT);
+                    Toast.makeText(OwnerActivity.this, "Sign out failed", Toast.LENGTH_SHORT);
                 }
             }
         });
     }
 
-    public static Intent createIntent(Context context, IdpResponse idpResponse) {
+    public static Intent createIntent(Context context) {
         Intent in  = new Intent();
-        in.setClass(context, SignInActivity.class);
+        in.setClass(context, OwnerActivity.class);
         return in;
     }
 }
