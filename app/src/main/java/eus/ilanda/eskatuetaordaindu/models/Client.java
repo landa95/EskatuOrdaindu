@@ -1,4 +1,4 @@
-package eus.ilanda.eskatuetaordaindu.Models;
+package eus.ilanda.eskatuetaordaindu.models;
 
 /**
  * Created by landa on 08/05/2018.
@@ -17,6 +17,7 @@ public class Client  extends User{
         super(uid, email, name);
         this.country = country;
         this.age = age;
+
     }
 
     public Client(String uid){

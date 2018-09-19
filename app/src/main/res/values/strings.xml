@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Eskatu eta Ordaindu</string>
+    <string name="nav_menu1">Settings</string>
+    <string name="nav_menu2">Sign out</string>
+    <string name="nav_menu3">About</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
 </resources>

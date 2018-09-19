@@ -1,4 +1,4 @@
-package eus.ilanda.eskatuetaordaindu.Models;
+package eus.ilanda.eskatuetaordaindu.models;
 
 import com.google.firebase.auth.FirebaseAuth;
 

@@ -21,15 +21,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
-import eus.ilanda.eskatuetaordaindu.Models.Client;
-import eus.ilanda.eskatuetaordaindu.Models.User;
+import eus.ilanda.eskatuetaordaindu.models.Client;
+import eus.ilanda.eskatuetaordaindu.models.User;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -39,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     //Sign in button
     Button btnsignIn;
     TextView dataTextview;
+
     final FirebaseDatabase database  = FirebaseDatabase.getInstance();
     final DatabaseReference myRef = database.getReference("message");
 
@@ -74,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
     }// protected void onCreate(Bundle savedInstanceState)
 
-    private void setUpControls(){
+    private void setUpControls(){ 
 
         //Data textview init
         dataTextview = (TextView) findViewById(R.id.textView);
@@ -191,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             @Override
             public void onCancelled(DatabaseError databaseError) {
+
             }
         });
 

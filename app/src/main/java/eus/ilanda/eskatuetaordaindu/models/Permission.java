@@ -1,4 +1,4 @@
-package eus.ilanda.eskatuetaordaindu.Models;
+package eus.ilanda.eskatuetaordaindu.models;
 
 /**
  * Created by landa on 05/06/2018.

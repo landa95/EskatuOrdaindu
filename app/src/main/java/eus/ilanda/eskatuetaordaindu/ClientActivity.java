@@ -35,15 +35,15 @@ public class ClientActivity extends AppCompatActivity {
         });
     }
 
-    public void signOut(){
-        AuthUI.getInstance().signOut(this).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
-                    startActivity(MainActivity.createIntent(ClientActivity.this));
-                }else{ //sign out failed
-                    Toast.makeText(ClientActivity.this, "Sign out failed", Toast.LENGTH_SHORT);
-                }
+                    public void signOut(){
+                        AuthUI.getInstance().signOut(this).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()){
+                                    startActivity(MainActivity.createIntent(ClientActivity.this));
+                                }else{ //sign out failed
+                                    Toast.makeText(ClientActivity.this, "Sign out failed", Toast.LENGTH_SHORT);
+                                }
             }
         });
     }
