@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     //Authentication manager
-    FirebaseAuth auth = FirebaseAuth.getInstance();
+    FirebaseAuth auth ;
     private DBManager dbManager = new DBManager();
 
 
@@ -53,8 +53,10 @@ public class MainActivity extends AppCompatActivity {
         setUpControls();
 
 
+        auth = FirebaseAuth.getInstance();
         if(auth.getCurrentUser() != null){
-               dbManager.userType(auth.getUid(),this);
+            dbManager.userType(auth.getUid(),this);
+            Log.w("MAIN NOT NULL", Boolean.toString(auth.getCurrentUser()==null)+ " is null?");
         }
 
 

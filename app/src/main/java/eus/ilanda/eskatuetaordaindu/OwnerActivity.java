@@ -60,9 +60,9 @@ public class OwnerActivity extends AppCompatActivity implements NavigationView.O
         if(FirebaseAuth.getInstance().getCurrentUser() == null){
             MainActivity.createIntent(this);
             finish();
+        }else{
+            setUpControls();
         }
-
-        setUpControls();
     }
 
 
@@ -110,7 +110,9 @@ public class OwnerActivity extends AppCompatActivity implements NavigationView.O
                 Toast.makeText(this, "Settings press", Toast.LENGTH_LONG).show();
                 break;
             case R.id.nav_exit:
-                dbManager.signOut(this);
+                //dbManager.signOut(this);
+                dbManager.deleteUser(FirebaseAuth.getInstance().getCurrentUser().getUid(),this);
+
                 break;
 
         }

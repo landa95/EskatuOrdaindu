@@ -14,6 +14,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import eus.ilanda.eskatuetaordaindu.AdminActivity;
@@ -23,12 +24,13 @@ import eus.ilanda.eskatuetaordaindu.OwnerActivity;
 import eus.ilanda.eskatuetaordaindu.models.User;
 
 public class DBManager {
-     private static FirebaseAuth auth = FirebaseAuth.getInstance();
-     private static FirebaseDatabase database = FirebaseDatabase.getInstance();
+     private static FirebaseAuth auth;
+     private static FirebaseDatabase database;
 
 
      public DBManager(){
-
+        auth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
      }
 
      //Sign Out current user
@@ -86,5 +88,39 @@ public class DBManager {
             }
         });
 
+    }
+
+    //delete user
+    //CALL dbManager.deleteUser(FirebaseAuth.getInstance().getCurrentUser().getUid(),this);
+    public void deleteUser(String uid, final Context context){
+
+         final DatabaseReference dbRef = database.getReference("users");
+         Query query = dbRef.orderByChild("uid").equalTo(uid);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                DataSnapshot nodeShot = dataSnapshot.getChildren().iterator().next();
+                String key = nodeShot.getKey();
+                dbRef.child(key).removeValue();
+                auth.getCurrentUser().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Log.w("USER_DELETE", Boolean.toString(auth.getCurrentUser()==null)+ " is null?");
+                            context.startActivity(MainActivity.createIntent(context));
+
+                            ((Activity)context).finish();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        Log.w("USER DELETE", Boolean.toString(auth.getCurrentUser()==null)+ " is null?");
     }
 }
