@@ -21,8 +21,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
+import eus.ilanda.eskatuetaordaindu.Manager.DBManager;
 import eus.ilanda.eskatuetaordaindu.fragments.FragmentBottomNav;
 import eus.ilanda.eskatuetaordaindu.fragments.FragmentSettings;
+import eus.ilanda.eskatuetaordaindu.models.Owner;
 
 public class OwnerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -35,6 +37,8 @@ public class OwnerActivity extends AppCompatActivity implements NavigationView.O
     TextView text,email;
 
     FirebaseAuth auth = FirebaseAuth.getInstance();
+
+    private DBManager dbManager = new DBManager();
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelected = new
             BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -52,8 +56,15 @@ public class OwnerActivity extends AppCompatActivity implements NavigationView.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_owner);
+
+        if(FirebaseAuth.getInstance().getCurrentUser() == null){
+            MainActivity.createIntent(this);
+            finish();
+        }
+
         setUpControls();
     }
+
 
     public void setUpControls() {
         nav_view = (NavigationView) findViewById(R.id.nav_view);
@@ -99,8 +110,9 @@ public class OwnerActivity extends AppCompatActivity implements NavigationView.O
                 Toast.makeText(this, "Settings press", Toast.LENGTH_LONG).show();
                 break;
             case R.id.nav_exit:
-                signOut();
+                dbManager.signOut(this);
                 break;
+
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -115,18 +127,6 @@ public class OwnerActivity extends AppCompatActivity implements NavigationView.O
         }
     }
 
-  public void signOut(){
-        AuthUI.getInstance().signOut(this).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
-                    startActivity(MainActivity.createIntent(OwnerActivity.this));
-                }else{ //sign out failed
-                    Toast.makeText(OwnerActivity.this, "Sign out failed", Toast.LENGTH_SHORT);
-                }
-            }
-        });
-    }
 
     public static Intent createIntent(Context context) {
         Intent in  = new Intent();

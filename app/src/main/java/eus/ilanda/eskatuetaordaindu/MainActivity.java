@@ -4,6 +4,7 @@ package eus.ilanda.eskatuetaordaindu;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.MainThread;
+import android.support.v4.view.GravityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,22 +27,21 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
+import eus.ilanda.eskatuetaordaindu.Manager.DBManager;
 import eus.ilanda.eskatuetaordaindu.models.Client;
 import eus.ilanda.eskatuetaordaindu.models.User;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    //DB button onn click, write
-    Button dbButton;
     //Sign in button
     Button btnsignIn;
     TextView dataTextview;
 
-    final FirebaseDatabase database  = FirebaseDatabase.getInstance();
-    final DatabaseReference myRef = database.getReference("message");
 
+    //Authentication manager
     FirebaseAuth auth = FirebaseAuth.getInstance();
+    private DBManager dbManager = new DBManager();
 
 
     private static final int RC_SIGN_IN= 100;
@@ -52,21 +52,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setUpControls();
 
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String value = dataSnapshot.getValue(String.class);
-                dataTextview.setText(value);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                dataTextview.setText("Error: " + databaseError.toString());
-            }
-        });
 
         if(auth.getCurrentUser() != null){
-               userType(auth.getUid());
+               dbManager.userType(auth.getUid(),this);
         }
 
 
@@ -74,22 +62,8 @@ public class MainActivity extends AppCompatActivity {
     }// protected void onCreate(Bundle savedInstanceState)
 
     private void setUpControls(){ 
-
-        //Data textview init
-        dataTextview = (TextView) findViewById(R.id.textView);
-        //db Init
-        dbButton = (Button) findViewById(R.id.button);
-
         //Button sign in
         btnsignIn = (Button)findViewById(R.id.btnSignIn);
-
-        dbButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                myRef.setValue("Hello, World!");
-            }
-        });
-
         btnsignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 selectedProviders.add(new AuthUI.IdpConfig.EmailBuilder().build());
                 selectedProviders.add(new AuthUI.IdpConfig.GoogleBuilder().setSignInOptions(gso).build());
                 startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder().setIsSmartLockEnabled(true).setAvailableProviders(selectedProviders).build(), RC_SIGN_IN);
-            }
+                }
         });
 
     }// private void setUpControls()
@@ -111,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
             return;
         }
+
     }//protected void onActivityResult(int requestCode, int resultCode, Intent data)
 
     @MainThread
@@ -125,19 +100,16 @@ public class MainActivity extends AppCompatActivity {
 
             if (metadata.getCreationTimestamp() == metadata.getLastSignInTimestamp()){
                 //Datu Basean erregistratu (owner, client)
-               Log.w("NEW:","New User");
+               Log.w("LOG_IN:","New User");
                Log.w("RESPONSE", " \n email: "+ response.getEmail().toString() + "\n name: " + auth.getCurrentUser().getDisplayName().toString() + " \n providerType: " + response.getProviderType() + " uid: " + auth.getUid().toString());
-               User user =   new User(auth.getUid());
-               user.setEmail(response.getEmail().toString());
-               user.setName(auth.getCurrentUser().getDisplayName().toString());
-               database.getReference("users").child(user.getUid().toString()).setValue(user);
-                userType(auth.getUid());
+               dbManager.newUser();
+               dbManager.userType(auth.getUid(),this);
 
             }else{
                 //Log-in egin, erabiltzaile motaren arabera
-                Log.w("NEW", "Old User");
+                Log.w("LOG_IN", "Old User");
                 Log.w("RESPONSE", " \n email: "+ response.getEmail().toString() + "\n name: " + FirebaseAuth.getInstance().getCurrentUser().getDisplayName().toString() + " \n providerType: " + response.getProviderType() + " uid: " + FirebaseAuth.getInstance().getUid().toString());
-                userType(auth.getUid());
+                dbManager.userType(auth.getUid(),this);
 
 
             }
@@ -164,37 +136,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }//private void handleSignInResponse(int resultCode, Intent data
 
-    private void userType(String uid){
 
-       final String userType = "client";
-        DatabaseReference dbRef = database.getReference("users").child(uid);
-        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                if (user.getPermission().isOwner() == true) {
-                    startActivity(OwnerActivity.createIntent(MainActivity.this));
 
-                    finish();
-                }else if(user.getPermission().isAdmin() == true){
-                    startActivity(AdminActivity.createIntent(MainActivity.this));
-
-                    finish();
-
-                }else if(!user.getPermission().isOwner() && !user.getPermission().isAdmin()){
-                        startActivity(ClientActivity.createIntent(MainActivity.this));
-
-                    finish();
-                    }
-                    Log.w("DATABASE" , "uid: " + user.getUid() + " isOwner: " + user.getPermission().isOwner() + " isAdmin: " + user.getPermission().isAdmin());
-                }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-    }
 
     public static Intent createIntent(Context context){
         Intent in = new Intent();

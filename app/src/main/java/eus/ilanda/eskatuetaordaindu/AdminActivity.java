@@ -14,8 +14,12 @@ import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import eus.ilanda.eskatuetaordaindu.Manager.DBManager;
+
 public class AdminActivity extends AppCompatActivity {
     Button signOut;
+
+    private DBManager dbManager = new DBManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,23 +34,13 @@ public class AdminActivity extends AppCompatActivity {
         signOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                signOut();
+
+                dbManager.signOut(AdminActivity.this);
             }
         });
     }
 
-    public void signOut(){
-        AuthUI.getInstance().signOut(this).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
-                    startActivity(MainActivity.createIntent(AdminActivity.this));
-                }else{
-                    Toast.makeText(AdminActivity.this, "Sign out failed", Toast.LENGTH_SHORT);
-                }
-            }
-        });
-    }
+
 
     public static Intent createIntent(Context context){
         Intent in = new Intent();
