@@ -4,7 +4,6 @@ package eus.ilanda.eskatuetaordaindu;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.MainThread;
-import android.support.v4.view.GravityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,18 +17,11 @@ import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseUserMetadata;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
-import eus.ilanda.eskatuetaordaindu.Manager.DBManager;
-import eus.ilanda.eskatuetaordaindu.models.Client;
-import eus.ilanda.eskatuetaordaindu.models.User;
+import eus.ilanda.eskatuetaordaindu.manager.DBManager;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -56,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         if(auth.getCurrentUser() != null){
             dbManager.userType(auth.getUid(),this);
-            Log.w("MAIN NOT NULL", Boolean.toString(auth.getCurrentUser()==null)+ " is null?");
+            Log.w("MAIN NOT NULL", Boolean.toString(auth.getCurrentUser()== null)+ " is null?");
         }
 
 

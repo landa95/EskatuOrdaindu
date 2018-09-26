@@ -3,7 +3,6 @@ package eus.ilanda.eskatuetaordaindu;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -16,15 +15,11 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+
 import com.google.firebase.auth.FirebaseAuth;
 
-import eus.ilanda.eskatuetaordaindu.Manager.DBManager;
+import eus.ilanda.eskatuetaordaindu.manager.DBManager;
 import eus.ilanda.eskatuetaordaindu.fragments.FragmentBottomNav;
-import eus.ilanda.eskatuetaordaindu.fragments.FragmentSettings;
-import eus.ilanda.eskatuetaordaindu.models.Owner;
 
 public class OwnerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -40,17 +35,9 @@ public class OwnerActivity extends AppCompatActivity implements NavigationView.O
 
     private DBManager dbManager = new DBManager();
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelected = new
-            BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    //  switch (item.getItemId()){
-                    //    case 0:
-                    //      return true;
-                    //}
-                    return true;
-                }
-            };
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,4 +122,6 @@ public class OwnerActivity extends AppCompatActivity implements NavigationView.O
         in.setClass(context, OwnerActivity.class);
         return in;
     }
+
+
 }
