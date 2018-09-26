@@ -18,8 +18,8 @@ public class Category implements Serializable {
 
     }
 
-    public int getId() {
-        return id;
+    public String getId() {
+        return Integer.toString(this.id);
     }
 
     public void setId(String id) {

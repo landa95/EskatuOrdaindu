@@ -1,7 +1,8 @@
-package eus.ilanda.eskatuetaordaindu.Manager;
+package eus.ilanda.eskatuetaordaindu.manager;
 
 import android.app.Activity;
 import android.content.Context;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
@@ -14,13 +15,19 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import eus.ilanda.eskatuetaordaindu.AdminActivity;
 import eus.ilanda.eskatuetaordaindu.ClientActivity;
 import eus.ilanda.eskatuetaordaindu.MainActivity;
 import eus.ilanda.eskatuetaordaindu.OwnerActivity;
+import eus.ilanda.eskatuetaordaindu.adapters.CategoryAdapter;
+import eus.ilanda.eskatuetaordaindu.models.Category;
 import eus.ilanda.eskatuetaordaindu.models.User;
 
 public class DBManager {
@@ -122,5 +129,58 @@ public class DBManager {
         });
 
         Log.w("USER DELETE", Boolean.toString(auth.getCurrentUser()==null)+ " is null?");
+    }
+
+    public void loadCategories(final Context context, final CategoryAdapter adapter) {
+         final DatabaseReference dbRef = database.getReference("menu").child("categories");
+        // Category cat = new Category(11 , "New Category");
+        //dbRef.child(Integer.toString(cat.getId())).setValue(cat);
+
+         dbRef.addValueEventListener(new ValueEventListener() {
+             @Override
+             public void onDataChange(DataSnapshot dataSnapshot) {
+                 List<Category> categoryList = new ArrayList<Category>();
+
+                 Log.w("DATABASE","database");
+                 for (DataSnapshot snapshot: dataSnapshot.getChildren())
+                 {
+                     Category category = snapshot.getValue(Category.class);
+                     categoryList.add(category);
+                     //Prueba forzar llenar lista
+                 }
+                adapter.setCategories(categoryList);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    public void newCategory(final String categoryName){
+         final DatabaseReference dbRef = database.getReference("menu").child("categories");
+         dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<Category> categoryList = new ArrayList<Category>();
+
+                Log.w("DATABASE","database");
+                for (DataSnapshot snapshot: dataSnapshot.getChildren())
+                {
+                    Category category = snapshot.getValue(Category.class);
+                    categoryList.add(category);
+                }
+                Category newCategory = new Category(categoryList.size()+1 , categoryName);
+                dbRef.child(newCategory.getId()).setValue(newCategory);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }
