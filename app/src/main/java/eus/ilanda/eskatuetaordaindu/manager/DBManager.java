@@ -2,7 +2,6 @@ package eus.ilanda.eskatuetaordaindu.manager;
 
 import android.app.Activity;
 import android.content.Context;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
@@ -15,11 +14,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import eus.ilanda.eskatuetaordaindu.AdminActivity;
@@ -133,8 +132,6 @@ public class DBManager {
 
     public void loadCategories(final Context context, final CategoryAdapter adapter) {
          final DatabaseReference dbRef = database.getReference("menu").child("categories");
-        // Category cat = new Category(11 , "New Category");
-        //dbRef.child(Integer.toString(cat.getId())).setValue(cat);
 
          dbRef.addValueEventListener(new ValueEventListener() {
              @Override
@@ -173,7 +170,11 @@ public class DBManager {
                     Category category = snapshot.getValue(Category.class);
                     categoryList.add(category);
                 }
-                Category newCategory = new Category(categoryList.size()+1 , categoryName);
+                int id = 0;
+                if(categoryList.size() > 0 ){
+                    id = Integer.parseInt(categoryList.get(categoryList.size()-1).getId()) +1;
+                }
+                Category newCategory = new Category(id, categoryName);
                 dbRef.child(newCategory.getId()).setValue(newCategory);
             }
 
@@ -182,5 +183,51 @@ public class DBManager {
 
             }
         });
+    }
+
+    public void deleteCategory(Category category){
+
+        final DatabaseReference dbRef = database.getReference("menu").child("categories");
+        Query query = dbRef.orderByChild("id").equalTo(category.getId());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                DataSnapshot nodeShot = dataSnapshot.getChildren().iterator().next();
+                String key = nodeShot.getKey();
+                dbRef.child(key).removeValue();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        Log.w("USER DELETE", Boolean.toString(auth.getCurrentUser()==null)+ " is null?");
+    }
+
+    public void updateCategory(final Category category,final int i, final String newCategoryName){
+        final DatabaseReference dbRef = database.getReference("menu").child("categories");
+
+        Log.w("DIALOG-UPDATE" , "Old category" + category.getId() + " " + category.getCategoryName() + " New: " + newCategoryName);
+        Category newCategory = new Category(Integer.parseInt(category.getId()), newCategoryName);
+        HashMap<String, Object> update = new HashMap<>();
+        update.put(category.getId(), newCategory);
+        dbRef.child(Integer.toString(i)).setValue(newCategory);
+       /* Query query = dbRef.orderByChild("id").equalTo(i);
+         query.addListenerForSingleValueEvent(new ValueEventListener() {
+             @Override
+             public void onDataChange(DataSnapshot dataSnapshot) {
+                 Log.w("DIALOG-UPDATE" , "Old category" + category.getId() + " " + category.getCategoryName() + " New: " + newCategoryName);
+                 Category newCategory = new Category(Integer.parseInt(category.getId()), newCategoryName);
+                 HashMap<String, Object> update = new HashMap<>();
+                 update.put(category.getId(), newCategory);
+                 dbRef.child(Integer.toString(i)).updateChildren(update);
+             }
+
+             @Override
+             public void onCancelled(DatabaseError databaseError) {
+
+             }
+         });*/
     }
 }

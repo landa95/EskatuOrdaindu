@@ -8,5 +8,10 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="dialog_category_new">Category</string>
+    <string name="dialog_options">Options</string>
+    <string-array name="dialog_options_list">
+        <item name="dialog_list_edit">Edit</item>
+        <item name="dialog_list_delete">Delete</item>
+    </string-array>
 
 </resources>
