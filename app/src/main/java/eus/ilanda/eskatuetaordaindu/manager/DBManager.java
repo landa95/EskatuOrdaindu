@@ -106,15 +106,15 @@ public class DBManager {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 DataSnapshot nodeShot = dataSnapshot.getChildren().iterator().next();
-                String key = nodeShot.getKey();
-                dbRef.child(key).removeValue();
+                final String key = nodeShot.getKey();
+
                 auth.getCurrentUser().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
                             Log.w("USER_DELETE", Boolean.toString(auth.getCurrentUser()==null)+ " is null?");
                             context.startActivity(MainActivity.createIntent(context));
-
+                            dbRef.child(key).removeValue();
                             ((Activity)context).finish();
                         }
                     }

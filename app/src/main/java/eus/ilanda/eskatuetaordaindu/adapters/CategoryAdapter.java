@@ -68,12 +68,21 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                     listener.onItemClick(category, getAdapterPosition());
                 }
             });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    listener.onItemLongClick(category, getAdapterPosition());
+                    return true;
+                }
+            });
         }
 
     }
 
     public interface OnItemClickListener {
         void onItemClick(Category category, int position);
+        void onItemLongClick(Category category, int position);
     }
 
 }

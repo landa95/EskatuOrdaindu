@@ -2,24 +2,23 @@ package eus.ilanda.eskatuetaordaindu;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.google.firebase.auth.FirebaseAuth;
 
-import eus.ilanda.eskatuetaordaindu.manager.DBManager;
 import eus.ilanda.eskatuetaordaindu.fragments.FragmentBottomNav;
+import eus.ilanda.eskatuetaordaindu.manager.DBManager;
 
 public class OwnerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -97,8 +96,8 @@ public class OwnerActivity extends AppCompatActivity implements NavigationView.O
                 Toast.makeText(this, "Settings press", Toast.LENGTH_LONG).show();
                 break;
             case R.id.nav_exit:
-                //dbManager.signOut(this);
-                dbManager.deleteUser(FirebaseAuth.getInstance().getCurrentUser().getUid(),this);
+                dbManager.signOut(this);
+                //dbManager.deleteUser(FirebaseAuth.getInstance().getCurrentUser().getUid(),this);
 
                 break;
 
