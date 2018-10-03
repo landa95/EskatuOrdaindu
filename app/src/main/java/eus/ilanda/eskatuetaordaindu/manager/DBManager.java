@@ -27,6 +27,7 @@ import eus.ilanda.eskatuetaordaindu.MainActivity;
 import eus.ilanda.eskatuetaordaindu.OwnerActivity;
 import eus.ilanda.eskatuetaordaindu.adapters.CategoryAdapter;
 import eus.ilanda.eskatuetaordaindu.models.Category;
+import eus.ilanda.eskatuetaordaindu.models.ItemMenu;
 import eus.ilanda.eskatuetaordaindu.models.User;
 
 public class DBManager {
@@ -73,11 +74,11 @@ public class DBManager {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
-                if (user.getPermission().isOwner() == true) {
+                if (user.getPermission().isOwner()) {
                     ((Activity)context).startActivity(OwnerActivity.createIntent(context));
 
                     ((Activity)context).finish();
-                }else if(user.getPermission().isAdmin() == true){
+                }else if(user.getPermission().isAdmin()){
                     ((Activity)context).startActivity(AdminActivity.createIntent(context));
 
                     ((Activity)context).finish();
@@ -108,17 +109,23 @@ public class DBManager {
                 DataSnapshot nodeShot = dataSnapshot.getChildren().iterator().next();
                 final String key = nodeShot.getKey();
 
-                auth.getCurrentUser().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()){
-                            Log.w("USER_DELETE", Boolean.toString(auth.getCurrentUser()==null)+ " is null?");
-                            context.startActivity(MainActivity.createIntent(context));
-                            dbRef.child(key).removeValue();
-                            ((Activity)context).finish();
-                        }
+                try {
+                    if(auth.getCurrentUser() != null) {
+                        auth.getCurrentUser().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Log.w("USER_DELETE", Boolean.toString(auth.getCurrentUser() == null) + " is null?");
+                                    context.startActivity(MainActivity.createIntent(context));
+                                    dbRef.child(key).removeValue();
+                                    ((Activity) context).finish();
+                                }
+                            }
+                        });
                     }
-                });
+                }catch (NullPointerException e){
+                    Log.wtf("DELETE USER" , "Null Pointer exception");
+                }
             }
 
             @Override
@@ -130,7 +137,7 @@ public class DBManager {
         Log.w("USER DELETE", Boolean.toString(auth.getCurrentUser()==null)+ " is null?");
     }
 
-    public void loadCategories(final Context context, final CategoryAdapter adapter) {
+    public void loadCategories(final CategoryAdapter adapter) {
          final DatabaseReference dbRef = database.getReference("menu").child("categories");
 
          dbRef.addValueEventListener(new ValueEventListener() {
@@ -143,7 +150,6 @@ public class DBManager {
                  {
                      Category category = snapshot.getValue(Category.class);
                      categoryList.add(category);
-                     //Prueba forzar llenar lista
                  }
                 adapter.setCategories(categoryList);
                 adapter.notifyDataSetChanged();
@@ -154,35 +160,20 @@ public class DBManager {
 
             }
         });
-
     }
 
     public void newCategory(final String categoryName){
          final DatabaseReference dbRef = database.getReference("menu").child("categories");
-         dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                List<Category> categoryList = new ArrayList<Category>();
+         String key = dbRef.push().getKey();
+         Category newCategory = new Category(key, categoryName);
+         dbRef.child(newCategory.getId()).setValue(newCategory).addOnCompleteListener(new OnCompleteListener<Void>() {
+             @Override
+             public void onComplete(@NonNull Task<Void> task) {
 
-                Log.w("DATABASE","database");
-                for (DataSnapshot snapshot: dataSnapshot.getChildren())
-                {
-                    Category category = snapshot.getValue(Category.class);
-                    categoryList.add(category);
-                }
-                int id = 0;
-                if(categoryList.size() > 0 ){
-                    id = Integer.parseInt(categoryList.get(categoryList.size()-1).getId()) +1;
-                }
-                Category newCategory = new Category(id, categoryName);
-                dbRef.child(newCategory.getId()).setValue(newCategory);
-            }
+             }
+         });
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
     }
 
     public void deleteCategory(Category category){
@@ -209,7 +200,7 @@ public class DBManager {
         final DatabaseReference dbRef = database.getReference("menu").child("categories");
 
         Log.w("DIALOG-UPDATE" , "Old category" + category.getId() + " " + category.getCategoryName() + " New: " + newCategoryName);
-        Category newCategory = new Category(Integer.parseInt(category.getId()), newCategoryName);
+        Category newCategory = new Category(category.getId(), newCategoryName);
         HashMap<String, Object> update = new HashMap<>();
         update.put(category.getId(), newCategory);
         dbRef.child(Integer.toString(i)).setValue(newCategory);
@@ -230,4 +221,16 @@ public class DBManager {
              }
          });*/
     }
+
+    public void newItemMenu(final ItemMenu item){
+         final DatabaseReference dbRef = database.getReference("menu").child("menuItems");
+         final String str = dbRef.push().getKey();
+         item.setId(str);
+         dbRef.child(str).setValue(item).addOnCompleteListener(new OnCompleteListener<Void>() {
+             @Override
+             public void onComplete(@NonNull Task<Void> task) {
+
+             }
+         });
+     }
 }
