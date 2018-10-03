@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import eus.ilanda.eskatuetaordaindu.R;
 import eus.ilanda.eskatuetaordaindu.adapters.CategoryAdapter;
@@ -24,7 +25,7 @@ import eus.ilanda.eskatuetaordaindu.dialogs.DialogFragmentCategory;
 import eus.ilanda.eskatuetaordaindu.manager.DBManager;
 import eus.ilanda.eskatuetaordaindu.models.Category;
 
-public class FragmentMenuEditor extends Fragment {
+public class FragmentMenuEditor extends Fragment implements DBManager.CallbackCategory {
 
     //ListView
     private RecyclerView categoryList;
@@ -47,7 +48,7 @@ public class FragmentMenuEditor extends Fragment {
         categoryList = (RecyclerView) v.findViewById(R.id.list_categories);
         ArrayList<Category> names  = new ArrayList<Category>();
 
-        final DBManager manager = new DBManager();
+        final DBManager manager = new DBManager(this);
 
 
         mLayoutManager = new LinearLayoutManager(v.getContext());
@@ -91,7 +92,7 @@ public class FragmentMenuEditor extends Fragment {
         categoryList.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         categoryList.setAdapter(mAdapter);
 
-        manager.loadCategories(mAdapter);
+        manager.loadCategories();
 
 
         //Action Button
@@ -107,5 +108,12 @@ public class FragmentMenuEditor extends Fragment {
             }
         });
 
+    }
+
+    //update  category adapter
+    @Override
+    public void updateCategoryAdapter(List<Category> categories) {
+        mAdapter.setCategories(categories);
+        mAdapter.notifyDataSetChanged();
     }
 }

@@ -25,7 +25,6 @@ import eus.ilanda.eskatuetaordaindu.AdminActivity;
 import eus.ilanda.eskatuetaordaindu.ClientActivity;
 import eus.ilanda.eskatuetaordaindu.MainActivity;
 import eus.ilanda.eskatuetaordaindu.OwnerActivity;
-import eus.ilanda.eskatuetaordaindu.adapters.CategoryAdapter;
 import eus.ilanda.eskatuetaordaindu.models.Category;
 import eus.ilanda.eskatuetaordaindu.models.ItemMenu;
 import eus.ilanda.eskatuetaordaindu.models.User;
@@ -33,11 +32,23 @@ import eus.ilanda.eskatuetaordaindu.models.User;
 public class DBManager {
      private static FirebaseAuth auth;
      private static FirebaseDatabase database;
+     private CallbackCategory categoryCallbackListener;
 
 
-     public DBManager(){
+     public interface CallbackCategory{
+         void updateCategoryAdapter(List<Category> categories);
+     }
+
+
+     public DBManager(CallbackCategory callbackListener){
+         this.categoryCallbackListener = callbackListener;
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
+     }
+
+     public DBManager(){
+         auth = FirebaseAuth.getInstance();
+         database = FirebaseDatabase.getInstance();
      }
 
      //Sign Out current user
@@ -137,7 +148,7 @@ public class DBManager {
         Log.w("USER DELETE", Boolean.toString(auth.getCurrentUser()==null)+ " is null?");
     }
 
-    public void loadCategories(final CategoryAdapter adapter) {
+    public void loadCategories() {
          final DatabaseReference dbRef = database.getReference("menu").child("categories");
 
          dbRef.addValueEventListener(new ValueEventListener() {
@@ -151,8 +162,7 @@ public class DBManager {
                      Category category = snapshot.getValue(Category.class);
                      categoryList.add(category);
                  }
-                adapter.setCategories(categoryList);
-                adapter.notifyDataSetChanged();
+                 categoryCallbackListener.updateCategoryAdapter(categoryList);
             }
 
             @Override
@@ -196,14 +206,14 @@ public class DBManager {
         Log.w("USER DELETE", Boolean.toString(auth.getCurrentUser()==null)+ " is null?");
     }
 
-    public void updateCategory(final Category category,final int i, final String newCategoryName){
+    public void updateCategory(final Category category, final String newCategoryName){
         final DatabaseReference dbRef = database.getReference("menu").child("categories");
 
         Log.w("DIALOG-UPDATE" , "Old category" + category.getId() + " " + category.getCategoryName() + " New: " + newCategoryName);
         Category newCategory = new Category(category.getId(), newCategoryName);
         HashMap<String, Object> update = new HashMap<>();
         update.put(category.getId(), newCategory);
-        dbRef.child(Integer.toString(i)).setValue(newCategory);
+        dbRef.child(category.getId()).setValue(newCategory);
        /* Query query = dbRef.orderByChild("id").equalTo(i);
          query.addListenerForSingleValueEvent(new ValueEventListener() {
              @Override
@@ -233,4 +243,7 @@ public class DBManager {
              }
          });
      }
+
+
+
 }
