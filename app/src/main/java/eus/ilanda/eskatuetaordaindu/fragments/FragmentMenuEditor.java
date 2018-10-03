@@ -91,7 +91,7 @@ public class FragmentMenuEditor extends Fragment {
         categoryList.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         categoryList.setAdapter(mAdapter);
 
-        manager.loadCategories(context, mAdapter);
+        manager.loadCategories(mAdapter);
 
 
         //Action Button
