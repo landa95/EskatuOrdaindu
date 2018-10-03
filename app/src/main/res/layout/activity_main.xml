@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,10 +10,17 @@
         android:id="@+id/btnSignIn"
         android:layout_width="158dp"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/button"
-        android:layout_alignStart="@+id/button"
-        android:layout_below="@+id/button"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="250dp"
         android:text="Sign In" />
+
+    <Button
+        android:layout_width="158dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:text="new Item Test"
+        android:id="@+id/btnTest"/>
+
+
 </LinearLayout>

@@ -15,5 +15,4 @@
         android:gravity="center"
         android:textSize="20dp"
         android:text="Category Name" />
-
 </LinearLayout>
