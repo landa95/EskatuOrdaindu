@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Category implements Serializable {
 
-    private int id;
+    private String id;
 
     private String categoryName;
 
@@ -12,18 +12,18 @@ public class Category implements Serializable {
 
     }
 
-    public Category(int id, String category){
+    public Category(String id, String category){
         this.id = id;
         this.categoryName = category;
 
     }
 
     public String getId() {
-        return Integer.toString(this.id);
+        return this.id;
     }
 
     public void setId(String id) {
-        this.id = Integer.parseInt(id);
+        this.id = id;
     }
 
     public String getCategoryName() {

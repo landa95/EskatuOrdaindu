@@ -50,6 +50,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         return this.categories;
     }
 
+    //View Holder pattern
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView categoryName;
 
