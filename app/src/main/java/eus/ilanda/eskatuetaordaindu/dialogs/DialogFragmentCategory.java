@@ -40,7 +40,7 @@ public class DialogFragmentCategory extends  android.support.v4.app.DialogFragme
                   Toast.makeText(getContext(), text.getText().toString(),Toast.LENGTH_SHORT ).show();
                   Category cat  = new Category(bundle.getString("categoryId"), bundle.getString("categoryName"));
                   Log.w("DIALOG", cat.getCategoryName() + " " + cat.getId());
-                  manager.updateCategory(cat,Integer.parseInt(cat.getId()),text.getText().toString());
+                  manager.updateCategory(cat,text.getText().toString());
 
               }
 

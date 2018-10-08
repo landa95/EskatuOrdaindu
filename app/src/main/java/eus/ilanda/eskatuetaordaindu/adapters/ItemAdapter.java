@@ -27,7 +27,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     public ItemAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
         ViewHolder vh = new ViewHolder(v);
-        return null;
+        return vh;
     }
 
     @Override
@@ -37,7 +37,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return 0;
+        return this.items.size();
+    }
+
+    public void setItemList(List<ItemMenu> list){
+        this.items = list;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
@@ -76,6 +80,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
 
     }
+
+
 
     public interface OnItemClickListener{
         void onItemClick(ItemMenu item, int position);

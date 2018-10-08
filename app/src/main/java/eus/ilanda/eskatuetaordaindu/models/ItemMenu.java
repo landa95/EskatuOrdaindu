@@ -49,7 +49,7 @@ public class ItemMenu {
     }
 
     public void setPrize(double prize){
-        if (prize <= 0){
+        if (prize >= 0){
             this.prize = prize;
         }
     }

@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //dbManager
-                ItemMenu item = new ItemMenu("", "Pasta Carbonara", "MAcarrones, tomate, carne de vacuno", 10.5, "");
+                ItemMenu item = new ItemMenu("ghjkl", "Pasta Carbonara", "MAcarrones, tomate, carne de vacuno", 10.5, "hjk");
                 dbManager.newItemMenu(item);
             }
         });

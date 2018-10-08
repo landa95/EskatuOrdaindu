@@ -35,31 +35,31 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
             holder.bind(categories.get(position), listener);
-    }
-
-    @Override
-    public int getItemCount() {
-        return this.categories.size();
-    }
-
-    public void setCategories(List<Category> categories){
-        this.categories = categories;
-    }
-
-    public List<Category> getCategories(){
-        return this.categories;
-    }
-
-    //View Holder pattern
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView categoryName;
-
-        public ViewHolder(View v) {
-            super(v);
-            this.categoryName = (TextView) v.findViewById(R.id.txtCategory);
         }
 
-        public void bind(final Category category, final OnItemClickListener listener){
+            @Override
+            public int getItemCount() {
+                return this.categories.size();
+            }
+
+            public void setCategories(List<Category> categories){
+                this.categories = categories;
+            }
+
+            public List<Category> getCategories(){
+                return this.categories;
+            }
+
+            //View Holder pattern
+            public static class ViewHolder extends RecyclerView.ViewHolder {
+                private TextView categoryName;
+
+                public ViewHolder(View v) {
+                    super(v);
+                    this.categoryName = (TextView) v.findViewById(R.id.txtCategory);
+                }
+
+                public void bind(final Category category, final OnItemClickListener listener){
             categoryName.setText(category.getCategoryName());
 
             itemView.setOnClickListener(new View.OnClickListener(){
@@ -77,6 +77,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                     return true;
                 }
             });
+
         }
 
     }
