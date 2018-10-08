@@ -30,25 +30,31 @@ import eus.ilanda.eskatuetaordaindu.models.ItemMenu;
 import eus.ilanda.eskatuetaordaindu.models.User;
 
 public class DBManager {
-     private static FirebaseAuth auth;
-     private static FirebaseDatabase database;
+     private static FirebaseAuth auth = FirebaseAuth.getInstance();
+     private static FirebaseDatabase database = FirebaseDatabase.getInstance();
      private CallbackCategory categoryCallbackListener;
+     private CallbackItemMenu callbackItemMenuListener;
 
 
      public interface CallbackCategory{
          void updateCategoryAdapter(List<Category> categories);
      }
 
+     public interface CallbackItemMenu{
+         void updateItemMenuAdapter(List<ItemMenu> menuItems);
+     }
+
 
      public DBManager(CallbackCategory callbackListener){
          this.categoryCallbackListener = callbackListener;
-        auth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance();
+     }
+
+     public DBManager( CallbackItemMenu callbackItemMenu){
+         this.callbackItemMenuListener = callbackItemMenu;
      }
 
      public DBManager(){
-         auth = FirebaseAuth.getInstance();
-         database = FirebaseDatabase.getInstance();
+
      }
 
      //Sign Out current user
@@ -239,6 +245,27 @@ public class DBManager {
          dbRef.child(str).setValue(item).addOnCompleteListener(new OnCompleteListener<Void>() {
              @Override
              public void onComplete(@NonNull Task<Void> task) {
+
+             }
+         });
+     }
+
+     public void loadItemMenus(){
+         final DatabaseReference dbRef = database.getReference("menu").child("menuItems");
+         dbRef.addValueEventListener(new ValueEventListener() {
+             @Override
+             public void onDataChange(DataSnapshot dataSnapshot) {
+                 List<ItemMenu> itemList = new ArrayList<ItemMenu>();
+                 for (DataSnapshot snapshot: dataSnapshot.getChildren())
+                 {
+                     ItemMenu item = snapshot.getValue(ItemMenu.class);
+                     itemList.add(item);
+                 }
+                 callbackItemMenuListener.updateItemMenuAdapter(itemList);
+             }
+
+             @Override
+             public void onCancelled(DatabaseError databaseError) {
 
              }
          });

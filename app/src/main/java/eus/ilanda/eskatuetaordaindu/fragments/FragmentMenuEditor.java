@@ -25,14 +25,19 @@ import eus.ilanda.eskatuetaordaindu.dialogs.DialogFragmentCategory;
 import eus.ilanda.eskatuetaordaindu.manager.DBManager;
 import eus.ilanda.eskatuetaordaindu.models.Category;
 
-public class FragmentMenuEditor extends Fragment implements DBManager.CallbackCategory {
+public class FragmentMenuEditor extends Fragment implements DBManager.CallbackCategory, CategoryAdapter.OnItemClickListener {
 
     //ListView
     private RecyclerView categoryList;
 
-    private CategoryAdapter mAdapter;
+    private CategoryAdapter categoryAdapter;
+
 
     private RecyclerView.LayoutManager mLayoutManager;
+
+    private Context context ;
+
+    private DBManager manager =  new DBManager(this);
 
 
     @Nullable
@@ -40,59 +45,37 @@ public class FragmentMenuEditor extends Fragment implements DBManager.CallbackCa
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_menu_editor, container, false);
 
+        this.context = getContext();
         setUpControls(v, getContext(), savedInstanceState);
+        categoryList.setLayoutManager(mLayoutManager);
+        categoryList.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+
+        categoryList.setAdapter(categoryAdapter);
+        manager.loadCategories();
         return v;
     }
 
     private void setUpControls(View v, final Context context, final Bundle savedInstanceState) {
         categoryList = (RecyclerView) v.findViewById(R.id.list_categories);
-        ArrayList<Category> names  = new ArrayList<Category>();
+        ArrayList<Category> names  = new ArrayList<>();
 
-        final DBManager manager = new DBManager(this);
+
+       /* items.add(new ItemMenu("-LNunJEyDTv43wXl3Uty", "Pasta Carbonara", "Macarrones, tomate, carne de vacuno", 10.5, "-LNunEVyBi7n0pSkdDSn"));
+        items.add(new ItemMenu("-LNunJEyDTv43wXl3Uty", "Pasta Carbonara", "Macarrones, tomate, carne de vacuno", 10.5, "-LNunEVyBi7n0pSkdDSn"));
+        items.add(new ItemMenu("-LNunJEyDTv43wXl3Uty", "Pasta Carbonara", "Macarrones, tomate, carne de vacuno", 10.5, "-LNunEVyBi7n0pSkdDSn"));
+        items.add(new ItemMenu("-LNunJEyDTv43wXl3Uty", "Pasta Carbonara", "Macarrones, tomate, carne de vacuno", 10.5, "-LNunEVyBi7n0pSkdDSn"));
+        items.add(new ItemMenu("-LNunJEyDTv43wXl3Uty", "Pasta Carbonara", "Macarrones, tomate, carne de vacuno", 10.5, "-LNunEVyBi7n0pSkdDSn"));
+        items.add(new ItemMenu("-LNunJEyDTv43wXl3Uty", "Pasta Carbonara", "Macarrones, tomate, carne de vacuno", 10.5, "-LNunEVyBi7n0pSkdDSn"));*/
 
 
         mLayoutManager = new LinearLayoutManager(v.getContext());
 
-        mAdapter = new CategoryAdapter(R.layout.list_category, names, new CategoryAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Category category, int position) {
-                Toast.makeText(context,"Category id: " + category.getId() + " , " + category.getCategoryName() ,Toast.LENGTH_SHORT).show();
-            }
+        categoryAdapter = new CategoryAdapter(R.layout.list_category, names, this);
 
-            @Override
-            public void onItemLongClick(final Category category, int position) {
-                Toast.makeText(context,"Long Category id: " + category.getId() + " , " + category.getCategoryName() ,Toast.LENGTH_SHORT).show();
-                AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-                dialog.setTitle(R.string.dialog_options);
-                dialog.setItems(R.array.dialog_options_list, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        if(i == 0){
-                            //Edit Category name
-                            DialogFragmentCategory dialogFragment = new DialogFragmentCategory();
-                            Bundle bundle = new Bundle();
-                            bundle.putString("categoryName", category.getCategoryName());
-                            bundle.putString("categoryId", category.getId());
-                            dialogFragment.setArguments(bundle);
-                            dialogFragment.show(getFragmentManager(), "edit");
+        //itemAdapter = new ItemAdapter(R.layout.list_item,items , this);
 
-                            //manager.updateCategory(category,new Category(20, "Update category"));
-                        }else if (i==1){
-                            //Delete category name Pay attention to subItems
-                            manager.deleteCategory(category);
-                        }
-                    }
-                });
-                dialog.create();
-                dialog.show();
+       // categoryList.setAdapter(itemAdapter);
 
-            }
-        });
-        categoryList.setLayoutManager(mLayoutManager);
-        categoryList.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        categoryList.setAdapter(mAdapter);
-
-        manager.loadCategories();
 
 
         //Action Button
@@ -108,12 +91,74 @@ public class FragmentMenuEditor extends Fragment implements DBManager.CallbackCa
             }
         });
 
+
+
     }
 
-    //update  category adapter
+    //implement dbManager to update  category adapter
     @Override
     public void updateCategoryAdapter(List<Category> categories) {
-        mAdapter.setCategories(categories);
-        mAdapter.notifyDataSetChanged();
+        categoryAdapter.setCategories(categories);
+        categoryAdapter.notifyDataSetChanged();
     }
+
+
+    //Implement Recycler view Category on click
+    @Override
+    public void onItemClick(Category category, int position) {
+        final android.support.v4.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(android.R.id.tabcontent, new FragmentMenuItem());
+        transaction.addToBackStack(null);
+        transaction.commit();
+
+    }
+
+    //Implement Recycler view Category on long click
+    @Override
+    public void onItemLongClick(final Category category, int position) {
+        Toast.makeText(context,"Long Category id: " + category.getId() + " , " + category.getCategoryName() ,Toast.LENGTH_SHORT).show();
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+        dialog.setTitle(R.string.dialog_options);
+        dialog.setItems(R.array.dialog_options_list, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if(i == 0){
+                    //Edit Category name
+                    DialogFragmentCategory dialogFragment = new DialogFragmentCategory();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("categoryName", category.getCategoryName());
+                    bundle.putString("categoryId", category.getId());
+                    dialogFragment.setArguments(bundle);
+                    dialogFragment.show(getFragmentManager(), "edit");
+
+                    //manager.updateCategory(category,new Category(20, "Update category"));
+                }else if (i==1){
+                    //Delete category name Pay attention to subItems
+                    manager.deleteCategory(category);
+                }
+            }
+        });
+        dialog.create();
+        dialog.show();
+    }
+/*
+    //ItemMenu Adapter On Click
+    @Override
+    public void onItemClick(ItemMenu item, int position) {
+
+    }
+
+//    ItemMenu Adapter on long click
+
+    @Override
+    public void onItemLongClick(ItemMenu item, int position) {
+
+    }
+
+//  Item menu update adapter from DBManager
+    @Override
+    public void updateItemMenuAdapter(List<ItemMenu> menuItems) {
+        itemAdapter.setItemList(menuItems);
+        itemAdapter.notifyDataSetChanged();
+    }*/
 }
