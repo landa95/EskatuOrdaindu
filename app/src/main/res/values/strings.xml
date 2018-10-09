@@ -7,11 +7,19 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="dialog_category_new">Category</string>
+    <string name="dialog_category_new">Category name</string>
     <string name="dialog_options">Options</string>
     <string-array name="dialog_options_list">
         <item name="dialog_list_edit">Edit</item>
         <item name="dialog_list_delete">Delete</item>
     </string-array>
+    
+    <string name="dialog_item_name">Item name</string>
+    <string name="dialog_item_description">Item description</string>
+    <string name="dialog_item_prize">Item prize</string>
+    <string name="dialog_item_txt_prize">Set prize</string>
+
+    <string name="dialog_ok">Accept</string>
+    <string name="dialog_cancel">Cancell</string>
 
 </resources>

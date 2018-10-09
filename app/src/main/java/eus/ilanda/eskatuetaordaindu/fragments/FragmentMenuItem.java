@@ -1,5 +1,6 @@
 package eus.ilanda.eskatuetaordaindu.fragments;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,6 +20,7 @@ import java.util.List;
 
 import eus.ilanda.eskatuetaordaindu.R;
 import eus.ilanda.eskatuetaordaindu.adapters.ItemAdapter;
+import eus.ilanda.eskatuetaordaindu.dialogs.DialogFragmentItem;
 import eus.ilanda.eskatuetaordaindu.manager.DBManager;
 import eus.ilanda.eskatuetaordaindu.models.ItemMenu;
 
@@ -34,6 +36,8 @@ public class FragmentMenuItem extends Fragment implements ItemAdapter.OnItemClic
 
     private DBManager manager = new DBManager(this);
 
+    private FloatingActionButton fab;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -48,6 +52,29 @@ public class FragmentMenuItem extends Fragment implements ItemAdapter.OnItemClic
         itemList.setAdapter(itemAdapter);
         manager.loadItemMenus();
 
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context, "Floating botton clicked " , Toast.LENGTH_SHORT).show();
+                final DialogFragmentItem dialogFragmentItem = new DialogFragmentItem();
+                dialogFragmentItem.newInstance(new DialogFragmentItem.OnDialogClick() {
+                    @Override
+                    public void onPositiveClick(ItemMenu item) {
+                        manager.newItemMenu(item);
+                        Toast.makeText(getContext(), item.getItemName() , Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNegativeClick() {
+
+                    }
+                });
+                dialogFragmentItem.show(getFragmentManager(), null);
+                AlertDialog dialog = (AlertDialog) dialogFragmentItem.getDialog();
+
+            }
+        });
+
         return v;
     }
 
@@ -60,17 +87,7 @@ public class FragmentMenuItem extends Fragment implements ItemAdapter.OnItemClic
         itemAdapter = new ItemAdapter(R.layout.list_item, items,this);
 
         //Action Button
-        FloatingActionButton fab = v.findViewById(R.id.fab);
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(context, "Floating botton clicked " , Toast.LENGTH_SHORT).show();
-                //DialogFragmentCategory dialogFragment = new DialogFragmentCategory();
-                //dialogFragment.show(getFragmentManager(), "new");
-
-            }
-        });
+        fab= v.findViewById(R.id.fab);
 
 
     }

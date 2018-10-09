@@ -19,6 +19,7 @@ public class DialogFragmentCategory extends  android.support.v4.app.DialogFragme
 
     private String tag = "new";
     private String title = "New Category";
+    private EditText text;
 
     @Override
     public Dialog onCreateDialog(final Bundle savedInstanceState){
@@ -27,25 +28,31 @@ public class DialogFragmentCategory extends  android.support.v4.app.DialogFragme
         final DBManager manager = new DBManager();
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
+        //inflate category layout
         View v  = inflater.inflate(R.layout.dialog_category,null);
-       final EditText text = (EditText) v.findViewById(R.id.txt_new_category);
-        builder.setView(v).setTitle(title).setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+       text = (EditText) v.findViewById(R.id.txt_new_category);
+        builder.setView(v).setTitle(title).setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
            @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-              if (tag.equals("new")){
-                  Toast.makeText(getContext(), text.getText().toString(),Toast.LENGTH_SHORT ).show();
-                  manager.newCategory(text.getText().toString());
-              }else if (tag.equals("edit")){
-                  Bundle bundle = getArguments();
-                  Toast.makeText(getContext(), text.getText().toString(),Toast.LENGTH_SHORT ).show();
-                  Category cat  = new Category(bundle.getString("categoryId"), bundle.getString("categoryName"));
-                  Log.w("DIALOG", cat.getCategoryName() + " " + cat.getId());
-                  manager.updateCategory(cat,text.getText().toString());
+               String txtInput = text.getText().toString();
+               if(txtInput.trim().isEmpty()){
+                   Toast.makeText(getContext(), "Please insert a category name", Toast.LENGTH_SHORT).show();
+               }else{
+                   if (tag.equals("new")){
+                       Toast.makeText(getContext(), text.getText().toString(),Toast.LENGTH_SHORT ).show();
+                       manager.newCategory(text.getText().toString());
+                   }else if (tag.equals("edit")){
+                       Bundle bundle = getArguments();
+                       Toast.makeText(getContext(), text.getText().toString(),Toast.LENGTH_SHORT ).show();
+                       Category cat  = new Category(bundle.getString("categoryId"), bundle.getString("categoryName"));
+                       Log.w("DIALOG", cat.getCategoryName() + " " + cat.getId());
+                       manager.updateCategory(cat,text.getText().toString());
+                   }
+               }
 
-              }
 
             }
-        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        }).setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 

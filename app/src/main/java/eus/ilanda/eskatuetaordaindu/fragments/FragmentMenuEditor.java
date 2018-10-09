@@ -90,9 +90,6 @@ public class FragmentMenuEditor extends Fragment implements DBManager.CallbackCa
 
             }
         });
-
-
-
     }
 
     //implement dbManager to update  category adapter

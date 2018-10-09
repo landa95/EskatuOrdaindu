@@ -38,7 +38,6 @@ public class FragmentBottomNav extends android.support.v4.app.Fragment{
             };
 
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
