@@ -67,7 +67,7 @@ public class FragmentMenuItem extends Fragment implements ItemAdapter.OnItemClic
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, "Floating botton clicked " , Toast.LENGTH_SHORT).show();
-                showItemDialog("new", null);
+                showItemDialog(dialogFragmentItem.ACTION_NEW, null);
 
 
             }

@@ -178,11 +178,12 @@ public class DBManager {
         });
     }
 
-    public void newCategory(final String categoryName){
+    public void newCategory(final Category category){
+         Log.w("CATEGORY_NEW", category.getCategoryName());
          final DatabaseReference dbRef = database.getReference("menu").child("categories");
          String key = dbRef.push().getKey();
-         Category newCategory = new Category(key, categoryName);
-         dbRef.child(newCategory.getId()).setValue(newCategory).addOnCompleteListener(new OnCompleteListener<Void>() {
+         category.setId(key);
+         dbRef.child(key).setValue(category).addOnCompleteListener(new OnCompleteListener<Void>() {
              @Override
              public void onComplete(@NonNull Task<Void> task) {
 
@@ -212,12 +213,13 @@ public class DBManager {
         Log.w("USER DELETE", Boolean.toString(auth.getCurrentUser()==null)+ " is null?");
     }
 
-    public void updateCategory(final Category category, final String newCategoryName){
+    public void updateCategory(final Category category){
+        Log.w("CATEGORY_UPDATE", category.getId());
         final DatabaseReference dbRef = database.getReference("menu").child("categories");
-        Category newCategory = new Category(category.getId(), newCategoryName);
+        Category newCategory = category;
         HashMap<String, Object> update = new HashMap<>();
-        update.put(category.getId(), newCategory);
-        dbRef.child(category.getId()).setValue(newCategory);
+        update.put(category.getId(), category);
+        dbRef.child(newCategory.getId()).setValue(newCategory);
     }
 
     public void newItemMenu(final ItemMenu item){

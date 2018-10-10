@@ -1,6 +1,5 @@
 package eus.ilanda.eskatuetaordaindu.fragments;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -22,6 +21,7 @@ import java.util.List;
 import eus.ilanda.eskatuetaordaindu.R;
 import eus.ilanda.eskatuetaordaindu.adapters.CategoryAdapter;
 import eus.ilanda.eskatuetaordaindu.dialogs.DialogFragmentCategory;
+import eus.ilanda.eskatuetaordaindu.dialogs.DialogFragmentEditDelete;
 import eus.ilanda.eskatuetaordaindu.manager.DBManager;
 import eus.ilanda.eskatuetaordaindu.models.Category;
 
@@ -38,6 +38,8 @@ public class FragmentMenuEditor extends Fragment implements DBManager.CallbackCa
     private Context context ;
 
     private DBManager manager =  new DBManager(this);
+
+    private DialogFragmentCategory dialogFragmentCategory = new DialogFragmentCategory();
 
 
     @Nullable
@@ -72,11 +74,36 @@ public class FragmentMenuEditor extends Fragment implements DBManager.CallbackCa
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, "Floating botton clicked " , Toast.LENGTH_SHORT).show();
-                DialogFragmentCategory dialogFragment = new DialogFragmentCategory();
-                dialogFragment.show(getFragmentManager(), "new");
+                showCategoryDialog(dialogFragmentCategory.ACTION_NEW, null);
+
 
             }
         });
+    }
+
+    public void showCategoryDialog(final String action, final Category category){
+        if (action.equals(dialogFragmentCategory.ACTION_NEW)){
+            dialogFragmentCategory.setCategory(new Category());
+        }else if (action.equals(dialogFragmentCategory.ACTION_EDIT)){
+            dialogFragmentCategory.setCategory(category);
+        }
+
+        dialogFragmentCategory.newInstance(new DialogFragmentCategory.OnDialogClick() {
+            @Override
+            public void onPositiveClick(Category category) {
+                if (action.equals(dialogFragmentCategory.ACTION_NEW)){
+                    manager.newCategory(category);
+                }else if (action.equals(dialogFragmentCategory.ACTION_EDIT)){
+                    manager.updateCategory(category);
+                }
+            }
+
+            @Override
+            public void onNegativeClick() {
+
+            }
+        });
+        dialogFragmentCategory.show(getFragmentManager(), null);
     }
 
     //implement dbManager to update  category adapter
@@ -102,30 +129,23 @@ public class FragmentMenuEditor extends Fragment implements DBManager.CallbackCa
     //Implement Recycler view Category on long click
     @Override
     public void onItemLongClick(final Category category, int position) {
-        Toast.makeText(context,"Long Category id: " + category.getId() + " , " + category.getCategoryName() ,Toast.LENGTH_SHORT).show();
-        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-        dialog.setTitle(R.string.dialog_options);
-        dialog.setItems(R.array.dialog_options_list, new DialogInterface.OnClickListener() {
+        final DialogFragmentEditDelete dialogFragmentEditDelete = new DialogFragmentEditDelete();
+        dialogFragmentEditDelete.setTitle("Item");
+        dialogFragmentEditDelete.newInstance(new DialogFragmentEditDelete.OnEditDeleteClick() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if(i == 0){
                     //Edit Category name
-                    DialogFragmentCategory dialogFragment = new DialogFragmentCategory();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("categoryName", category.getCategoryName());
-                    bundle.putString("categoryId", category.getId());
-                    dialogFragment.setArguments(bundle);
-                    dialogFragment.show(getFragmentManager(), "edit");
+                    Toast.makeText(getContext(), category.getCategoryName(), Toast.LENGTH_SHORT).show();
+                    showCategoryDialog(dialogFragmentCategory.ACTION_EDIT, category);
 
-                    //manager.updateCategory(category,new Category(20, "Update category"));
                 }else if (i==1){
                     //Delete category name Pay attention to subItems
                     manager.deleteCategory(category);
                 }
             }
         });
-        dialog.create();
-        dialog.show();
+        dialogFragmentEditDelete.show(getFragmentManager(), null);
     }
 
 }

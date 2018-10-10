@@ -32,9 +32,9 @@ public class DialogFragmentItem extends DialogFragment {
     private String category = "";
 
     private ItemMenu itemMenu;
-    
+
     public final String ACTION_NEW = "new";
-    
+
     public final String ACTION_EDIT = "edit";
 
     public void newInstance(OnDialogClick listener){
@@ -139,4 +139,3 @@ public class DialogFragmentItem extends DialogFragment {
 
 
 }
-
