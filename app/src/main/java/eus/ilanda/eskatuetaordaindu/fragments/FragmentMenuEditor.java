@@ -60,22 +60,9 @@ public class FragmentMenuEditor extends Fragment implements DBManager.CallbackCa
         ArrayList<Category> names  = new ArrayList<>();
 
 
-       /* items.add(new ItemMenu("-LNunJEyDTv43wXl3Uty", "Pasta Carbonara", "Macarrones, tomate, carne de vacuno", 10.5, "-LNunEVyBi7n0pSkdDSn"));
-        items.add(new ItemMenu("-LNunJEyDTv43wXl3Uty", "Pasta Carbonara", "Macarrones, tomate, carne de vacuno", 10.5, "-LNunEVyBi7n0pSkdDSn"));
-        items.add(new ItemMenu("-LNunJEyDTv43wXl3Uty", "Pasta Carbonara", "Macarrones, tomate, carne de vacuno", 10.5, "-LNunEVyBi7n0pSkdDSn"));
-        items.add(new ItemMenu("-LNunJEyDTv43wXl3Uty", "Pasta Carbonara", "Macarrones, tomate, carne de vacuno", 10.5, "-LNunEVyBi7n0pSkdDSn"));
-        items.add(new ItemMenu("-LNunJEyDTv43wXl3Uty", "Pasta Carbonara", "Macarrones, tomate, carne de vacuno", 10.5, "-LNunEVyBi7n0pSkdDSn"));
-        items.add(new ItemMenu("-LNunJEyDTv43wXl3Uty", "Pasta Carbonara", "Macarrones, tomate, carne de vacuno", 10.5, "-LNunEVyBi7n0pSkdDSn"));*/
-
-
         mLayoutManager = new LinearLayoutManager(v.getContext());
 
         categoryAdapter = new CategoryAdapter(R.layout.list_category, names, this);
-
-        //itemAdapter = new ItemAdapter(R.layout.list_item,items , this);
-
-       // categoryList.setAdapter(itemAdapter);
-
 
 
         //Action Button
@@ -104,7 +91,9 @@ public class FragmentMenuEditor extends Fragment implements DBManager.CallbackCa
     @Override
     public void onItemClick(Category category, int position) {
         final android.support.v4.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(android.R.id.tabcontent, new FragmentMenuItem());
+        FragmentMenuItem menuItemFragment = new FragmentMenuItem();
+        menuItemFragment.setCategory(category.getId());
+        transaction.replace(android.R.id.tabcontent, menuItemFragment);
         transaction.addToBackStack(null);
         transaction.commit();
 
@@ -138,24 +127,5 @@ public class FragmentMenuEditor extends Fragment implements DBManager.CallbackCa
         dialog.create();
         dialog.show();
     }
-/*
-    //ItemMenu Adapter On Click
-    @Override
-    public void onItemClick(ItemMenu item, int position) {
 
-    }
-
-//    ItemMenu Adapter on long click
-
-    @Override
-    public void onItemLongClick(ItemMenu item, int position) {
-
-    }
-
-//  Item menu update adapter from DBManager
-    @Override
-    public void updateItemMenuAdapter(List<ItemMenu> menuItems) {
-        itemAdapter.setItemList(menuItems);
-        itemAdapter.notifyDataSetChanged();
-    }*/
 }

@@ -250,9 +250,31 @@ public class DBManager {
          });
      }
 
-     public void loadItemMenus(){
+    public void loadItemMenus(){
+        final DatabaseReference dbRef = database.getReference("menu").child("menuItems");
+        dbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<ItemMenu> itemList = new ArrayList<ItemMenu>();
+                for (DataSnapshot snapshot: dataSnapshot.getChildren())
+                {
+                    ItemMenu item = snapshot.getValue(ItemMenu.class);
+                    itemList.add(item);
+                }
+                callbackItemMenuListener.updateItemMenuAdapter(itemList);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+     public void loadItemsByCategory(final String categoryId){
          final DatabaseReference dbRef = database.getReference("menu").child("menuItems");
-         dbRef.addValueEventListener(new ValueEventListener() {
+         Query query = dbRef.orderByChild("category").equalTo(categoryId);
+         query.addValueEventListener(new ValueEventListener() {
              @Override
              public void onDataChange(DataSnapshot dataSnapshot) {
                  List<ItemMenu> itemList = new ArrayList<ItemMenu>();
@@ -260,6 +282,10 @@ public class DBManager {
                  {
                      ItemMenu item = snapshot.getValue(ItemMenu.class);
                      itemList.add(item);
+/*                     if(item.getCategory().equals(categoryId)){
+                         itemList.add(item);
+                     }*/
+
                  }
                  callbackItemMenuListener.updateItemMenuAdapter(itemList);
              }
@@ -269,8 +295,6 @@ public class DBManager {
 
              }
          });
-     }
-
-
+    }
 
 }

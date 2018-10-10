@@ -38,6 +38,12 @@ public class FragmentMenuItem extends Fragment implements ItemAdapter.OnItemClic
 
     private FloatingActionButton fab;
 
+    private String category = "";
+
+    public void setCategory(String category){
+        this.category = category;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -50,7 +56,9 @@ public class FragmentMenuItem extends Fragment implements ItemAdapter.OnItemClic
         itemList.setLayoutManager(mLayoutManager);
         itemList.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         itemList.setAdapter(itemAdapter);
-        manager.loadItemMenus();
+
+        manager.loadItemsByCategory(this.category);
+        //manager.loadItemMenus();
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,6 +68,7 @@ public class FragmentMenuItem extends Fragment implements ItemAdapter.OnItemClic
                 dialogFragmentItem.newInstance(new DialogFragmentItem.OnDialogClick() {
                     @Override
                     public void onPositiveClick(ItemMenu item) {
+                        item.setCategory(category);
                         manager.newItemMenu(item);
                         Toast.makeText(getContext(), item.getItemName() , Toast.LENGTH_SHORT).show();
                     }

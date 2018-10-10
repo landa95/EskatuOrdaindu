@@ -29,6 +29,8 @@ public class DialogFragmentItem extends DialogFragment {
 
     private OnDialogClick clickListener;
 
+    private String category = "";
+
     public void newInstance(OnDialogClick listener){
         this.clickListener = listener;
     }
