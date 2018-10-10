@@ -77,10 +77,11 @@ public class DialogFragmentItem extends DialogFragment {
         return dialog;
     }
     public double getNumberPickers(){
-        int number = inputNumberPicker.getValue();
-        int number2 = inputNumberPicker2.getValue();
-        String str = number + "." + number2;
-        return Double.parseDouble(str);
+        double number = inputNumberPicker.getValue();
+        double number2 = inputNumberPicker2.getValue();
+        number2 = number2/100;
+        number = number + number2;
+        return number;
     }
 
     private void setUpControls(View v) {
@@ -105,7 +106,7 @@ public class DialogFragmentItem extends DialogFragment {
         NumberPicker.Formatter formatter2 = new NumberPicker.Formatter() {
             @Override
             public String format(int i) {
-                return  NumberFormat.getInstance().format((int)i).toString();
+                return  String.format("%02d",i);
             }
         };
         inputNumberPicker.setFormatter(formatter);
