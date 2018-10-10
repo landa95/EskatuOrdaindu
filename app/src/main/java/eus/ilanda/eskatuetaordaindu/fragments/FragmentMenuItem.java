@@ -1,7 +1,7 @@
 package eus.ilanda.eskatuetaordaindu.fragments;
 
-import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,6 +20,7 @@ import java.util.List;
 
 import eus.ilanda.eskatuetaordaindu.R;
 import eus.ilanda.eskatuetaordaindu.adapters.ItemAdapter;
+import eus.ilanda.eskatuetaordaindu.dialogs.DialogFragmentEditDelete;
 import eus.ilanda.eskatuetaordaindu.dialogs.DialogFragmentItem;
 import eus.ilanda.eskatuetaordaindu.manager.DBManager;
 import eus.ilanda.eskatuetaordaindu.models.ItemMenu;
@@ -39,6 +40,8 @@ public class FragmentMenuItem extends Fragment implements ItemAdapter.OnItemClic
     private FloatingActionButton fab;
 
     private String category = "";
+
+    private  DialogFragmentItem dialogFragmentItem = new DialogFragmentItem();
 
     public void setCategory(String category){
         this.category = category;
@@ -64,22 +67,8 @@ public class FragmentMenuItem extends Fragment implements ItemAdapter.OnItemClic
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, "Floating botton clicked " , Toast.LENGTH_SHORT).show();
-                final DialogFragmentItem dialogFragmentItem = new DialogFragmentItem();
-                dialogFragmentItem.newInstance(new DialogFragmentItem.OnDialogClick() {
-                    @Override
-                    public void onPositiveClick(ItemMenu item) {
-                        item.setCategory(category);
-                        manager.newItemMenu(item);
-                        Toast.makeText(getContext(), item.getItemName() , Toast.LENGTH_SHORT).show();
-                    }
+                showItemDialog("new", null);
 
-                    @Override
-                    public void onNegativeClick() {
-
-                    }
-                });
-                dialogFragmentItem.show(getFragmentManager(), null);
-                AlertDialog dialog = (AlertDialog) dialogFragmentItem.getDialog();
 
             }
         });
@@ -101,16 +90,59 @@ public class FragmentMenuItem extends Fragment implements ItemAdapter.OnItemClic
 
     }
 
+    public void showItemDialog(final String action, final ItemMenu item){
+
+        if (action.equals(dialogFragmentItem.ACTION_NEW)){
+            dialogFragmentItem.setItem(new ItemMenu());
+        }else if (action.equals(dialogFragmentItem.ACTION_EDIT)){
+            dialogFragmentItem.setItem(item);
+        }
+
+        this.dialogFragmentItem.newInstance(new DialogFragmentItem.OnDialogClick() {
+            @Override
+            public void onPositiveClick(ItemMenu dialogItem) {
+                if(action.equals(dialogFragmentItem.ACTION_NEW)){
+                    dialogItem.setCategory(category);
+                    manager.newItemMenu(dialogItem);
+                    Toast.makeText(getContext(), dialogItem.getItemName() , Toast.LENGTH_SHORT).show();
+                }else if (action.equals(dialogFragmentItem.ACTION_EDIT)){
+                    manager.updateItem(dialogItem);
+                }
+            }
+
+            @Override
+            public void onNegativeClick() {
+
+            }
+        });
+        dialogFragmentItem.show(getFragmentManager(), null);
+    }
+
     @Override
     public void onItemClick(ItemMenu item, int position) {
 
     }
 
     @Override
-    public void onItemLongClick(ItemMenu item, int position) {
-
+    public void onItemLongClick(final ItemMenu listItem, int position) {
+        DialogFragmentEditDelete dialogFragmentEditDelete = new DialogFragmentEditDelete();
+        dialogFragmentEditDelete.setTitle("Item");
+        dialogFragmentEditDelete.newInstance(new DialogFragmentEditDelete.OnEditDeleteClick() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if(i == 0){
+                    //Edit Item
+                    showItemDialog(dialogFragmentItem.ACTION_EDIT, listItem);
+                }else if (i==1){
+                    //Delete item
+                    manager.deleteItem(listItem);
+                }
+            }
+        });
+        dialogFragmentEditDelete.show(getFragmentManager(), null);
     }
 
+    //Callback from DBManager
     @Override
     public void updateItemMenuAdapter(List<ItemMenu> menuItems) {
         itemAdapter.setItemList(menuItems);

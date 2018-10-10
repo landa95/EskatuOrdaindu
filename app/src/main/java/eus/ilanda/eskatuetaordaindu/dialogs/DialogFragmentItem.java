@@ -31,6 +31,12 @@ public class DialogFragmentItem extends DialogFragment {
 
     private String category = "";
 
+    private ItemMenu itemMenu;
+    
+    public final String ACTION_NEW = "new";
+    
+    public final String ACTION_EDIT = "edit";
+
     public void newInstance(OnDialogClick listener){
         this.clickListener = listener;
     }
@@ -59,13 +65,13 @@ public class DialogFragmentItem extends DialogFragment {
                 if (inputItemName.getText().toString().trim().isEmpty()|| inputItemDescription.getText().toString().trim().isEmpty()){
                     Toast.makeText(getContext(), "Please insert an item name and a description ", Toast.LENGTH_SHORT).show();
                 }else{
-                    ItemMenu item = new ItemMenu();
+
                     double db = getNumberPickers();
-                    item.setItemName(inputItemName.getText().toString());
-                    item.setItemDetails(inputItemDescription.getText().toString());
-                    item.setPrize(db);
+                    itemMenu.setItemName(inputItemName.getText().toString());
+                    itemMenu.setItemDetails(inputItemDescription.getText().toString());
+                    itemMenu.setPrize(db);
                     dismiss();
-                    clickListener.onPositiveClick(item);
+                    clickListener.onPositiveClick(itemMenu);
                 }
             }
         });
@@ -120,10 +126,17 @@ public class DialogFragmentItem extends DialogFragment {
         inputNumberPicker2.setMaxValue(99);
     }
 
+    public void setItem(ItemMenu item){
+        this.itemMenu = item;
+    }
+
     public interface OnDialogClick{
         void onPositiveClick(ItemMenu item);
         void onNegativeClick();
     }
+
+
+
 
 }
 

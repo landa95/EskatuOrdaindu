@@ -214,28 +214,10 @@ public class DBManager {
 
     public void updateCategory(final Category category, final String newCategoryName){
         final DatabaseReference dbRef = database.getReference("menu").child("categories");
-
-        Log.w("DIALOG-UPDATE" , "Old category" + category.getId() + " " + category.getCategoryName() + " New: " + newCategoryName);
         Category newCategory = new Category(category.getId(), newCategoryName);
         HashMap<String, Object> update = new HashMap<>();
         update.put(category.getId(), newCategory);
         dbRef.child(category.getId()).setValue(newCategory);
-       /* Query query = dbRef.orderByChild("id").equalTo(i);
-         query.addListenerForSingleValueEvent(new ValueEventListener() {
-             @Override
-             public void onDataChange(DataSnapshot dataSnapshot) {
-                 Log.w("DIALOG-UPDATE" , "Old category" + category.getId() + " " + category.getCategoryName() + " New: " + newCategoryName);
-                 Category newCategory = new Category(Integer.parseInt(category.getId()), newCategoryName);
-                 HashMap<String, Object> update = new HashMap<>();
-                 update.put(category.getId(), newCategory);
-                 dbRef.child(Integer.toString(i)).updateChildren(update);
-             }
-
-             @Override
-             public void onCancelled(DatabaseError databaseError) {
-
-             }
-         });*/
     }
 
     public void newItemMenu(final ItemMenu item){
@@ -282,9 +264,6 @@ public class DBManager {
                  {
                      ItemMenu item = snapshot.getValue(ItemMenu.class);
                      itemList.add(item);
-/*                     if(item.getCategory().equals(categoryId)){
-                         itemList.add(item);
-                     }*/
 
                  }
                  callbackItemMenuListener.updateItemMenuAdapter(itemList);
@@ -296,5 +275,32 @@ public class DBManager {
              }
          });
     }
+
+    public void updateItem(final ItemMenu editItem){
+        final DatabaseReference dbRef = database.getReference("menu").child("menuItems");
+        ItemMenu newItemMenu = editItem;
+        HashMap<String, Object> update = new HashMap<>();
+        update.put(editItem.getId(),newItemMenu );
+        dbRef.child(editItem.getId()).setValue(newItemMenu);
+    }
+
+    public void deleteItem(final ItemMenu item ){
+        final DatabaseReference dbRef = database.getReference("menu").child("menuItems");
+        Query query = dbRef.orderByChild("id").equalTo(item.getId());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                DataSnapshot nodeShot = dataSnapshot.getChildren().iterator().next();
+                String key = nodeShot.getKey();
+                dbRef.child(key).removeValue();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 
 }
