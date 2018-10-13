@@ -6,7 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Currency;
 import java.util.List;
+import java.util.Locale;
 
 import eus.ilanda.eskatuetaordaindu.R;
 import eus.ilanda.eskatuetaordaindu.models.ItemMenu;
@@ -60,7 +62,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         public void bind(final ItemMenu item , final  OnItemClickListener listener){
             itemName.setText(item.getItemName());
             itemDetails.setText(item.getItemDetails());
-            itemPrize.setText(Double.toString(item.getPrize()));
+            itemPrize.setText(Currency.getInstance(Locale.getDefault()).getSymbol().toString() + Double.toString(item.getPrize()));
 
             super.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
