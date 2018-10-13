@@ -34,6 +34,7 @@ public class DBManager {
      private static FirebaseDatabase database = FirebaseDatabase.getInstance();
      private CallbackCategory categoryCallbackListener;
      private CallbackItemMenu callbackItemMenuListener;
+     private CallbackUser callbackUser;
 
 
      public interface CallbackCategory{
@@ -44,12 +45,25 @@ public class DBManager {
          void updateItemMenuAdapter(List<ItemMenu> menuItems);
      }
 
+     public interface CallbackUser{
+         void getUser(User user);
+    }
+
 
      public DBManager(CallbackCategory callbackListener){
          this.categoryCallbackListener = callbackListener;
      }
 
      public DBManager( CallbackItemMenu callbackItemMenu){
+         this.callbackItemMenuListener = callbackItemMenu;
+     }
+
+     public DBManager(CallbackUser callbackUser){
+        this.callbackUser = callbackUser;
+     }
+
+     public DBManager(CallbackCategory callbackCategory, CallbackItemMenu callbackItemMenu){
+         this.categoryCallbackListener = callbackCategory;
          this.callbackItemMenuListener = callbackItemMenu;
      }
 
@@ -81,6 +95,21 @@ public class DBManager {
          database.getReference("users").child(user.getUid()).setValue(user);
      }
 
+     public void getUser(String uid){
+         DatabaseReference dbRef = database.getReference("users").child(uid);
+         dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+             @Override
+             public void onDataChange(DataSnapshot dataSnapshot) {
+                 User user = dataSnapshot.getValue(User.class);
+                 callbackUser.getUser(user);
+             }
+
+             @Override
+             public void onCancelled(DatabaseError databaseError) {
+
+             }
+         });
+     }
 
     //Check what kind of user is logged inm and start activity
     public void userType(String uid,final Context context){
@@ -210,11 +239,9 @@ public class DBManager {
             }
         });
 
-        Log.w("USER DELETE", Boolean.toString(auth.getCurrentUser()==null)+ " is null?");
     }
 
     public void updateCategory(final Category category){
-        Log.w("CATEGORY_UPDATE", category.getId());
         final DatabaseReference dbRef = database.getReference("menu").child("categories");
         Category newCategory = category;
         HashMap<String, Object> update = new HashMap<>();
