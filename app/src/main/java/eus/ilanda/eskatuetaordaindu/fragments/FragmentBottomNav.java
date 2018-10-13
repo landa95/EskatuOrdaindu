@@ -11,7 +11,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import eus.ilanda.eskatuetaordaindu.R;
+import eus.ilanda.eskatuetaordaindu.manager.DBManager;
+import eus.ilanda.eskatuetaordaindu.models.Permission;
+import eus.ilanda.eskatuetaordaindu.models.User;
 
 
 /**
@@ -20,7 +25,7 @@ import eus.ilanda.eskatuetaordaindu.R;
 
 
 
-public class FragmentBottomNav extends android.support.v4.app.Fragment{
+public class FragmentBottomNav extends android.support.v4.app.Fragment implements DBManager.CallbackUser{
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelected = new
             BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -32,28 +37,45 @@ public class FragmentBottomNav extends android.support.v4.app.Fragment{
                             transaction.replace(android.R.id.tabcontent, new FragmentMenuEditor());
                             transaction.commit();
                             return true;
+                          case R.id.restaurant_client:
+                              transaction.replace(android.R.id.tabcontent, new FragmentMenuView());
+                              transaction.commit();
                     }
                     return true;
                 }
             };
+    private BottomNavigationView navigationView;
 
+    //Show view to user
+    private Permission userPersmission = new Permission();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_bottom_nav, container, false);
 
-        BottomNavigationView navigationView = (BottomNavigationView) v.findViewById(R.id.bottom_navigation);
-        Menu menu = navigationView.getMenu();
-        MenuItem menuItem = menu.getItem(0);
-        navigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelected);
-        menuItem.setChecked(true);
-
-       final android.support.v4.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(android.R.id.tabcontent, new FragmentMenuEditor());
-        transaction.commit();
-
+        navigationView = (BottomNavigationView) v.findViewById(R.id.bottom_navigation);
+        DBManager dbManager = new DBManager(this);
+        dbManager.getUser(FirebaseAuth.getInstance().getCurrentUser().getUid());
         return v;
     }
 
+    @Override
+    public void getUser(User user) {
+        this.userPersmission = user.getPermission();
+        if (this.userPersmission.isOwner()){
+            navigationView.inflateMenu(R.menu.bottom_nav_view_owner);
+            getFragmentManager().beginTransaction().replace(android.R.id.tabcontent, new FragmentMenuEditor()).commit();
+        }else if (this.userPersmission.isAdmin()){
+
+        }else {
+            navigationView.inflateMenu(R.menu.bottom_nav_view_client);
+            getFragmentManager().beginTransaction().replace(android.R.id.tabcontent, new FragmentMenuView()).commit();
+        }
+
+        Menu menu = navigationView.getMenu();
+        MenuItem menuItem = menu.getItem(0);
+        navigationView.setOnNavigationItemSelectedListener(this.mOnNavigationItemSelected);
+        menuItem.setChecked(true);
+    }
 }

@@ -3,12 +3,13 @@
 
     <group >
         <item
-            android:id="@+id/fav"
-            android:icon="@drawable/ic_favorite"
-            android:title="favourite" />
-        <item
-            android:id="@+id/restaurant2"
+            android:id="@+id/restaurant_client"
             android:icon="@drawable/ic_restaurant_black_24dp"
             android:title="restaurant" />
+
+        <item
+            android:id="@+id/fav2"
+            android:icon="@drawable/ic_favorite"
+            android:title="fav" />
     </group>
 </menu>

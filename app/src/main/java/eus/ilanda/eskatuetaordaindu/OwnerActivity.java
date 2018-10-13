@@ -24,13 +24,14 @@ public class OwnerActivity extends AppCompatActivity implements NavigationView.O
 
     private DrawerLayout drawer;
 
-    NavigationView nav_view;
+    private NavigationView nav_view;
 
-    View header_view;
+    private  View header_view;
 
+    //user info
     TextView text,email;
 
-    FirebaseAuth auth = FirebaseAuth.getInstance();
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
 
     private DBManager dbManager = new DBManager();
 

@@ -44,15 +44,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        setUpControls();
-
-
         auth = FirebaseAuth.getInstance();
         if(auth.getCurrentUser() != null){
             dbManager.userType(auth.getUid(),this);
             Log.w("MAIN NOT NULL", Boolean.toString(auth.getCurrentUser()== null)+ " is null?");
+        }else {
+            setContentView(R.layout.activity_main);
+            setUpControls();
         }
+
+
+
+
 
 
 

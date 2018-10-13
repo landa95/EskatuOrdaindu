@@ -32,10 +32,7 @@ public class FragmentMenuEditor extends Fragment implements DBManager.CallbackCa
 
     private CategoryAdapter categoryAdapter;
 
-
     private RecyclerView.LayoutManager mLayoutManager;
-
-    private Context context ;
 
     private DBManager manager =  new DBManager(this);
 
@@ -47,8 +44,7 @@ public class FragmentMenuEditor extends Fragment implements DBManager.CallbackCa
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_menu_editor, container, false);
 
-        this.context = getContext();
-        setUpControls(v, getContext(), savedInstanceState);
+        setUpControls(v, getContext());
         categoryList.setLayoutManager(mLayoutManager);
         categoryList.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
 
@@ -57,7 +53,7 @@ public class FragmentMenuEditor extends Fragment implements DBManager.CallbackCa
         return v;
     }
 
-    private void setUpControls(View v, final Context context, final Bundle savedInstanceState) {
+    private void setUpControls(View v, final Context context) {
         categoryList = (RecyclerView) v.findViewById(R.id.list_categories);
         ArrayList<Category> names  = new ArrayList<>();
 

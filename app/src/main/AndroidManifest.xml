@@ -21,7 +21,8 @@
         <activity android:name=".OwnerActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".AdminActivity" />
-        <activity android:name=".ClientActivity"></activity>
+        <activity android:name=".ClientActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
