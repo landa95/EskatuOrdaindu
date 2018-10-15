@@ -11,10 +11,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import eus.ilanda.eskatuetaordaindu.ClientActivity;
 import eus.ilanda.eskatuetaordaindu.R;
 import eus.ilanda.eskatuetaordaindu.adapters.CategoryAdapter;
 import eus.ilanda.eskatuetaordaindu.adapters.ItemAdapter;
@@ -34,17 +36,23 @@ public class FragmentMenuView extends Fragment implements CategoryAdapter.OnItem
 
     private ItemAdapter itemAdapter;
 
+    ClientActivity clientActivity;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_menu_viewer, container, false);
+        clientActivity =(ClientActivity) getActivity();
+
+        Toast.makeText(getContext(), Integer.toString(clientActivity.getCart().size()), Toast.LENGTH_SHORT).show();
        setUpControls(v,getContext());
         menu.setLayoutManager(mLayoutManager);
         menu.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
 
         menu.setAdapter(categoryAdapter);
         manager.loadCategories();
+
         return v;
     }
 
@@ -57,8 +65,6 @@ public class FragmentMenuView extends Fragment implements CategoryAdapter.OnItem
 
         ArrayList<ItemMenu> items = new ArrayList<>();
         itemAdapter = new ItemAdapter(R.layout.list_item,items , null);
-
-
     }
 
     @Override

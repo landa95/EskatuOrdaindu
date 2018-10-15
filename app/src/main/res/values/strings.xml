@@ -13,7 +13,7 @@
         <item name="dialog_list_edit">Edit</item>
         <item name="dialog_list_delete">Delete</item>
     </string-array>
-    
+
     <string name="dialog_item_name">Item name</string>
     <string name="dialog_item_description">Item description</string>
     <string name="dialog_item_prize">Item prize</string>

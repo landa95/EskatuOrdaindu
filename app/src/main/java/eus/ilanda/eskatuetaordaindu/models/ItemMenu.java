@@ -1,6 +1,9 @@
 package eus.ilanda.eskatuetaordaindu.models;
 
-public class ItemMenu {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class ItemMenu implements Parcelable {
 
     private String id;
     private String itemName;
@@ -10,6 +13,11 @@ public class ItemMenu {
 
     public ItemMenu(){
 
+    }
+
+    public ItemMenu(Parcel p){
+        category = "";
+        readFromParcel(p);
     }
 
     public ItemMenu(String id, String itemName, String itemDetails, double prize, String category){
@@ -63,4 +71,37 @@ public class ItemMenu {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(this.id);
+        parcel.writeString(this.itemName);
+        parcel.writeString(this.itemDetails);
+        parcel.writeDouble(this.prize);
+
+    }
+    public void readFromParcel(Parcel in){
+        id = in.readString();
+        itemName = in.readString();
+        itemDetails = in.readString();
+        prize = in.readDouble();
+
+    }
+
+    public static final Parcelable.Creator<ItemMenu> CREATOR =
+            new Parcelable.Creator<ItemMenu>(){
+
+                @Override
+                public ItemMenu createFromParcel(Parcel parcel) {
+                    return new ItemMenu(parcel);
+                }
+
+                public ItemMenu[] newArray(int size) {
+                    return new ItemMenu[size];
+                }
+            };
 }

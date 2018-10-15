@@ -9,6 +9,7 @@ public class Client  extends User{
     private String country;
     private int age;
 
+
     public Client(){
         super();
     }

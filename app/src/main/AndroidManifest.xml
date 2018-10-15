@@ -18,11 +18,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".OwnerActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".OwnerActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".AdminActivity" />
-        <activity android:name=".ClientActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".ClientActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop"/>
+        <activity android:name=".CartActivity"
+            android:parentActivityName=".ClientActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ClientActivity"></meta-data>
+        </activity>
     </application>
 
 </manifest>

@@ -10,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -18,8 +19,11 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
+
 import eus.ilanda.eskatuetaordaindu.fragments.FragmentBottomNav;
 import eus.ilanda.eskatuetaordaindu.manager.DBManager;
+import eus.ilanda.eskatuetaordaindu.models.ItemMenu;
 
 public class ClientActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -31,19 +35,26 @@ public class ClientActivity extends AppCompatActivity implements NavigationView.
     private NavigationView nav_view;
     private   View header_view;
 
+    //Cart
+    private ArrayList<ItemMenu> cart;
+
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private DBManager dbManager = new DBManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        cart = new ArrayList<ItemMenu>();
         setContentView(R.layout.activity_client);
         if(FirebaseAuth.getInstance().getCurrentUser()==null){
             MainActivity.createIntent(this);
             finish();
         }else {
+            cart = new ArrayList<ItemMenu>();
             setUpControls();
         }
+
+
     }
 
     public void setUpControls(){
@@ -112,5 +123,35 @@ public class ClientActivity extends AppCompatActivity implements NavigationView.
         Intent in  = new Intent();
         in.setClass(context, ClientActivity.class);
         return in;
+    }
+
+    //Inflate cart icon
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_options_client, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.action_cart){
+            Intent intent = new Intent(this, CartActivity.class);
+            intent.putExtra("cart", cart);
+            startActivity(intent);
+
+            //startActivity(CartActivity.createIntent(this));
+            /*Intent intent = new Intent(this, CartActivity.class);
+            startActivity(intent);*/
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public ArrayList<ItemMenu> getCart() {
+        return cart;
+    }
+
+    public void setCart(ArrayList<ItemMenu> cart) {
+        this.cart = cart;
     }
 }

@@ -16,6 +16,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import eus.ilanda.eskatuetaordaindu.ClientActivity;
 import eus.ilanda.eskatuetaordaindu.R;
 import eus.ilanda.eskatuetaordaindu.adapters.ItemAdapter;
 import eus.ilanda.eskatuetaordaindu.manager.DBManager;
@@ -32,10 +33,16 @@ public class FragmentMenuViewItem extends Fragment implements ItemAdapter.OnItem
 
     private String category = "";
 
+    ClientActivity activity;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_menu_viewer, container, false);
+
+        activity = (ClientActivity) getActivity();
+
+
         setUpControls(v,getContext());
 
         Toast.makeText(getContext(), this.category, Toast.LENGTH_SHORT).show();
@@ -43,6 +50,8 @@ public class FragmentMenuViewItem extends Fragment implements ItemAdapter.OnItem
         menu.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         menu.setAdapter(itemAdapter);
         manager.loadItemsByCategory(this.category);
+
+
         return v;
     }
 
@@ -68,7 +77,7 @@ public class FragmentMenuViewItem extends Fragment implements ItemAdapter.OnItem
 
     @Override
     public void onItemClick(ItemMenu item, int position) {
-
+        activity.getCart().add(item);
     }
 
     @Override

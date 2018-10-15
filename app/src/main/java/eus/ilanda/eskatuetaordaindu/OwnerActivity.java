@@ -10,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -52,7 +53,6 @@ public class OwnerActivity extends AppCompatActivity implements NavigationView.O
         }
     }
 
-
     public void setUpControls() {
         nav_view = (NavigationView) findViewById(R.id.nav_view);
 
@@ -75,19 +75,16 @@ public class OwnerActivity extends AppCompatActivity implements NavigationView.O
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragmentBottomNav()).commit();
         Toast.makeText(this, "On create", Toast.LENGTH_LONG);
 
 
     }
-
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -116,12 +113,24 @@ public class OwnerActivity extends AppCompatActivity implements NavigationView.O
         }
     }
 
-
     public static Intent createIntent(Context context) {
         Intent in  = new Intent();
         in.setClass(context, OwnerActivity.class);
         return in;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_options_client, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.action_cart){
+            Toast.makeText(this,"cart icon selected", Toast.LENGTH_SHORT).show();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

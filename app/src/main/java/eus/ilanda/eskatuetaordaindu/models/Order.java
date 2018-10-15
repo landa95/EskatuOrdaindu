@@ -2,9 +2,12 @@ package eus.ilanda.eskatuetaordaindu.models;
 
 import java.util.ArrayList;
 
-public class Order {
+public class Order{
 
     private String orderId;
+
+
+
     private int tableNumber;
     private String userId;
     private String timestamp;
@@ -83,4 +86,5 @@ public class Order {
     public OrderItem getOrderItem(int i){
         return this.orderItems.get(i);
     }
+
 }
