@@ -1,7 +1,10 @@
 package eus.ilanda.eskatuetaordaindu.models;
 
 
-public class OrderItem {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class OrderItem  implements Parcelable{
 
     private String itemOrderId;
     private ItemMenu item;
@@ -14,6 +17,10 @@ public class OrderItem {
     public OrderItem(ItemMenu item, int quantity){
         this.item= item;
         this.quantity = quantity;
+    }
+
+    public OrderItem(Parcel in){
+        readFromParcel(in);
     }
 
     public String getItemOrderId(){
@@ -39,4 +46,36 @@ public class OrderItem {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(this.itemOrderId);
+        parcel.writeParcelable(this.item,i);
+        parcel.writeInt(this.quantity);
+
+    }
+    public void readFromParcel(Parcel in){
+        itemOrderId = in.readString();
+        item = in.readParcelable(ItemMenu.class.getClassLoader());
+        quantity = in.readInt();
+    }
+
+
+    public static final Parcelable.Creator<OrderItem> CREATOR =
+            new Parcelable.Creator<OrderItem>(){
+
+                @Override
+                public OrderItem createFromParcel(Parcel parcel) {
+                    return new OrderItem(parcel);
+                }
+
+                public OrderItem[] newArray(int size) {
+                    return new OrderItem[size];
+                }
+            };
 }
