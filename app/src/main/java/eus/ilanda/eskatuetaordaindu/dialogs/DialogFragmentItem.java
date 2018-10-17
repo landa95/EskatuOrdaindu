@@ -1,10 +1,14 @@
 package eus.ilanda.eskatuetaordaindu.dialogs;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -26,8 +30,13 @@ public class DialogFragmentItem extends DialogFragment {
     private EditText inputItemDescription;
     private NumberPicker inputNumberPicker;
     private NumberPicker inputNumberPicker2;
+    private Button btnUploadImage;
+
+    private boolean upload = false;
+    private Uri uploadImageUri;
 
     private OnDialogClick clickListener;
+
 
     private String category = "";
 
@@ -36,6 +45,18 @@ public class DialogFragmentItem extends DialogFragment {
     public final String ACTION_NEW = "new";
 
     public final String ACTION_EDIT = "edit";
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    private String action = "";
+
+    private static final int REQUEST_CODE = 111;
 
     public void newInstance(OnDialogClick listener){
         this.clickListener = listener;
@@ -70,8 +91,13 @@ public class DialogFragmentItem extends DialogFragment {
                     itemMenu.setItemName(inputItemName.getText().toString());
                     itemMenu.setItemDetails(inputItemDescription.getText().toString());
                     itemMenu.setPrize(db);
+                    if (upload==true){
+                        //uploadImageToFirebase(uploadImageUri);
+                        clickListener.onPositiveClick(itemMenu, uploadImageUri);
+                    }else{
+                        clickListener.onPositiveClick(itemMenu);
+                    }
                     dismiss();
-                    clickListener.onPositiveClick(itemMenu);
                 }
             }
         });
@@ -124,7 +150,36 @@ public class DialogFragmentItem extends DialogFragment {
         inputNumberPicker2.setFormatter(formatter2);
         inputNumberPicker2.setMinValue(0);
         inputNumberPicker2.setMaxValue(99);
+
+        btnUploadImage = (Button) v.findViewById(R.id.btn_upload);
+
+        btnUploadImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                upload= true;
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+                startActivityForResult(intent, REQUEST_CODE);
+            }
+        });
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_CODE && resultCode== Activity.RESULT_OK){
+
+            if (data!= null){
+                uploadImageUri = data.getData();
+                //uploadImageToFirebase(uploadImageUri);
+                Log.w("IMAGE_SELECT", uploadImageUri.toString());
+            }
+
+
+        }
+
+    }
+
 
     public void setItem(ItemMenu item){
         this.itemMenu = item;
@@ -132,6 +187,7 @@ public class DialogFragmentItem extends DialogFragment {
 
     public interface OnDialogClick{
         void onPositiveClick(ItemMenu item);
+        void onPositiveClick(ItemMenu item, Uri uploadUri);
         void onNegativeClick();
     }
 

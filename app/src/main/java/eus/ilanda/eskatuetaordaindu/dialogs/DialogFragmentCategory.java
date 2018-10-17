@@ -65,10 +65,6 @@ public class DialogFragmentCategory extends  android.support.v4.app.DialogFragme
     private void setUpControls(View v) {
         text = (EditText) v.findViewById(R.id.txt_new_category);
     }
-
-
-
-
     public void setCategory(Category category){
         this.category = category;
     }

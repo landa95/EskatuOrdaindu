@@ -18,6 +18,7 @@
     <string name="dialog_item_description">Item description</string>
     <string name="dialog_item_prize">Item prize</string>
     <string name="dialog_item_txt_prize">Set prize</string>
+    <string name="dialog_item_image">Upload image</string>
 
     <string name="dialog_ok">Accept</string>
     <string name="dialog_cancel">Cancell</string>

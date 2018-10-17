@@ -2,6 +2,7 @@ package eus.ilanda.eskatuetaordaindu.manager;
 
 import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
@@ -43,6 +44,7 @@ public class DBManager {
 
      public interface CallbackItemMenu{
          void updateItemMenuAdapter(List<ItemMenu> menuItems);
+         void uploadImage(ItemMenu item, Uri uri);
      }
 
      public interface CallbackUser{
@@ -250,6 +252,9 @@ public class DBManager {
     }
 
     public void newItemMenu(final ItemMenu item){
+         if(item.getImageURL() == null){
+             item.setImageURL("");
+         }
          final DatabaseReference dbRef = database.getReference("menu").child("menuItems");
          final String str = dbRef.push().getKey();
          item.setId(str);
@@ -260,6 +265,27 @@ public class DBManager {
              }
          });
      }
+
+    //DATABASE UPLOAD IMAGE
+    public void newItemMenu(final ItemMenu item,final Uri uri){
+        if(item.getImageURL() == null){
+            item.setImageURL("");
+        }
+
+        final DatabaseReference dbRef = database.getReference("menu").child("menuItems");
+        final String str = dbRef.push().getKey();
+        item.setId(str);
+
+        dbRef.child(str).setValue(item).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                callbackItemMenuListener.uploadImage(item, uri);
+            }
+        });
+    }
+
+
+
 
     public void loadItemMenus(){
         final DatabaseReference dbRef = database.getReference("menu").child("menuItems");
@@ -293,11 +319,9 @@ public class DBManager {
                  {
                      ItemMenu item = snapshot.getValue(ItemMenu.class);
                      itemList.add(item);
-
                  }
                  callbackItemMenuListener.updateItemMenuAdapter(itemList);
              }
-
              @Override
              public void onCancelled(DatabaseError databaseError) {
 

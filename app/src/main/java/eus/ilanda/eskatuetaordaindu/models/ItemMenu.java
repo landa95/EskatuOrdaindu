@@ -10,6 +10,7 @@ public class ItemMenu implements Parcelable {
     private String itemDetails;
     private double prize;
     private String category;
+    private String imageURL;
 
     public ItemMenu(){
 
@@ -60,6 +61,14 @@ public class ItemMenu implements Parcelable {
         if (prize >= 0){
             this.prize = prize;
         }
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 
     public String getCategory() {
