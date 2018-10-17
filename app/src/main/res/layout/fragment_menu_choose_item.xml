@@ -62,13 +62,14 @@
                 android:layout_marginRight="5dp"
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/ic_remove_black"
-                android:textAlignment="center"/>
+                android:textAlignment="center"
+                android:backgroundTint="@color/fui_transparent"/>
 
             <TextView
                 android:id="@+id/txt_item_quantity"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
+                android:gravity="center"
                 android:text="1"
                 android:textAlignment="center" />
 
@@ -78,7 +79,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/ic_add_black_24dp"/>
+                android:src="@drawable/ic_add_black_24dp"
+                android:backgroundTint="@color/fui_transparent"/>
         </LinearLayout>
 
         <Button
