@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -17,6 +18,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -337,7 +340,7 @@ public class DBManager {
         dbRef.child(editItem.getId()).setValue(newItemMenu);
     }
 
-    public void deleteItem(final ItemMenu item ){
+    public void deleteItem(final ItemMenu item){
         final DatabaseReference dbRef = database.getReference("menu").child("menuItems");
         Query query = dbRef.orderByChild("id").equalTo(item.getId());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -346,6 +349,7 @@ public class DBManager {
                 DataSnapshot nodeShot = dataSnapshot.getChildren().iterator().next();
                 String key = nodeShot.getKey();
                 dbRef.child(key).removeValue();
+                deleteItemImage(item);
             }
 
             @Override
@@ -353,6 +357,18 @@ public class DBManager {
 
             }
         });
+    }
+
+    public void deleteItemImage(final ItemMenu item){
+        StorageReference fsRef = FirebaseStorage.getInstance().getReference().child("/" + item.getId());
+        StorageReference imageRef = fsRef.child("image.jpg");
+        imageRef.delete().addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w("IMAGE", "Unable to delete item image: "+ item.getId());
+            }
+        });
+
     }
 
 

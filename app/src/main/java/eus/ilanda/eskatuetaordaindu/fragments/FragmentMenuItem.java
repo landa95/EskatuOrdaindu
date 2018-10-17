@@ -165,7 +165,7 @@ public class FragmentMenuItem extends Fragment implements ItemAdapter.OnItemClic
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     String url = taskSnapshot.getMetadata().getDownloadUrl().toString();
                     item.setImageURL(url);
-                    manager.newItemMenu(item);
+                    manager.updateItem(item);
                 }
             });
 
