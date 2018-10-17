@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -81,7 +82,14 @@ public class FragmentMenuViewItem extends Fragment implements ItemAdapter.OnItem
 
     @Override
     public void onItemClick(ItemMenu item, int position) {
-        activity.getCart().add(item);
+        FragmentMenuChooseItem fragmentMenuChooseItem = new FragmentMenuChooseItem();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("item", item);
+        fragmentMenuChooseItem.setArguments(bundle);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(android.R.id.tabcontent, fragmentMenuChooseItem);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     @Override

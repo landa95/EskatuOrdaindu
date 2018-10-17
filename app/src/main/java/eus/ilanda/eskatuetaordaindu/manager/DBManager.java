@@ -351,7 +351,6 @@ public class DBManager {
                 dbRef.child(key).removeValue();
                 deleteItemImage(item);
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
@@ -368,8 +367,6 @@ public class DBManager {
                 Log.w("IMAGE", "Unable to delete item image: "+ item.getId());
             }
         });
-
     }
-
 
 }
