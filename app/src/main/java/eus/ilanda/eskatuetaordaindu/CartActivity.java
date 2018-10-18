@@ -18,8 +18,8 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.util.ArrayList;
 
-import eus.ilanda.eskatuetaordaindu.models.ItemMenu;
 import eus.ilanda.eskatuetaordaindu.models.Order;
+import eus.ilanda.eskatuetaordaindu.models.OrderItem;
 
 public class CartActivity extends AppCompatActivity {
 
@@ -34,11 +34,11 @@ public class CartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
-        ArrayList<ItemMenu> cart = getIntent().getParcelableArrayListExtra("cart");
+        ArrayList<OrderItem> cart = getIntent().getParcelableArrayListExtra("cart");
 
         //order.setOrderItems(cart);
         for (int i = 0; i < cart.size(); i++){
-            Log.i("PARCELABLE", Integer.toString(i+1) + "/" + Integer.toString(cart.size())+": " +cart.get(i).getItemName());
+            Log.i("PARCELABLE", Integer.toString(i+1) + "/" + Integer.toString(cart.size())+": " + cart.get(i).getItem().getItemName() + " " +cart.get(i).getQuantity() );
         }
 
         imageView = (ImageView) findViewById(R.id.img_example);

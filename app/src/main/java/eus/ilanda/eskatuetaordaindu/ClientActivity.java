@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 import eus.ilanda.eskatuetaordaindu.fragments.FragmentBottomNav;
 import eus.ilanda.eskatuetaordaindu.manager.DBManager;
-import eus.ilanda.eskatuetaordaindu.models.ItemMenu;
+import eus.ilanda.eskatuetaordaindu.models.OrderItem;
 
 public class ClientActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -36,7 +36,7 @@ public class ClientActivity extends AppCompatActivity implements NavigationView.
     private   View header_view;
 
     //Cart
-    private ArrayList<ItemMenu> cart;
+    private ArrayList<OrderItem> cart;
 
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private DBManager dbManager = new DBManager();
@@ -44,13 +44,13 @@ public class ClientActivity extends AppCompatActivity implements NavigationView.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        cart = new ArrayList<ItemMenu>();
+        cart = new ArrayList<OrderItem>();
         setContentView(R.layout.activity_client);
         if(FirebaseAuth.getInstance().getCurrentUser()==null){
             MainActivity.createIntent(this);
             finish();
         }else {
-            cart = new ArrayList<ItemMenu>();
+            cart = new ArrayList<OrderItem>();
             setUpControls();
         }
 
@@ -147,11 +147,12 @@ public class ClientActivity extends AppCompatActivity implements NavigationView.
         return super.onOptionsItemSelected(item);
     }
 
-    public ArrayList<ItemMenu> getCart() {
+    public ArrayList<OrderItem> getCart() {
         return cart;
     }
 
-    public void setCart(ArrayList<ItemMenu> cart) {
+    public void setCart(ArrayList<OrderItem> cart) {
         this.cart = cart;
     }
+
 }

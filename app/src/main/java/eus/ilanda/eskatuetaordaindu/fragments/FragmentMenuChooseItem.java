@@ -9,12 +9,14 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import eus.ilanda.eskatuetaordaindu.ClientActivity;
 import eus.ilanda.eskatuetaordaindu.R;
 import eus.ilanda.eskatuetaordaindu.models.ItemMenu;
 import eus.ilanda.eskatuetaordaindu.models.OrderItem;
@@ -26,8 +28,11 @@ public class FragmentMenuChooseItem extends Fragment {
     private TextView itemName, itemDescription, itemPrize, itemQuantity;
     private ImageButton more, less;
     private OrderItem orderItem = new OrderItem();
+    private Button addToCart;
 
     private String imageURL ="";
+
+    private ClientActivity activity;
 
 
 
@@ -47,6 +52,8 @@ public class FragmentMenuChooseItem extends Fragment {
        itemPrize.setText(Double.toString(item.getPrize()));
 
        loadImageWithPicasso();
+
+       activity = (ClientActivity) getActivity();
         return v;
     }
 
@@ -76,6 +83,13 @@ public class FragmentMenuChooseItem extends Fragment {
         less.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int i = 1;
+                i = Integer.parseInt(itemQuantity.getText().toString());
+                if (i > 1){
+                    i--;
+                    itemQuantity.setText(Integer.toString(i));
+                    setItemPrize();
+                }
 
             }
         });
@@ -83,8 +97,31 @@ public class FragmentMenuChooseItem extends Fragment {
         more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int i = Integer.parseInt(itemQuantity.getText().toString());
+                if (i >= 1){
+                    i++;
+                    itemQuantity.setText(Integer.toString(i));
+                    setItemPrize();
+                }
+            }
+        });
+
+        addToCart = (Button) v.findViewById(R.id.btn_addToCart);
+
+        addToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                orderItem.setQuantity(Integer.parseInt(itemQuantity.getText().toString()));
+                activity.getCart().add(orderItem);
 
             }
         });
+    }
+
+    private void setItemPrize(){
+        double d = orderItem.getItem().getPrize();
+        int i = Integer.parseInt(itemQuantity.getText().toString());
+        d = i*d;
+        itemPrize.setText(Double.toString(d));
     }
 }
