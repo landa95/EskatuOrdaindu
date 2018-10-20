@@ -60,6 +60,7 @@ public class FragmentMenuChooseItem extends Fragment {
         if (exists == true){
             this.orderItem = activity.getCart().get(position);
             itemQuantity.setText(Integer.toString(orderItem.getQuantity()));
+            itemPrize.setText(Double.toString(orderItem.getQuantity() * orderItem.getItem().getPrize()));
         }else {
             this.orderItem.setItem(item);
         }
