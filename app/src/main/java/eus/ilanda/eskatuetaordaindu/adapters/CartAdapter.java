@@ -80,6 +80,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                     i = Integer.parseInt(txtItemQuantity.getText().toString());
                     if (i > 1) {
                         i--;
+                        orderItem.setQuantity(i);
                         txtItemQuantity.setText(Integer.toString(i));
                         double d = orderItem.getItem().getPrize();
                         d = i * d;
@@ -98,8 +99,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                     if (i >= 1) {
                         i++;
                         txtItemQuantity.setText(Integer.toString(i));
-
-
+                        orderItem.setQuantity(i);
                         double d = orderItem.getItem().getPrize();
                         d = i * d;
                         txtItemCartPrize.setText(Double.toString(d));

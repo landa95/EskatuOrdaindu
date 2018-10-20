@@ -36,7 +36,7 @@ public class ClientActivity extends AppCompatActivity implements NavigationView.
     private   View header_view;
 
     //Cart
-    private ArrayList<OrderItem> cart;
+    private ArrayList<OrderItem> cart = new ArrayList<OrderItem>();
 
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private DBManager dbManager = new DBManager();
@@ -52,6 +52,10 @@ public class ClientActivity extends AppCompatActivity implements NavigationView.
         }else {
             cart = new ArrayList<OrderItem>();
             setUpControls();
+            if (getIntent().getExtras()!= null){
+                Toast.makeText(this, "not null", Toast.LENGTH_LONG).show();
+                cart = getIntent().getParcelableArrayListExtra("cart");
+            }
         }
 
 
@@ -101,7 +105,6 @@ public class ClientActivity extends AppCompatActivity implements NavigationView.
                 break;
             case R.id.nav_exit:
                 dbManager.signOut(this);
-                //dbManager.deleteUser(FirebaseAuth.getInstance().getCurrentUser().getUid(),this);
                 break;
 
         }
@@ -117,7 +120,6 @@ public class ClientActivity extends AppCompatActivity implements NavigationView.
             super.onBackPressed();
         }
     }
-
 
     public static Intent createIntent(Context context) {
         Intent in  = new Intent();
@@ -138,35 +140,28 @@ public class ClientActivity extends AppCompatActivity implements NavigationView.
         if(id == R.id.action_cart){
             Intent intent = new Intent(this, CartActivity.class);
             intent.putExtra("cart", cart);
-            startActivity(intent);
+            startActivityForResult(intent, 100);
 
-            //startActivity(CartActivity.createIntent(this));
-            /*Intent intent = new Intent(this, CartActivity.class);
-            startActivity(intent);*/
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode== RESULT_OK && requestCode==100){
+            cart = data.getParcelableArrayListExtra("cart");
+        }
     }
 
     public ArrayList<OrderItem> getCart() {
         return cart;
     }
 
-/*    public void addOrderItem(OrderItem newOrderItem){
-        {
-            if (cart.size() == 0) {
-                cart.add(newOrderItem);
-            }else {
-                for (int i=0; i<cart.size(); i++)
-                if(cart.get(i).getItem().getId() == newOrderItem.getItem().getId())
-                int q =  cart.get(i).getQuantity();
-                cart.get(i).setQuantity(q + newOrderItem.getQuantity());
-                else{
-                    his.cart.add(newOrderItem);
-                }
-    }*/
-
     public void setCart(ArrayList<OrderItem> cart) {
         this.cart = cart;
     }
+
+
 
 }

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,11 +39,32 @@ public class FragmentMenuChooseItem extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_menu_choose_item, container,false);
-        setUpControls(v);
+        Bundle bundle = this.getArguments();
+        ItemMenu item = bundle.getParcelable("item");
+        this.orderItem.setItem(item);
 
-       Bundle bundle = this.getArguments();
-       ItemMenu item = bundle.getParcelable("item");
-       this.orderItem.setItem(item);
+        setUpControls(v);
+       activity = (ClientActivity) getActivity();
+
+        boolean exists = false;
+        int position = 0;
+
+
+        for (int i =0; i< activity.getCart().size();i++ ){
+            if (activity.getCart().get(i).getItem().getId().equals(orderItem.getItem().getId())){
+                exists = true;
+                position = i;
+            }
+        }
+        Log.w("MISTERIOBAT", Boolean.toString(exists) + " Position" + Integer.toString(position) );
+        if (exists == true){
+            this.orderItem = activity.getCart().get(position);
+            itemQuantity.setText(Integer.toString(orderItem.getQuantity()));
+        }else {
+            this.orderItem.setItem(item);
+        }
+
+
 
        imageURL = item.getImageURL();
        itemName.setText(item.getItemName());
@@ -51,7 +73,8 @@ public class FragmentMenuChooseItem extends Fragment {
 
        loadImageWithPicasso();
 
-       activity = (ClientActivity) getActivity();
+
+
         return v;
     }
 
@@ -85,7 +108,6 @@ public class FragmentMenuChooseItem extends Fragment {
                     itemQuantity.setText(Integer.toString(i));
                     setItemPrize();
                 }
-
             }
         });
 
@@ -103,12 +125,29 @@ public class FragmentMenuChooseItem extends Fragment {
 
         addToCart = (Button) v.findViewById(R.id.btn_addToCart);
 
+        //Numeros raros
         addToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 orderItem.setQuantity(Integer.parseInt(itemQuantity.getText().toString()));
-                activity.getCart().add(orderItem);
-
+                if (activity.getCart().size() ==0) {
+                    activity.getCart().add(orderItem);
+                }else {
+                    boolean exists = false;
+                    int position = 0;
+                    for (int i =0; i< activity.getCart().size();i++ ){
+                        if (activity.getCart().get(i).getItem().getId().equals(orderItem.getItem().getId())){
+                            exists = true;
+                            position = i;
+                        }
+                    }
+                    if (exists == true){
+                        int bi = orderItem.getQuantity();
+                        activity.getCart().get(position).setQuantity(bi);
+                    }else {
+                        activity.getCart().add(orderItem);
+                    }
+                }
             }
         });
     }

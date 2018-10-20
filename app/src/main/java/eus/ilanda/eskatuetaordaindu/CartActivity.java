@@ -1,5 +1,6 @@
 package eus.ilanda.eskatuetaordaindu;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
@@ -37,6 +38,7 @@ public class CartActivity extends AppCompatActivity  implements CartAdapter.Cart
 
     private ArrayList<OrderItem> cart = new ArrayList<>();
 
+    private ClientActivity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,31 +46,12 @@ public class CartActivity extends AppCompatActivity  implements CartAdapter.Cart
         setContentView(R.layout.activity_cart);
 
        cart = getIntent().getParcelableArrayListExtra("cart");
-/*       ArrayList<OrderItem> groupedList = new ArrayList<OrderItem>();
-       for (int i = 0; i< cart.size(); i++){
-           if (groupedList.size()>0){
-               for (int y = 0; y<groupedList.size(); y++){
-                   if (cart.get(i).getItem().getId().equals(groupedList.get(y).getItem().getId())){
-                       int quantity = groupedList.get(y).getQuantity();
-                       groupedList.get(y).setQuantity(quantity + cart.get(i).getQuantity());
-                   }else {
-                       groupedList.add(cart.get(i));
-                   }
-               }
-           }else {
-               groupedList.add(cart.get(i));
-           }
-       }
-       cart = groupedList;*/
 
-        //order.setOrderItems(cart);
 
         setUpControls();
     }
 
     private void setUpControls() {
-
-
         recyclerView = (RecyclerView) findViewById(R.id.list_cart_items);
         layoutManager= new LinearLayoutManager(this);
         cartAdapter = new CartAdapter(R.layout.list_cart, cart,this);
@@ -76,8 +59,6 @@ public class CartActivity extends AppCompatActivity  implements CartAdapter.Cart
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(cartAdapter);
-
-
     }
 
     private void downloadPicture() {
@@ -121,11 +102,30 @@ public class CartActivity extends AppCompatActivity  implements CartAdapter.Cart
 
     @Override
     public void removeItem(OrderItem orderItem, int position) {
-
+        cart.remove(orderItem);
+        cartAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void updateTotalPrize() {
 
+    }
+
+
+        @Override
+    public boolean onSupportNavigateUp() {
+        //pass data to client activity
+       Intent returnData = new Intent();
+        returnData.setClass(this, ClientActivity.class);
+        returnData.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        returnData.putParcelableArrayListExtra("cart", cart);
+        setResult(Activity.RESULT_OK, returnData);
+        finish();
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        onSupportNavigateUp();
     }
 }

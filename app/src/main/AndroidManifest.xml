@@ -33,5 +33,4 @@
                 android:value=".ClientActivity"></meta-data>
         </activity>
     </application>
-
 </manifest>
