@@ -79,9 +79,6 @@ public class Order{
         this.orderItems = orderItems;
     }
 
-    public void addOrderItem(OrderItem orderItem){
-        this.orderItems.add(orderItem);
-    }
 
     public OrderItem getOrderItem(int i){
         return this.orderItems.get(i);

@@ -65,20 +65,20 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             itemPrize.setText(Currency.getInstance(Locale.getDefault()).getSymbol().toString() + Double.toString(item.getPrize()));
 
             super.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    listener.onItemClick(item, getAdapterPosition());
-                }
-            });
+            @Override
+            public void onClick(View view) {
+                listener.onItemClick(item, getAdapterPosition());
+            }
+        });
 
             super.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    listener.onItemLongClick(item, getAdapterPosition());
-                    return true;
-                }
-            });
-        }
+            @Override
+            public boolean onLongClick(View view) {
+                listener.onItemLongClick(item, getAdapterPosition());
+                return true;
+            }
+        });
+    }
 
     }
 

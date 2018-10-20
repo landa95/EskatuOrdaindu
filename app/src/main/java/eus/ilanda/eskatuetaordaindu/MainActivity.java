@@ -52,13 +52,6 @@ public class MainActivity extends AppCompatActivity {
             setContentView(R.layout.activity_main);
             setUpControls();
         }
-
-
-
-
-
-
-
     }// protected void onCreate(Bundle savedInstanceState)
 
     private void setUpControls(){ 

@@ -1,11 +1,9 @@
 package eus.ilanda.eskatuetaordaindu.fragments;
 
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,9 +57,6 @@ public class FragmentMenuChooseItem extends Fragment {
 
     public void loadImageWithPicasso()
     {
-        Display display = getActivity().getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
         Picasso.get()
                 .load(imageURL)
                 //.resize(size.x, 200)

@@ -2,11 +2,31 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     tools:context=".CartActivity">
 
-    <ImageView
-        android:id="@+id/img_example"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list_cart_items"
         android:layout_width="match_parent"
-        android:layout_height="200dp" />
+        android:layout_height="300dp" />
+
+    <TextView
+        android:id="@+id/txt_cart_total"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:hint="Total to pay"/>
+
+    <EditText
+        android:id="@+id/et_num_table"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:hint="Insert the number of the table"
+        android:layout_marginTop="5dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"/>
 </LinearLayout>

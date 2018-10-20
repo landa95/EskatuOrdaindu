@@ -151,6 +151,20 @@ public class ClientActivity extends AppCompatActivity implements NavigationView.
         return cart;
     }
 
+/*    public void addOrderItem(OrderItem newOrderItem){
+        {
+            if (cart.size() == 0) {
+                cart.add(newOrderItem);
+            }else {
+                for (int i=0; i<cart.size(); i++)
+                if(cart.get(i).getItem().getId() == newOrderItem.getItem().getId())
+                int q =  cart.get(i).getQuantity();
+                cart.get(i).setQuantity(q + newOrderItem.getQuantity());
+                else{
+                    his.cart.add(newOrderItem);
+                }
+    }*/
+
     public void setCart(ArrayList<OrderItem> cart) {
         this.cart = cart;
     }

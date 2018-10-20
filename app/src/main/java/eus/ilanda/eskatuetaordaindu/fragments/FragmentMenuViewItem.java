@@ -51,7 +51,6 @@ public class FragmentMenuViewItem extends Fragment implements ItemAdapter.OnItem
         menu.setAdapter(itemAdapter);
         manager.loadItemsByCategory(this.category);
 
-
         return v;
     }
 
