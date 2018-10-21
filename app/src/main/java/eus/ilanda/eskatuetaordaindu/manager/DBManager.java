@@ -336,7 +336,7 @@ public class DBManager {
         final DatabaseReference dbRef = database.getReference("menu").child("menuItems");
         ItemMenu newItemMenu = editItem;
         HashMap<String, Object> update = new HashMap<>();
-        update.put(editItem.getId(),newItemMenu );
+        update.put(editItem.getId(),newItemMenu);
         dbRef.child(editItem.getId()).setValue(newItemMenu);
     }
 
@@ -368,5 +368,32 @@ public class DBManager {
             }
         });
     }
+
+    public void addItemToFavourites(final ItemMenu item, String uid){
+         final DatabaseReference dbRef = database.getReference("users");
+         Query query = dbRef.equalTo(uid);
+         query.addListenerForSingleValueEvent(new ValueEventListener() {
+             @Override
+             public void onDataChange(DataSnapshot dataSnapshot) {
+                 DataSnapshot nodeShot = dataSnapshot.getChildren().iterator().next();
+                 DatabaseReference reference = nodeShot.getRef();
+                 reference.child("favourites").setValue(item.getId());
+             }
+             @Override
+             public void onCancelled(DatabaseError databaseError) {
+
+             }
+         });
+     }
+
+     public void updateUser(User user){
+         final DatabaseReference dbRef = database.getReference("users");
+         User  newUser = user;
+         HashMap<String, Object> update = new HashMap<>();
+         update.put(user.getUid(),newUser);
+         dbRef.child(user.getUid()).setValue(user);
+         callbackUser.getUser(newUser);
+
+     }
 
 }

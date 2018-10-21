@@ -1,6 +1,6 @@
 package eus.ilanda.eskatuetaordaindu.models;
 
-import com.google.firebase.auth.FirebaseAuth;
+import java.util.ArrayList;
 
 /**
  * Created by landa on 08/05/2018.
@@ -13,9 +13,11 @@ public class User {
 
     private Permission permission = new Permission();
 
+    private ArrayList<String> favourites = new ArrayList<String>();
+
     public User()
     {
-
+        this.favourites = new ArrayList<String>();
     }
 
     public User(String uid){
@@ -27,6 +29,7 @@ public class User {
         this.uid = uid;
         this.email = email;
         this.name = name;
+        this.favourites = new ArrayList<String>();
     }
 
     public String getUid() {
@@ -60,5 +63,13 @@ public class User {
 
     public void setPermission(Permission permission) {
         this.permission = permission;
+    }
+
+    public ArrayList<String> getFavourites() {
+        return favourites;
+    }
+
+    public void setFavourites(ArrayList<String> favourites) {
+        this.favourites = favourites;
     }
 }

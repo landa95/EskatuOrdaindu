@@ -13,14 +13,20 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 import eus.ilanda.eskatuetaordaindu.ClientActivity;
 import eus.ilanda.eskatuetaordaindu.R;
+import eus.ilanda.eskatuetaordaindu.manager.DBManager;
 import eus.ilanda.eskatuetaordaindu.models.ItemMenu;
 import eus.ilanda.eskatuetaordaindu.models.OrderItem;
+import eus.ilanda.eskatuetaordaindu.models.User;
 
-public class FragmentMenuChooseItem extends Fragment {
+public class FragmentMenuChooseItem extends Fragment implements DBManager.CallbackUser{
+
 
     private  ImageView imageView;
 
@@ -29,22 +35,30 @@ public class FragmentMenuChooseItem extends Fragment {
     private OrderItem orderItem = new OrderItem();
     private Button addToCart;
 
+    private ImageView favourite;
+    private int favouriteTag = 0;
+
     private String imageURL ="";
 
     private ClientActivity activity;
 
+    private DBManager manager = new DBManager(this);
 
+    private User user;
+    private ItemMenu item;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_menu_choose_item, container,false);
         Bundle bundle = this.getArguments();
-        ItemMenu item = bundle.getParcelable("item");
+        item = bundle.getParcelable("item");
+        manager.getUser(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
         this.orderItem.setItem(item);
 
         setUpControls(v);
-       activity = (ClientActivity) getActivity();
+        activity = (ClientActivity) getActivity();
 
         boolean exists = false;
         int position = 0;
@@ -64,18 +78,12 @@ public class FragmentMenuChooseItem extends Fragment {
         }else {
             this.orderItem.setItem(item);
         }
-
-
-
        imageURL = item.getImageURL();
        itemName.setText(item.getItemName());
        itemDescription.setText(item.getItemDetails());
        itemPrize.setText(Double.toString(item.getPrize()));
 
        loadImageWithPicasso();
-
-
-
         return v;
     }
 
@@ -90,7 +98,8 @@ public class FragmentMenuChooseItem extends Fragment {
 
     private void setUpControls(View v) {
         imageView = (ImageView) v.findViewById(R.id.img_item_choose);
-
+        favourite = (ImageView) v.findViewById(R.id.iv_favourite);
+        //favourite.setTag(R.drawable.ic_favorite_white);
         itemName = (TextView) v.findViewById(R.id.txt_choose_item_name);
         itemDescription = (TextView) v.findViewById(R.id.txt_choose_item_description);
         itemPrize = (TextView) v.findViewById(R.id.txt_show_actual_prize);
@@ -151,6 +160,47 @@ public class FragmentMenuChooseItem extends Fragment {
                 }
             }
         });
+
+        favourite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (favourite.getTag().equals(R.drawable.ic_favorite)){
+                    favourite.setImageResource(R.drawable.ic_favorite_white);
+                    favourite.setTag(R.drawable.ic_favorite_white);
+                    user.getFavourites().remove(item.getId());
+                    manager.updateUser(user);
+
+                }else if (favourite.getTag().equals(R.drawable.ic_favorite_white)){
+                    favourite.setImageResource(R.drawable.ic_favorite);
+                    favourite.setTag(R.drawable.ic_favorite);
+                    user.getFavourites().add(item.getId());
+                    manager.updateUser(user);
+                }
+            }
+        });
+    }
+
+    private void setFavouriteIcon(ItemMenu item) {
+        if (user.getFavourites().equals(null)){
+            user.setFavourites(new ArrayList<String>());
+            favourite.setImageResource(R.drawable.ic_favorite_white);
+            favourite.setTag(R.drawable.ic_favorite_white);
+        }else if (this.user.getFavourites().size()!= 0){
+            for (int i = 0; i<this.user.getFavourites().size(); i++){
+                if (user.getFavourites().get(i).equals(item.getId())){
+                    favourite.setImageResource(R.drawable.ic_favorite);
+                    favourite.setTag(R.drawable.ic_favorite);
+                }else {
+                    favourite.setImageResource(R.drawable.ic_favorite_white);
+                    favourite.setTag(R.drawable.ic_favorite_white);
+
+                }
+            }
+        }else{
+            favourite.setImageResource(R.drawable.ic_favorite_white);
+            favourite.setTag(R.drawable.ic_favorite_white);
+        }
+
     }
 
     private void setItemPrize(){
@@ -158,5 +208,13 @@ public class FragmentMenuChooseItem extends Fragment {
         int i = Integer.parseInt(itemQuantity.getText().toString());
         d = i*d;
         itemPrize.setText(Double.toString(d));
+    }
+
+
+
+    @Override
+    public void getUser(User user) {
+        this.user = user;
+        setFavouriteIcon(item);
     }
 }
