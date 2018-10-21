@@ -46,7 +46,7 @@ public class FragmentMenuView extends Fragment implements CategoryAdapter.OnItem
         clientActivity =(ClientActivity) getActivity();
 
         Toast.makeText(getContext(), Integer.toString(clientActivity.getCart().size()), Toast.LENGTH_SHORT).show();
-       setUpControls(v,getContext());
+        setUpControls(v,getContext());
         menu.setLayoutManager(mLayoutManager);
         menu.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
 

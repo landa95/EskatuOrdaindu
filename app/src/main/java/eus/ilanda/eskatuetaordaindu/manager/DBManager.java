@@ -41,6 +41,8 @@ public class DBManager {
     private CallbackItemMenu callbackItemMenuListener;
     private CallbackUser callbackUser;
 
+    private CallbackOrder callbackOrder;
+
 
     public interface CallbackCategory {
         void updateCategoryAdapter(List<Category> categories);
@@ -56,6 +58,13 @@ public class DBManager {
         void getUser(User user);
     }
 
+    public interface CallbackOrder{
+        void getOrders(ArrayList<Order> orders);
+    }
+
+    public DBManager (CallbackOrder callbackOrder){
+        this.callbackOrder = callbackOrder;
+    }
 
     public DBManager(CallbackCategory callbackListener) {
         this.categoryCallbackListener = callbackListener;
@@ -403,5 +412,28 @@ public class DBManager {
         String key = dbRef.push().getKey();
         order.setOrderId(key);
         dbRef.child(order.getOrderId()).setValue(order);
+    }
+
+    public void getOrdersByUser(String uid){
+        final DatabaseReference dbRef = database.getReference("orders");
+        Query query = dbRef.orderByChild("userId").equalTo(uid);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<Order> orders = new ArrayList<Order>();
+                for (DataSnapshot snapshot: dataSnapshot.getChildren() ){
+                    Order order = snapshot.getValue(Order.class);
+                    orders.add(order);
+                }
+                callbackOrder.getOrders(orders);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 }

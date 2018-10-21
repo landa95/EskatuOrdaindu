@@ -33,6 +33,31 @@ public class FragmentBottomNav extends android.support.v4.app.Fragment implement
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
                       switch (item.getItemId()){
+                        case R.id.bottom_nav_owner_menu_edit: //Owner menu editor
+                            transaction.replace(android.R.id.tabcontent, new FragmentMenuEditor());
+                            transaction.commit();
+                            return true;
+                          case R.id.restaurant_client:
+                              transaction.replace(android.R.id.tabcontent, new FragmentMenuView());
+                              transaction.commit();
+                              return true;
+
+                          case R.id.bottom_nav_client_favourite:
+                               transaction.replace(android.R.id.tabcontent, new FragmentFavourites());
+                              transaction.commit();
+                              return true;
+                          case R.id.bottom_nav_history:
+                              transaction.replace(android.R.id.tabcontent, new FragmentHistoryOrders());
+                              transaction.commit();
+                              return true;
+
+                    }
+                    return true;
+                }
+            };
+
+    /*FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                      switch (item.getItemId()){
                         case R.id.fav:
                             transaction.replace(android.R.id.tabcontent, new FragmentMenuEditor());
                             transaction.commit();
@@ -41,9 +66,7 @@ public class FragmentBottomNav extends android.support.v4.app.Fragment implement
                               transaction.replace(android.R.id.tabcontent, new FragmentMenuView());
                               transaction.commit();
                     }
-                    return true;
-                }
-            };
+return true;*/
     private BottomNavigationView navigationView;
 
     //Show view to user
@@ -52,11 +75,14 @@ public class FragmentBottomNav extends android.support.v4.app.Fragment implement
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.activity_bottom_nav, container, false);
+       View v = inflater.inflate(R.layout.activity_bottom_nav, container, false);
 
-        navigationView = (BottomNavigationView) v.findViewById(R.id.bottom_navigation);
+        navigationView = v.findViewById(R.id.bottom_navigation);
         DBManager dbManager = new DBManager(this);
+
         dbManager.getUser(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+
         return v;
     }
 
@@ -77,5 +103,6 @@ public class FragmentBottomNav extends android.support.v4.app.Fragment implement
         MenuItem menuItem = menu.getItem(0);
         navigationView.setOnNavigationItemSelectedListener(this.mOnNavigationItemSelected);
         menuItem.setChecked(true);
+
     }
 }

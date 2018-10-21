@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import eus.ilanda.eskatuetaordaindu.R;
@@ -40,6 +41,10 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         return this.orders.size();
     }
 
+    public void setOrders(ArrayList<Order> orders){
+        this.orders = orders;
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
         private TextView txtOrderDate, txtOrderPrice;
@@ -62,7 +67,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setAdapter(adapter);
 
-            txtOrderDate.setText(order.getTimestamp().toString());
+            //txtOrderDate.setText(order.getTimestamp().toString());
             txtOrderPrice.setText(Double.toString(order.getTotalPrice()));
 
         }
