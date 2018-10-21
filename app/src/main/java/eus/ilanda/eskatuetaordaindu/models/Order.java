@@ -82,4 +82,12 @@ public class Order{
         return this.orderItems.get(i);
     }
 
+    public double getTotalPrice(){
+        double price = 0;
+        for (int i = 0; i< orderItems.size(); i++){
+            price = price + (orderItems.get(i).getItem().getPrize() * orderItems.get(i).getQuantity());
+        }
+        return price;
+    }
+
 }
