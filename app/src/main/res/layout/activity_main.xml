@@ -12,15 +12,13 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="250dp"
-        android:text="Sign In" />
+        android:text="Iniciar sesion"
+        android:background="@color/white"/>
 
-    <Button
+    <com.google.android.gms.common.SignInButton
         android:layout_width="158dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="15dp"
-        android:text="new Item Test"
         android:id="@+id/btnTest"/>
-
-
 </LinearLayout>

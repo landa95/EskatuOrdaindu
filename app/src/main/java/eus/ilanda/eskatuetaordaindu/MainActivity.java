@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     //Sign in button
     Button btnsignIn;
     TextView dataTextview;
-    Button btnTest;
+    com.google.android.gms.common.SignInButton btnTest;
 
 
     //Authentication manager
@@ -63,20 +63,21 @@ public class MainActivity extends AppCompatActivity {
                 GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
                 ArrayList<AuthUI.IdpConfig> selectedProviders = new ArrayList<AuthUI.IdpConfig>();
                 selectedProviders.add(new AuthUI.IdpConfig.EmailBuilder().build());
-                selectedProviders.add(new AuthUI.IdpConfig.GoogleBuilder().setSignInOptions(gso).build());
                 startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder().setIsSmartLockEnabled(true).setAvailableProviders(selectedProviders).build(), RC_SIGN_IN);
                 }
         });
 
 
         //Testing
-        btnTest = (Button) findViewById(R.id.btnTest);
+        btnTest =  findViewById(R.id.btnTest);
         btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //dbManager
-                ItemMenu item = new ItemMenu("ghjkl", "Pasta Carbonara", "MAcarrones, tomate, carne de vacuno", 10.5, "hjk");
-                dbManager.newItemMenu(item);
+                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+                ArrayList<AuthUI.IdpConfig> selectedProviders = new ArrayList<AuthUI.IdpConfig>();
+                selectedProviders.add(new AuthUI.IdpConfig.GoogleBuilder().setSignInOptions(gso).build());
+                startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder().setIsSmartLockEnabled(true).setAvailableProviders(selectedProviders).build(), RC_SIGN_IN);
+
             }
         });
 
