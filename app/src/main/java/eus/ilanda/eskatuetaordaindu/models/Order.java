@@ -6,8 +6,6 @@ public class Order{
 
     private String orderId;
 
-
-
     private int tableNumber;
     private String userId;
     private String timestamp;

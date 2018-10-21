@@ -6,7 +6,7 @@ import android.os.Parcelable;
 
 public class OrderItem  implements Parcelable{
 
-    private String itemOrderId;
+
     private ItemMenu item;
     private int quantity;
 
@@ -23,13 +23,6 @@ public class OrderItem  implements Parcelable{
         readFromParcel(in);
     }
 
-    public String getItemOrderId(){
-        return itemOrderId;
-    }
-
-    public void setItemOrderId(String itemOrderId) {
-        this.itemOrderId = itemOrderId;
-    }
 
     public ItemMenu getItem() {
         return item;
@@ -54,13 +47,11 @@ public class OrderItem  implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(this.itemOrderId);
         parcel.writeParcelable(this.item,i);
         parcel.writeInt(this.quantity);
 
     }
     public void readFromParcel(Parcel in){
-        itemOrderId = in.readString();
         item = in.readParcelable(ItemMenu.class.getClassLoader());
         quantity = in.readInt();
     }

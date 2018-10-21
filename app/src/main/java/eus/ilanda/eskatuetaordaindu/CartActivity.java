@@ -3,42 +3,40 @@ package eus.ilanda.eskatuetaordaindu;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.Display;
-import android.widget.ImageView;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FileDownloadTask;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
+import com.google.firebase.auth.FirebaseAuth;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import eus.ilanda.eskatuetaordaindu.adapters.CartAdapter;
+import eus.ilanda.eskatuetaordaindu.manager.DBManager;
 import eus.ilanda.eskatuetaordaindu.models.Order;
 import eus.ilanda.eskatuetaordaindu.models.OrderItem;
 
 public class CartActivity extends AppCompatActivity  implements CartAdapter.CartAdapterListener{
 
-    private StorageReference storageReference;
-    ImageView imageView;
     private CartAdapter cartAdapter;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
+    private Button btnOrder;
+    private EditText txtTableNumber;
 
-    private Order order;
+    private Order order = new Order();
 
     private ArrayList<OrderItem> cart = new ArrayList<>();
 
     private ClientActivity activity;
+
+    private DBManager manager = new DBManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,43 +54,30 @@ public class CartActivity extends AppCompatActivity  implements CartAdapter.Cart
         layoutManager= new LinearLayoutManager(this);
         cartAdapter = new CartAdapter(R.layout.list_cart, cart,this);
 
+        btnOrder = findViewById(R.id.btn_cart_order);
+        txtTableNumber = findViewById(R.id.et_num_table);
+
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(cartAdapter);
-    }
 
-    private void downloadPicture() {
-       storageReference = FirebaseStorage.getInstance().getReference();
-        try {
-            final File localFile = File.createTempFile("images", "jpeg");;
-
-      storageReference = storageReference.child("pizza.jpeg");
-        storageReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+        btnOrder.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                loadImageWithPicasso(localFile);
+            public void onClick(View view) {
+                if (txtTableNumber.getText().toString().trim().isEmpty()){
+                    Toast.makeText(getApplicationContext(), "Please enter the table number", Toast.LENGTH_SHORT).show();
+                }else{
+                    order.setTableNumber(Integer.parseInt(txtTableNumber.getText().toString()));
+                    order.setOrderItems(cart);
+                    order.setPaid(true);
+                    order.setUserId(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    order.setDetails("details");
+                    manager.addOrder(order);
+                }
             }
         });
-        }catch (Exception e){
-            Log.i("File" , e.toString());
-        }
     }
 
-    public void loadImageWithPicasso(File f)
-    {
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-                Picasso.get()
-                .load(f)
-                .resize(size.x, 200)
-                //.placeholder(ic_cargando)
-                .into(imageView);
-    }
-
-    public void uploadImage(){
-
-    }
 
     public static Intent createIntent(Context context){
         Intent in = new Intent();
