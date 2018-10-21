@@ -2,29 +2,28 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginTop="10dp">
     <android.support.v7.widget.CardView
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal">
         <LinearLayout
              android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:orientation="vertical">
-
+            android:orientation="horizontal">
             <TextView
                 android:id="@+id/txt_order_history_date"
                 android:layout_width="150dp"
-                android:layout_height="30dp" />
+                android:layout_height="30dp"
+                android:text="·date"/>
 
             <TextView
                 android:id="@+id/txt_order_history_totalPrize"
                 android:layout_width="150dp"
-                android:layout_height="30dp" />
+                android:layout_height="30dp"
+                android:text="total price"/>
         </LinearLayout>
 
         <LinearLayout
@@ -34,14 +33,10 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/orderItem_list_history"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp">
 
             </android.support.v7.widget.RecyclerView>
         </LinearLayout>
-
-
     </android.support.v7.widget.CardView>
-
-
-
 </LinearLayout>
