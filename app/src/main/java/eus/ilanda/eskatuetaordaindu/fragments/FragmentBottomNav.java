@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,19 +35,23 @@ public class FragmentBottomNav extends android.support.v4.app.Fragment implement
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
                       switch (item.getItemId()){
                         case R.id.bottom_nav_owner_menu_edit: //Owner menu editor
+                            popBackStack();
                             transaction.replace(android.R.id.tabcontent, new FragmentMenuEditor());
                             transaction.commit();
                             return true;
                           case R.id.restaurant_client:
+                              popBackStack();
                               transaction.replace(android.R.id.tabcontent, new FragmentMenuView());
                               transaction.commit();
                               return true;
 
                           case R.id.bottom_nav_client_favourite:
+                              popBackStack();
                                transaction.replace(android.R.id.tabcontent, new FragmentFavourites());
                               transaction.commit();
                               return true;
                           case R.id.bottom_nav_history:
+                              popBackStack();
                               transaction.replace(android.R.id.tabcontent, new FragmentHistoryOrders());
                               transaction.commit();
                               return true;
@@ -84,6 +89,13 @@ return true;*/
 
 
         return v;
+    }
+
+    public void popBackStack(){
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        for (int i = 0; i< fm.getBackStackEntryCount(); i++){
+            fm.popBackStack();
+        }
     }
 
     @Override
