@@ -109,6 +109,15 @@ public class FragmentMenuEditor extends Fragment implements DBManager.CallbackCa
         categoryAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void hasSubItems(boolean hasSubItems, Category category) {
+        if (hasSubItems){
+            Toast.makeText(getContext(), " Unable to delete: this category has Item Menus", Toast.LENGTH_SHORT).show();
+        }else {
+            manager.deleteCategory(category);
+        }
+    }
+
 
     //Implement Recycler view Category on click
     @Override
@@ -136,8 +145,8 @@ public class FragmentMenuEditor extends Fragment implements DBManager.CallbackCa
                     showCategoryDialog(dialogFragmentCategory.ACTION_EDIT, category);
 
                 }else if (i==1){
-                    //Delete category name Pay attention to subItems
-                    manager.deleteCategory(category);
+                    //Delete category pay attention to subItems
+                    manager.hasSubItemMenu(category);
                 }
             }
         });

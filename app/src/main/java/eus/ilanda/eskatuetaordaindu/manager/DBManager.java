@@ -38,6 +38,7 @@ public class DBManager {
     private static FirebaseAuth auth = FirebaseAuth.getInstance();
     private static FirebaseDatabase database = FirebaseDatabase.getInstance();
     private CallbackCategory categoryCallbackListener;
+    private  CallbackCategoryClient callbackCategoryClient;
     private CallbackItemMenu callbackItemMenuListener;
     private CallbackUser callbackUser;
 
@@ -45,6 +46,12 @@ public class DBManager {
 
 
     public interface CallbackCategory {
+        void updateCategoryAdapter(List<Category> categories);
+        void hasSubItems(boolean bool, Category cat);
+    }
+
+
+    public interface CallbackCategoryClient {
         void updateCategoryAdapter(List<Category> categories);
     }
 
@@ -60,6 +67,10 @@ public class DBManager {
 
     public interface CallbackOrder{
         void getOrders(ArrayList<Order> orders);
+    }
+
+    public DBManager(CallbackCategoryClient callbackCategoryClient){
+        this.callbackCategoryClient = callbackCategoryClient;
     }
 
     public DBManager (CallbackOrder callbackOrder){
@@ -256,6 +267,29 @@ public class DBManager {
             }
         });
 
+    }
+
+    public boolean hasSubItemMenu(final Category category){
+        final boolean answer;
+        final DatabaseReference dbRef = database.getReference("menu").child("menuItems");
+        Query query = dbRef.orderByChild("category").equalTo(category.getId());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.getChildren().iterator().hasNext()){
+                   categoryCallbackListener.hasSubItems(false, category);
+                }else{
+                    categoryCallbackListener.hasSubItems(true, category);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        return true;
     }
 
     public void updateCategory(final Category category) {

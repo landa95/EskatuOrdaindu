@@ -24,7 +24,7 @@ import eus.ilanda.eskatuetaordaindu.manager.DBManager;
 import eus.ilanda.eskatuetaordaindu.models.Category;
 import eus.ilanda.eskatuetaordaindu.models.ItemMenu;
 
-public class FragmentMenuView extends Fragment implements CategoryAdapter.OnItemClickListener, DBManager.CallbackCategory{
+public class FragmentMenuView extends Fragment implements CategoryAdapter.OnItemClickListener, DBManager.CallbackCategoryClient{
 
     private RecyclerView menu;
 
