@@ -35,6 +35,7 @@ import eus.ilanda.eskatuetaordaindu.models.Order;
 import eus.ilanda.eskatuetaordaindu.models.User;
 
 public class DBManager {
+
     private static FirebaseAuth auth = FirebaseAuth.getInstance();
     private static FirebaseDatabase database = FirebaseDatabase.getInstance();
     private CallbackCategory categoryCallbackListener;
@@ -224,7 +225,11 @@ public class DBManager {
                     Category category = snapshot.getValue(Category.class);
                     categoryList.add(category);
                 }
-                categoryCallbackListener.updateCategoryAdapter(categoryList);
+                if (categoryCallbackListener == null){
+                    callbackCategoryClient.updateCategoryAdapter(categoryList);
+                }else {
+                    categoryCallbackListener.updateCategoryAdapter(categoryList);
+                }
             }
 
             @Override
