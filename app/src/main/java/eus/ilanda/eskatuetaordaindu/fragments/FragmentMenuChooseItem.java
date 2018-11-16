@@ -105,8 +105,8 @@ public class FragmentMenuChooseItem extends Fragment implements DBManager.Callba
         itemPrize = (TextView) v.findViewById(R.id.txt_show_actual_prize);
         itemQuantity = (TextView) v.findViewById(R.id.txt_item_quantity) ;
 
-        less = (ImageButton) v.findViewById(R.id.btn_less);
-        more = (ImageButton) v.findViewById(R.id.btn_more);
+        less = v.findViewById(R.id.btn_less);
+        more =  v.findViewById(R.id.btn_more);
 
         less.setOnClickListener(new View.OnClickListener() {
             @Override

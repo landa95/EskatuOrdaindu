@@ -42,6 +42,7 @@ public class DBManager {
     private  CallbackCategoryClient callbackCategoryClient;
     private CallbackItemMenu callbackItemMenuListener;
     private CallbackUser callbackUser;
+    private CallbackItemMenuList callbackItemMenuList;
 
     private CallbackOrder callbackOrder;
 
@@ -58,8 +59,11 @@ public class DBManager {
 
     public interface CallbackItemMenu {
         void updateItemMenuAdapter(List<ItemMenu> menuItems);
-
         void uploadImage(ItemMenu item, Uri uri);
+    }
+
+    public interface CallbackItemMenuList{
+        void getFavouriteItemMenusList(List<ItemMenu> favItemMenus);
     }
 
     public interface CallbackUser {
@@ -93,6 +97,11 @@ public class DBManager {
     public DBManager(CallbackCategory callbackCategory, CallbackItemMenu callbackItemMenu) {
         this.categoryCallbackListener = callbackCategory;
         this.callbackItemMenuListener = callbackItemMenu;
+    }
+
+    public DBManager(CallbackItemMenuList callbackItemMenuList, CallbackUser callbackUser){
+        this.callbackItemMenuList = callbackItemMenuList;
+        this.callbackUser = callbackUser;
     }
 
     public DBManager() {
@@ -371,6 +380,31 @@ public class DBManager {
                     itemList.add(item);
                 }
                 callbackItemMenuListener.updateItemMenuAdapter(itemList);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    //
+    public void loadFavouriteItems(final ArrayList<String> favourites){
+        final DatabaseReference dbRef = database.getReference("menu").child("menuItems");
+        final ArrayList<ItemMenu> itemMenus  = new ArrayList<>();
+        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                    for( DataSnapshot snapshot : dataSnapshot.getChildren()){
+                        ItemMenu itemMenu = snapshot.getValue(ItemMenu.class);
+                        for (int i = 0; i< favourites.size(); i++){
+                            if (itemMenu.getId().equals(favourites.get(i))){
+                                itemMenus.add(itemMenu);
+                            }
+                        }
+                    }
+                    callbackItemMenuList.getFavouriteItemMenusList(itemMenus);
             }
 
             @Override
