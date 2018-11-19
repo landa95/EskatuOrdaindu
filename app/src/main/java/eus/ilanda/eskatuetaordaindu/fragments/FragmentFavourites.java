@@ -51,7 +51,12 @@ public class FragmentFavourites extends Fragment implements DBManager.CallbackUs
         favouriteList = v.findViewById(R.id.list_favourites);
         mLayoutManager = new LinearLayoutManager(v.getContext());
 
-        favouriteAdapter = new FavouriteAdapter(R.layout.list_item_favourite,itemMenuArrayList );
+        favouriteAdapter = new FavouriteAdapter(R.layout.list_item_favourite, itemMenuArrayList, new FavouriteAdapter.CalbackFavouriteAdapter() {
+            @Override
+            public void clickIcon(ItemMenu itemMenu) {
+
+            }
+        });
         favouriteList.setLayoutManager(mLayoutManager);
         favouriteList.setAdapter(favouriteAdapter);
     }
