@@ -16,10 +16,12 @@ public class FavouriteAdapter  extends RecyclerView.Adapter<FavouriteAdapter.Vie
 
     private int layout;
     private List<ItemMenu> itemsMenus;
+    CalbackFavouriteAdapter callbackFavouriteAdapter;
 
-    public FavouriteAdapter(int layout, List<ItemMenu> items ){
+    public FavouriteAdapter(int layout, List<ItemMenu> items, CalbackFavouriteAdapter favouriteAdapterCallback ){
         this.layout = layout;
         this.itemsMenus = items;
+        this.callbackFavouriteAdapter = favouriteAdapterCallback;
     }
 
     public void setItemsMenus(List<ItemMenu> itemsMenus){
@@ -36,6 +38,8 @@ public class FavouriteAdapter  extends RecyclerView.Adapter<FavouriteAdapter.Vie
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.bind(itemsMenus.get(position));
+
+
     }
 
     @Override
@@ -57,6 +61,14 @@ public class FavouriteAdapter  extends RecyclerView.Adapter<FavouriteAdapter.Vie
             this.fav_item_prize = v.findViewById(R.id.txt__fav_item_prize);
             this.isFavourite = v.findViewById(R.id.btnFavourite);
 
+            isFavourite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    isFavourite.setImageResource(R.drawable.ic_favorite_white);
+                    isFavourite.setTag(R.drawable.ic_favorite_white);
+                }
+            });
+
         }
 
         public void bind(ItemMenu itemMenu){
@@ -65,5 +77,10 @@ public class FavouriteAdapter  extends RecyclerView.Adapter<FavouriteAdapter.Vie
             fav_item_details.setText(itemMenu.getItemDetails().toString());
             fav_item_prize.setText(Double.toString(itemMenu.getPrize()));
         }
+    }
+
+    public interface CalbackFavouriteAdapter{
+        void clickIcon(ItemMenu itemMenu);
+
     }
 }
