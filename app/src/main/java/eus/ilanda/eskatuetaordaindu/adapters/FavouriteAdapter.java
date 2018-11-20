@@ -16,9 +16,9 @@ public class FavouriteAdapter  extends RecyclerView.Adapter<FavouriteAdapter.Vie
 
     private int layout;
     private List<ItemMenu> itemsMenus;
-    CalbackFavouriteAdapter callbackFavouriteAdapter;
+    final CallbackFavouriteAdapter callbackFavouriteAdapter;
 
-    public FavouriteAdapter(int layout, List<ItemMenu> items, CalbackFavouriteAdapter favouriteAdapterCallback ){
+    public FavouriteAdapter(int layout, List<ItemMenu> items, CallbackFavouriteAdapter favouriteAdapterCallback ){
         this.layout = layout;
         this.itemsMenus = items;
         this.callbackFavouriteAdapter = favouriteAdapterCallback;
@@ -37,7 +37,7 @@ public class FavouriteAdapter  extends RecyclerView.Adapter<FavouriteAdapter.Vie
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.bind(itemsMenus.get(position));
+        holder.bind(itemsMenus.get(position), this.callbackFavouriteAdapter);
 
 
     }
@@ -61,26 +61,37 @@ public class FavouriteAdapter  extends RecyclerView.Adapter<FavouriteAdapter.Vie
             this.fav_item_prize = v.findViewById(R.id.txt__fav_item_prize);
             this.isFavourite = v.findViewById(R.id.btnFavourite);
 
-            isFavourite.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    isFavourite.setImageResource(R.drawable.ic_favorite_white);
-                    isFavourite.setTag(R.drawable.ic_favorite_white);
-                }
-            });
-
         }
 
-        public void bind(ItemMenu itemMenu){
+        public void bind(final ItemMenu itemMenu, final CallbackFavouriteAdapter callbackFavouriteAdapter){
             fav_item_name.setText(itemMenu.getItemName().toString());
 
             fav_item_details.setText(itemMenu.getItemDetails().toString());
             fav_item_prize.setText(Double.toString(itemMenu.getPrize()));
+
+            isFavourite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    callbackFavouriteAdapter.clickIcon(itemMenu , getAdapterPosition());
+                }
+            });
+
+            //On click item view
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    callbackFavouriteAdapter.onClick(itemMenu, getAdapterPosition());
+                }
+            });
         }
     }
 
-    public interface CalbackFavouriteAdapter{
-        void clickIcon(ItemMenu itemMenu);
+    public interface CallbackFavouriteAdapter{
+        //delete from favourites
+        void clickIcon(ItemMenu itemMenu, int position);
+        //click
+        void onClick(ItemMenu itemMenu, int position);
+
 
     }
 }
