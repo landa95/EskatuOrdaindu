@@ -97,13 +97,13 @@ public class FragmentMenuChooseItem extends Fragment implements DBManager.Callba
     }
 
     private void setUpControls(View v) {
-        imageView = (ImageView) v.findViewById(R.id.img_item_choose);
-        favourite = (ImageView) v.findViewById(R.id.iv_favourite);
+        imageView =  v.findViewById(R.id.img_item_choose);
+        favourite = v.findViewById(R.id.iv_favourite);
         //favourite.setTag(R.drawable.ic_favorite_white);
-        itemName = (TextView) v.findViewById(R.id.txt_choose_item_name);
-        itemDescription = (TextView) v.findViewById(R.id.txt_choose_item_description);
-        itemPrize = (TextView) v.findViewById(R.id.txt_show_actual_prize);
-        itemQuantity = (TextView) v.findViewById(R.id.txt_item_quantity) ;
+        itemName =  v.findViewById(R.id.txt_choose_item_name);
+        itemDescription =  v.findViewById(R.id.txt_choose_item_description);
+        itemPrize =  v.findViewById(R.id.txt_show_actual_prize);
+        itemQuantity =  v.findViewById(R.id.txt_item_quantity) ;
 
         less = v.findViewById(R.id.btn_less);
         more =  v.findViewById(R.id.btn_more);
@@ -133,7 +133,7 @@ public class FragmentMenuChooseItem extends Fragment implements DBManager.Callba
             }
         });
 
-        addToCart = (Button) v.findViewById(R.id.btn_addToCart);
+        addToCart = v.findViewById(R.id.btn_addToCart);
 
         //Numeros raros
         addToCart.setOnClickListener(new View.OnClickListener() {

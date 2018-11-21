@@ -14,10 +14,20 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.paypal.android.sdk.payments.PayPalConfiguration;
+import com.paypal.android.sdk.payments.PayPalPayment;
+import com.paypal.android.sdk.payments.PayPalService;
+import com.paypal.android.sdk.payments.PaymentActivity;
+import com.paypal.android.sdk.payments.PaymentConfirmation;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import eus.ilanda.eskatuetaordaindu.adapters.CartAdapter;
+import eus.ilanda.eskatuetaordaindu.config.PaypalConfig;
 import eus.ilanda.eskatuetaordaindu.manager.DBManager;
 import eus.ilanda.eskatuetaordaindu.models.Order;
 import eus.ilanda.eskatuetaordaindu.models.OrderItem;
@@ -38,6 +48,18 @@ public class CartActivity extends AppCompatActivity  implements CartAdapter.Cart
 
     private DBManager manager = new DBManager();
 
+    //Paypal REQUEST CODE
+    public static final int PAYPAL_REQUEST_CODE = 2222;
+    //Paypal configuration object set up
+    private static PayPalConfiguration payPalConfiguration = new PayPalConfiguration()
+            .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
+            .clientId(PaypalConfig.PAYPAL_CLIENT_ID);
+
+    private static String CREATE_TIME = "create_time";
+    private static String RESPONSE = "response";
+    private static String PAYMENT_STATE = "state";
+    private static String PAYMENT_ID = "id";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,12 +67,21 @@ public class CartActivity extends AppCompatActivity  implements CartAdapter.Cart
 
        cart = getIntent().getParcelableArrayListExtra("cart");
 
+        Intent intent = new Intent(this, PayPalService.class);
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, payPalConfiguration);
+        startService(intent);
 
         setUpControls();
     }
 
+    @Override
+    protected void onDestroy() {
+        stopService(new Intent(this, PayPalService.class));
+        super.onDestroy();
+    }
+
     private void setUpControls() {
-        recyclerView = (RecyclerView) findViewById(R.id.list_cart_items);
+        recyclerView = findViewById(R.id.list_cart_items);
         layoutManager= new LinearLayoutManager(this);
         cartAdapter = new CartAdapter(R.layout.list_cart, cart,this);
 
@@ -72,12 +103,54 @@ public class CartActivity extends AppCompatActivity  implements CartAdapter.Cart
                     order.setPaid(true);
                     order.setUserId(FirebaseAuth.getInstance().getCurrentUser().getUid());
                     order.setDetails("details");
-                    manager.addOrder(order);
+                    proccessPayment();
+                    //manager.addOrder(order);
                 }
             }
         });
     }
 
+    private void proccessPayment(){
+        PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(String.valueOf(order.getTotalPrice())), "EUR",
+                "Eskatu Ordaindu", PayPalPayment.PAYMENT_INTENT_SALE);
+        Intent intent = new Intent(this, PaymentActivity.class);
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, payPalConfiguration);
+        intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payPalPayment);
+        startActivityForResult(intent, PAYPAL_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == PAYPAL_REQUEST_CODE){
+            if (resultCode==RESULT_OK){
+                PaymentConfirmation confirmation = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+                if (confirmation!= null){
+                    try{
+                        String paymentDetails = confirmation.toJSONObject().toString(4);
+                        JSONObject jsonObject = confirmation.toJSONObject();
+                        JSONObject response = jsonObject.getJSONObject(RESPONSE);
+                        order.setTimestamp(response.getString(CREATE_TIME));
+                        if (response.getString(PAYMENT_STATE).equals("approved")){
+                            order.setPaid(true);
+                        }
+                        manager.addOrder(order);
+                        //Payment id not saved
+                        Toast.makeText(this, "Payment accepted", Toast.LENGTH_LONG).show();
+                            //PAYMENT CONFIRMED, ORDER CONFIRMED AND PAID, now SERVE
+                    }catch (JSONException e){
+                        e.printStackTrace();
+                    }
+
+                }
+            }else if (resultCode == Activity.RESULT_CANCELED){
+                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+            }
+        }else if (resultCode== PaymentActivity.RESULT_EXTRAS_INVALID){
+            Toast.makeText(this, "Invalid payment", Toast.LENGTH_LONG).show();
+
+        }
+    }
 
     public static Intent createIntent(Context context){
         Intent in = new Intent();
@@ -96,8 +169,7 @@ public class CartActivity extends AppCompatActivity  implements CartAdapter.Cart
 
     }
 
-
-        @Override
+    @Override
     public boolean onSupportNavigateUp() {
         //pass data to client activity
        Intent returnData = new Intent();
