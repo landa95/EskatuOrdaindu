@@ -3,11 +3,13 @@ package eus.ilanda.eskatuetaordaindu;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.icu.util.GregorianCalendar;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.Time;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,7 +26,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
+import java.security.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import eus.ilanda.eskatuetaordaindu.adapters.CartAdapter;
 import eus.ilanda.eskatuetaordaindu.config.PaypalConfig;
@@ -127,10 +134,14 @@ public class CartActivity extends AppCompatActivity  implements CartAdapter.Cart
                 PaymentConfirmation confirmation = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
                 if (confirmation!= null){
                     try{
+                        DateFormat df = new SimpleDateFormat("EEE, d MMM yyyy, HH:mm");
+                        String date = df.format(Calendar.getInstance().getTime());
+                        order.setTimestamp(getCurrentDateTime());
                         String paymentDetails = confirmation.toJSONObject().toString(4);
                         JSONObject jsonObject = confirmation.toJSONObject();
                         JSONObject response = jsonObject.getJSONObject(RESPONSE);
                         order.setTimestamp(response.getString(CREATE_TIME));
+
                         if (response.getString(PAYMENT_STATE).equals("approved")){
                             order.setPaid(true);
                         }
@@ -150,6 +161,12 @@ public class CartActivity extends AppCompatActivity  implements CartAdapter.Cart
             Toast.makeText(this, "Invalid payment", Toast.LENGTH_LONG).show();
 
         }
+    }
+
+    private String getCurrentDateTime(){
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yy HH:mm:ss");
+        return simpleDateFormat.format(calendar.getTime());
     }
 
     public static Intent createIntent(Context context){
