@@ -63,6 +63,9 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
        }
 
         public void bind(final Order order){
+            String timestamp = order.getTimestamp();
+            String[] dateTime = timestamp.split("T|Z|' ' ");
+            txtOrderDate.setText(dateTime[0]);
             adapter =  new ItemCartHistoryAdapter(R.layout.list_history_order_items, order.getOrderItems());
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setAdapter(adapter);

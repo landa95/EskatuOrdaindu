@@ -35,6 +35,7 @@ public class FragmentHistoryOrders extends Fragment implements DBManager.Callbac
         View v = inflater.inflate(R.layout.fragment_order_history, container, false);
         setUpControls(v);
 
+
         list_all_orders.setLayoutManager(mLayoutManager);
         list_all_orders.setAdapter(orderHistoryAdapter);
 
@@ -45,6 +46,8 @@ public class FragmentHistoryOrders extends Fragment implements DBManager.Callbac
 
     private void setUpControls(View v) {
         mLayoutManager = new LinearLayoutManager(v.getContext());
+        ((LinearLayoutManager) mLayoutManager).setReverseLayout(true);
+        ((LinearLayoutManager) mLayoutManager).setStackFromEnd(true);
         ArrayList<Order> orders = new ArrayList<Order>();
         orderHistoryAdapter = new OrderHistoryAdapter(R.layout.list_orders_history, orders);
         list_all_orders = v.findViewById(R.id.list_order_history);
