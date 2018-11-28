@@ -10,12 +10,14 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.Time;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalPayment;
 import com.paypal.android.sdk.payments.PayPalService;
@@ -32,6 +34,8 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 import eus.ilanda.eskatuetaordaindu.adapters.CartAdapter;
 import eus.ilanda.eskatuetaordaindu.config.PaypalConfig;
@@ -99,6 +103,7 @@ public class CartActivity extends AppCompatActivity  implements CartAdapter.Cart
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(cartAdapter);
 
+
         btnOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,7 +116,12 @@ public class CartActivity extends AppCompatActivity  implements CartAdapter.Cart
                     order.setUserId(FirebaseAuth.getInstance().getCurrentUser().getUid());
                     order.setDetails("details");
                     proccessPayment();
-                    //manager.addOrder(order);
+                    order.setTimestamp(getCurrentDateTime());
+                   //DateFormat df = DateFormat.getDateInstance();
+                   //df.setTimeZone(TimeZone.getDefault());
+                   //Log.w("DATA_ORDUA", Calendar.getInstance().getTime().toString());
+
+
                 }
             }
         });
@@ -152,7 +162,6 @@ public class CartActivity extends AppCompatActivity  implements CartAdapter.Cart
                     }catch (JSONException e){
                         e.printStackTrace();
                     }
-
                 }
             }else if (resultCode == Activity.RESULT_CANCELED){
                 Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();

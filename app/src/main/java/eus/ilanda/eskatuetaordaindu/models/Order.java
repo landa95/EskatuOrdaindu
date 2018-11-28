@@ -5,14 +5,12 @@ import java.util.ArrayList;
 public class Order{
 
     private String orderId;
-
     private int tableNumber;
     private String userId;
     private String timestamp;
     private String details;
     private boolean paid;
     private ArrayList<OrderItem> orderItems = new ArrayList<>();
-
     public Order(){}
 
     public Order(int tableNumber, String userId, String details, ArrayList<OrderItem> orderItems){
@@ -77,7 +75,6 @@ public class Order{
         this.orderItems = orderItems;
     }
 
-
     public OrderItem getOrderItem(int i){
         return this.orderItems.get(i);
     }
@@ -89,5 +86,4 @@ public class Order{
         }
         return price;
     }
-
 }

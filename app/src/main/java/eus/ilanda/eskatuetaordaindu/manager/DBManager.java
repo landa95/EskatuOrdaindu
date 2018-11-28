@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -17,11 +18,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -481,6 +485,8 @@ public class DBManager {
     }
 
     public void addOrder(Order order) {
+
+
         DatabaseReference dbRef = database.getReference("orders");
         String key = dbRef.push().getKey();
         order.setOrderId(key);
@@ -499,9 +505,7 @@ public class DBManager {
                     orders.add(order);
                 }
                 callbackOrder.getOrders(orders);
-
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
