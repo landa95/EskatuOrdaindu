@@ -10,6 +10,7 @@ public class Order{
     private String timestamp;
     private String details;
     private boolean paid;
+    private boolean served;
     private ArrayList<OrderItem> orderItems = new ArrayList<>();
     public Order(){}
 
@@ -85,5 +86,13 @@ public class Order{
             price = price + (orderItems.get(i).getItem().getPrize() * orderItems.get(i).getQuantity());
         }
         return price;
+    }
+
+    public boolean isServed() {
+        return served;
+    }
+
+    public void setServed(boolean served) {
+        this.served = served;
     }
 }

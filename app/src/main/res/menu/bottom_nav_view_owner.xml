@@ -3,12 +3,12 @@
 
     <group >
         <item
+            android:id="@+id/bottom_nav_owner_orders"
+            android:icon="@drawable/ic_orders"
+            android:title="Orders" />
+        <item
             android:id="@+id/bottom_nav_owner_menu_edit"
             android:icon="@drawable/ic_restaurant_black_24dp"
-            android:title="favourite" />
-        <item
-            android:id="@+id/restaurant2"
-            android:icon="@drawable/ic_restaurant_black_24dp"
-            android:title="restaurant" />
+            android:title="Menu editor" />
     </group>
 </menu>
