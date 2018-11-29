@@ -10,13 +10,12 @@ import android.view.ViewGroup;
 
 import eus.ilanda.eskatuetaordaindu.R;
 
-public class FragmentRestaurantOrders  extends Fragment {
-
+public class FragmentRestUnServedOrders extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        View v =  inflater.inflate(R.layout.fragment_restaurant_orders, container, false);
+        super.onCreateView(inflater, container, savedInstanceState);
+        View v = inflater.inflate(R.layout.fragment_rest_unserved, container, false);
         return v;
     }
 }

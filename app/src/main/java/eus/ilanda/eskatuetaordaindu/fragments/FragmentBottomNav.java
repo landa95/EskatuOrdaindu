@@ -57,7 +57,7 @@ public class FragmentBottomNav extends android.support.v4.app.Fragment implement
                               return true;
                           case  R.id.bottom_nav_owner_orders:
                               popBackStack();
-                              transaction.replace(android.R.id.tabcontent, new FragmentRestaurantOrders());
+                              transaction.replace(android.R.id.tabcontent, new FragmentRestOrderTab());
                               transaction.commit();
                               return true;
                     }
