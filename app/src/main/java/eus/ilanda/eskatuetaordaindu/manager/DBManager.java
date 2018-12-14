@@ -47,9 +47,13 @@ public class DBManager {
     private CallbackItemMenu callbackItemMenuListener;
     private CallbackUser callbackUser;
     private CallbackItemMenuList callbackItemMenuList;
+    private CallbackOrderRestaurant callbackOrderRestaurant;
 
     private CallbackOrder callbackOrder;
 
+    public  interface CallbackOrderRestaurant{
+        void getOrders(ArrayList<Order> orders);
+    }
 
     public interface CallbackCategory {
         void updateCategoryAdapter(List<Category> categories);
@@ -77,6 +81,8 @@ public class DBManager {
     public interface CallbackOrder{
         void getOrders(ArrayList<Order> orders);
     }
+
+
 
     public DBManager(CallbackCategoryClient callbackCategoryClient){
         this.callbackCategoryClient = callbackCategoryClient;
@@ -106,6 +112,10 @@ public class DBManager {
     public DBManager(CallbackItemMenuList callbackItemMenuList, CallbackUser callbackUser){
         this.callbackItemMenuList = callbackItemMenuList;
         this.callbackUser = callbackUser;
+    }
+
+    public DBManager(CallbackOrderRestaurant callbackOrderRestaurant){
+        this.callbackOrderRestaurant = callbackOrderRestaurant;
     }
 
     public DBManager() {
@@ -423,7 +433,15 @@ public class DBManager {
         ItemMenu newItemMenu = editItem;
         HashMap<String, Object> update = new HashMap<>();
         update.put(editItem.getId(), newItemMenu);
-        dbRef.child(editItem.getId()).setValue(newItemMenu);
+        dbRef.updateChildren(update);
+    }
+
+    public void updateOrder(final Order order){
+        final DatabaseReference dbRef =database.getReference("orders");
+        Order newOrder  = order;
+        HashMap<String, Object> update = new HashMap<>();
+        update.put(order.getOrderId(), newOrder);
+        dbRef.updateChildren(update);
     }
 
     public void deleteItem(final ItemMenu item) {
@@ -456,23 +474,6 @@ public class DBManager {
         });
     }
 
-    public void addItemToFavourites(final ItemMenu item, String uid) {
-        final DatabaseReference dbRef = database.getReference("users");
-        Query query = dbRef.equalTo(uid);
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                DataSnapshot nodeShot = dataSnapshot.getChildren().iterator().next();
-                DatabaseReference reference = nodeShot.getRef();
-                reference.child("favourites").setValue(item.getId());
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
 
     public void updateUser(User user) {
         final DatabaseReference dbRef = database.getReference("users");
@@ -485,12 +486,11 @@ public class DBManager {
     }
 
     public void addOrder(Order order) {
-
-
         DatabaseReference dbRef = database.getReference("orders");
         String key = dbRef.push().getKey();
         order.setOrderId(key);
         dbRef.child(order.getOrderId()).setValue(order);
+
     }
 
     public void getOrdersByUser(String uid){
@@ -513,4 +513,32 @@ public class DBManager {
         });
 
     }
+
+    public void getOrdersInRestaurant(final boolean isServed){
+        final DatabaseReference dbRef = database.getReference("orders");
+        Query query = dbRef.orderByChild("timestamp");
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<Order> orders = new ArrayList<>();
+                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    Order order = snapshot.getValue(Order.class);
+                    if (order.isServed() == isServed){
+                        orders.add(order);
+                        //update unserved Adapter
+                    }
+                }
+                callbackOrderRestaurant.getOrders(orders);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+
 }
