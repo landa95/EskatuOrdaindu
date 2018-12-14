@@ -23,4 +23,6 @@
     <string name="dialog_ok">Accept</string>
     <string name="dialog_cancel">Cancell</string>
 
+    <string name="btn_cart_pay">Proceed to payment</string>
+
 </resources>

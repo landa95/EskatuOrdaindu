@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     //Sign in button
     Button btnsignIn;
     TextView dataTextview;
-    com.google.android.gms.common.SignInButton btnTest;
+    Button btnTest;
 
 
     //Authentication manager

@@ -4,21 +4,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="eus.ilanda.eskatuetaordaindu.MainActivity">
+    tools:context="eus.ilanda.eskatuetaordaindu.MainActivity"
+    android:background="@drawable/gradient">
 
     <Button
         android:id="@+id/btnSignIn"
-        android:layout_width="158dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="250dp"
         android:text="Iniciar sesion"
-        android:background="@color/white"/>
+        android:paddingLeft="16dp"
+        android:drawableLeft="@drawable/ic_email"
+        android:textAllCaps="false"
+        android:background="@drawable/sign_in_button"/>
 
-    <com.google.android.gms.common.SignInButton
-        android:layout_width="158dp"
+    <Button
+        android:id="@+id/btnTest"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="15dp"
-        android:id="@+id/btnTest"/>
+        android:paddingLeft="16dp"
+        android:drawableLeft="@drawable/ic_google_icon"
+        android:text="Iniciar sesion"
+        android:textAllCaps="false"
+        android:background="@drawable/sign_in_button"/>
 </LinearLayout>
