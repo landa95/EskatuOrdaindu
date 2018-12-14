@@ -20,19 +20,19 @@ public class FragmentRestOrderTab extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View v =  inflater.inflate(R.layout.fragment_restaurant_order_tab, container, false);
+        View v =  inflater.inflate(R.layout.fragment_rest_order_tab, container, false);
 
         TabLayout tabLayout = v.findViewById(R.id.tab_layout);
 
-        tabLayout.addTab(tabLayout.newTab().setText("Fragment1"));
-        tabLayout.addTab(tabLayout.newTab().setText("Fragment2"));
+        tabLayout.addTab(tabLayout.newTab().setText("To Serve"));
+        tabLayout.addTab(tabLayout.newTab().setText("Served"));
         tabLayout.setTabGravity(tabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = v.findViewById(R.id.pager);
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
         adapter.addFragment(new FragmentRestUnServedOrders(), "Unserved");
-        adapter.addFragment(new FragmentRestUnServedOrders(), "Served");
+        adapter.addFragment(new FragmentRestServedOrders(), "Served");
 
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));

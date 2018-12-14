@@ -128,7 +128,7 @@ public class CartActivity extends AppCompatActivity  implements CartAdapter.Cart
     }
 
     private void proccessPayment(){
-        PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(String.valueOf(order.getTotalPrice())), "EUR",
+        PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(String.valueOf(order.calculateTotalPrice())), "EUR",
                 "Eskatu Ordaindu", PayPalPayment.PAYMENT_INTENT_SALE);
         Intent intent = new Intent(this, PaymentActivity.class);
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, payPalConfiguration);
