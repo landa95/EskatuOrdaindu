@@ -17,11 +17,14 @@ public class StatManager {
     public CallbackStats callbackStats;
 
     public interface CallbackStats{
-        void topDish(String itemMenu);
+        void topDish(ItemMenu itemMenu, Integer concurrencies);
     }
 
     private static FirebaseAuth auth = FirebaseAuth.getInstance();
     private static FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+    //Hashmap<K,V> : Name of the item and concurrency
+    private HashMap<String, Integer> itemMenuConcurrencies = new HashMap<>();
 
     public StatManager(){}
 
@@ -43,7 +46,9 @@ public class StatManager {
                         orderItems.addAll(order.getOrderItems());
                     }
                 }
-                callbackStats.topDish(getTopDish(orderItems));
+                ItemMenu itemMenu = getTopDish(orderItems);
+                Integer integer = itemMenuConcurrencies.get(getTopDish(orderItems).getItemName());
+                callbackStats.topDish(itemMenu,integer);
             }
 
             @Override
@@ -53,8 +58,8 @@ public class StatManager {
         });
     }
 
-    private String getTopDish(ArrayList<OrderItem> orderItems){
-        HashMap<String, Integer> itemMenuConcurrencies = new HashMap<>();
+    private ItemMenu getTopDish(ArrayList<OrderItem> orderItems){
+
         ItemMenu topItem = orderItems.get(0).getItem();
         Integer  topQuantity = 0;
         for (int i = 0; i< orderItems.size(); i++){
@@ -77,6 +82,6 @@ public class StatManager {
                 }
             }
         }
-       return topItem.getItemName();
+       return topItem;
     }
 }

@@ -15,7 +15,7 @@ import eus.ilanda.eskatuetaordaindu.models.ItemMenu;
 
 public class FragmentRestaurantStats extends Fragment implements StatManager.CallbackStats {
 
-    private TextView txtTopDish;
+    private TextView txtTopDish, txtTopdishHowmany;
     StatManager statManager = new StatManager(this);
     @Nullable
     @Override
@@ -30,11 +30,13 @@ public class FragmentRestaurantStats extends Fragment implements StatManager.Cal
     private void setUpControls(View view) {
 
         txtTopDish = view.findViewById(R.id.txt_stats_top_dish);
+        txtTopdishHowmany = view.findViewById(R.id.txt_stats_top_dish_number);
 
     }
 
     @Override
-    public void topDish(String itemMenu) {
-        txtTopDish.setText(itemMenu);
+    public void topDish(ItemMenu itemMenu, Integer integer) {
+        txtTopDish.setText(itemMenu.getItemName());
+        txtTopdishHowmany.setText(Integer.toString(integer));
     }
 }
