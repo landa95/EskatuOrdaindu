@@ -11,7 +11,6 @@ public class OrderItem  implements Parcelable{
     private int quantity;
 
     public OrderItem(){
-
     }
 
     public OrderItem(ItemMenu item, int quantity){

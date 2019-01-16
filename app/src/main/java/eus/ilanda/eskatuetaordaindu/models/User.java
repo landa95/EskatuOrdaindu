@@ -10,20 +10,16 @@ public class User {
     private String uid;
     private String email;
     private String name;
-
     private Permission permission = new Permission();
-
     private ArrayList<String> favourites = new ArrayList<String>();
 
     public User()
     {
         this.favourites = new ArrayList<String>();
     }
-
     public User(String uid){
         this.uid = uid;
     }
-
     public User(String uid, String email, String name)
     {
         this.uid = uid;

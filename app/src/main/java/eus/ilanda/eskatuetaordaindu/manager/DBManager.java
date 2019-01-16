@@ -42,8 +42,9 @@ public class DBManager {
 
     private static FirebaseAuth auth = FirebaseAuth.getInstance();
     private static FirebaseDatabase database = FirebaseDatabase.getInstance();
+
     private CallbackCategory categoryCallbackListener;
-    private  CallbackCategoryClient callbackCategoryClient;
+    private CallbackCategoryClient callbackCategoryClient;
     private CallbackItemMenu callbackItemMenuListener;
     private CallbackUser callbackUser;
     private CallbackItemMenuList callbackItemMenuList;

@@ -1,5 +1,7 @@
 package eus.ilanda.eskatuetaordaindu;
 
+
+import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +20,8 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 
 import eus.ilanda.eskatuetaordaindu.fragments.FragmentBottomNav;
+import eus.ilanda.eskatuetaordaindu.fragments.FragmentRestaurantStats;
+import eus.ilanda.eskatuetaordaindu.fragments.FragmentSettings;
 import eus.ilanda.eskatuetaordaindu.manager.DBManager;
 
 public class OwnerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -89,8 +93,9 @@ public class OwnerActivity extends AppCompatActivity implements NavigationView.O
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch ( item.getItemId()){
             case R.id.nav_settings:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragmentBottomNav()).commit();
+                //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragmentBottomNav()).commit();
                 Toast.makeText(this, "Settings press", Toast.LENGTH_LONG).show();
+               openSettings();
                 break;
             case R.id.nav_exit:
                 dbManager.signOut(this);
@@ -102,6 +107,13 @@ public class OwnerActivity extends AppCompatActivity implements NavigationView.O
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+   void  openSettings(){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+       transaction.replace(android.R.id.tabcontent, new FragmentSettings());
+       transaction.addToBackStack(null);
+       transaction.commit();
+   }
 
     @Override
     public void onBackPressed() {
