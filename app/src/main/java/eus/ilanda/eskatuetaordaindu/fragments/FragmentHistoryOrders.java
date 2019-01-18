@@ -23,8 +23,6 @@ public class FragmentHistoryOrders extends Fragment implements DBManager.Callbac
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView list_all_orders;
 
-
-
     private DBManager manager =  new DBManager(this);
 
     private OrderHistoryAdapter orderHistoryAdapter;

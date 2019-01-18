@@ -67,7 +67,7 @@ public class FavouriteAdapter  extends RecyclerView.Adapter<FavouriteAdapter.Vie
             fav_item_name.setText(itemMenu.getItemName().toString());
 
             fav_item_details.setText(itemMenu.getItemDetails().toString());
-            fav_item_prize.setText(Double.toString(itemMenu.getPrize()));
+            fav_item_prize.setText("€ "+Double.toString(itemMenu.getPrize()));
 
             isFavourite.setOnClickListener(new View.OnClickListener() {
                 @Override

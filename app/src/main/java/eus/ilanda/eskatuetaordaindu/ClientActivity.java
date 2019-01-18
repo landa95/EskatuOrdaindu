@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -22,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 
 import eus.ilanda.eskatuetaordaindu.fragments.FragmentBottomNav;
+import eus.ilanda.eskatuetaordaindu.fragments.FragmentSettings;
 import eus.ilanda.eskatuetaordaindu.manager.DBManager;
 import eus.ilanda.eskatuetaordaindu.models.OrderItem;
 
@@ -100,16 +102,24 @@ public class ClientActivity extends AppCompatActivity implements NavigationView.
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch ( item.getItemId()){
             case R.id.nav_settings:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragmentBottomNav()).commit();
+                //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragmentBottomNav()).commit();
                 Toast.makeText(this, "Settings press", Toast.LENGTH_LONG).show();
+                openSettings();
                 break;
             case R.id.nav_exit:
                 dbManager.signOut(this);
+                //dbManager.deleteUser(FirebaseAuth.getInstance().getCurrentUser().getUid(),this);
                 break;
-
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void  openSettings(){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(android.R.id.tabcontent, new FragmentSettings());
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     @Override
@@ -141,7 +151,6 @@ public class ClientActivity extends AppCompatActivity implements NavigationView.
             Intent intent = new Intent(this, CartActivity.class);
             intent.putExtra("cart", cart);
             startActivityForResult(intent, 100);
-
         }
         return super.onOptionsItemSelected(item);
     }

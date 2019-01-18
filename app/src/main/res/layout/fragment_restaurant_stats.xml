@@ -8,46 +8,58 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="STATISTICS"
         android:layout_gravity="center"
-        android:textSize="16sp" />
+        android:text="STATISTICS"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="15dp"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Top Dish: " />
+            android:text="Top Dish"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <TextView
+            android:layout_marginTop="10dp"
             android:id="@+id/txt_stats_top_dish"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
+            android:textSize="14sp"
+            android:layout_gravity="center"
             android:text="Expecting result" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="15dp"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Top dish number " />
+            android:layout_marginTop="10dp"
+            android:text="How many times ordered"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/txt_stats_top_dish_number"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Expecting result" />
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:text="Expecting result"
+            android:layout_gravity="center"
+            android:textSize="14sp" />
     </LinearLayout>
 
 </LinearLayout>

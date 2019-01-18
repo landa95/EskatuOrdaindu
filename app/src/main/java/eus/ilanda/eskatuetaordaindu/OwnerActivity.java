@@ -20,7 +20,6 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 
 import eus.ilanda.eskatuetaordaindu.fragments.FragmentBottomNav;
-import eus.ilanda.eskatuetaordaindu.fragments.FragmentRestaurantStats;
 import eus.ilanda.eskatuetaordaindu.fragments.FragmentSettings;
 import eus.ilanda.eskatuetaordaindu.manager.DBManager;
 
@@ -38,9 +37,6 @@ public class OwnerActivity extends AppCompatActivity implements NavigationView.O
     private FirebaseAuth auth = FirebaseAuth.getInstance();
 
     private DBManager dbManager = new DBManager();
-
-
-
 
 
     @Override
@@ -100,15 +96,13 @@ public class OwnerActivity extends AppCompatActivity implements NavigationView.O
             case R.id.nav_exit:
                 dbManager.signOut(this);
                 //dbManager.deleteUser(FirebaseAuth.getInstance().getCurrentUser().getUid(),this);
-
                 break;
-
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-   void  openSettings(){
+   private void  openSettings(){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
        transaction.replace(android.R.id.tabcontent, new FragmentSettings());
        transaction.addToBackStack(null);

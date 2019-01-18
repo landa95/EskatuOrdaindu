@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -49,6 +50,7 @@ public class CartActivity extends AppCompatActivity  implements CartAdapter.Cart
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private Button btnOrder;
+    private TextView txtTotal;
     private EditText txtTableNumber;
 
     private Order order = new Order();
@@ -81,7 +83,7 @@ public class CartActivity extends AppCompatActivity  implements CartAdapter.Cart
         Intent intent = new Intent(this, PayPalService.class);
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, payPalConfiguration);
         startService(intent);
-
+        order.setOrderItems(cart);
         setUpControls();
     }
 
@@ -95,7 +97,8 @@ public class CartActivity extends AppCompatActivity  implements CartAdapter.Cart
         recyclerView = findViewById(R.id.list_cart_items);
         layoutManager= new LinearLayoutManager(this);
         cartAdapter = new CartAdapter(R.layout.list_cart, cart,this);
-
+        txtTotal = findViewById(R.id.txt_cart_total);
+        txtTotal.setText("€ "+ Double.toString(order.calculateTotalPrice()));
         btnOrder = findViewById(R.id.btn_cart_order);
         txtTableNumber = findViewById(R.id.et_num_table);
 
@@ -112,16 +115,8 @@ public class CartActivity extends AppCompatActivity  implements CartAdapter.Cart
                 }else{
                     order.setTableNumber(Integer.parseInt(txtTableNumber.getText().toString()));
                     order.setOrderItems(cart);
-                    order.setPaid(true);
                     order.setUserId(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                    order.setDetails("details");
                     proccessPayment();
-                    order.setTimestamp(getCurrentDateTime());
-                   //DateFormat df = DateFormat.getDateInstance();
-                   //df.setTimeZone(TimeZone.getDefault());
-                   //Log.w("DATA_ORDUA", Calendar.getInstance().getTime().toString());
-
-
                 }
             }
         });
@@ -145,7 +140,6 @@ public class CartActivity extends AppCompatActivity  implements CartAdapter.Cart
                 if (confirmation!= null){
                     try{
                         DateFormat df = new SimpleDateFormat("EEE, d MMM yyyy, HH:mm");
-                        String date = df.format(Calendar.getInstance().getTime());
                         order.setTimestamp(getCurrentDateTime());
                         String paymentDetails = confirmation.toJSONObject().toString(4);
                         JSONObject jsonObject = confirmation.toJSONObject();
@@ -154,8 +148,9 @@ public class CartActivity extends AppCompatActivity  implements CartAdapter.Cart
 
                         if (response.getString(PAYMENT_STATE).equals("approved")){
                             order.setPaid(true);
+                            manager.addOrder(order);
                         }
-                        manager.addOrder(order);
+
                         //Payment id not saved
                         Toast.makeText(this, "Payment accepted", Toast.LENGTH_LONG).show();
                             //PAYMENT CONFIRMED, ORDER CONFIRMED AND PAID, now SERVE
@@ -192,6 +187,7 @@ public class CartActivity extends AppCompatActivity  implements CartAdapter.Cart
 
     @Override
     public void updateTotalPrize() {
+        txtTotal.setText("€ "+ Double.toString(order.calculateTotalPrice()));
 
     }
 

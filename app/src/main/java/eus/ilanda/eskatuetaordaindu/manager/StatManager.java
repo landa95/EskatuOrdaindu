@@ -40,7 +40,6 @@ public class StatManager {
                 Order order = new Order();
                 ArrayList<OrderItem> orderItems = new ArrayList<>();
                 if (dataSnapshot != null){
-
                     for (DataSnapshot snapshot: dataSnapshot.getChildren()){
                         order = snapshot.getValue(Order.class);
                         orderItems.addAll(order.getOrderItems());
@@ -55,7 +54,7 @@ public class StatManager {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+          });
     }
 
     private ItemMenu getTopDish(ArrayList<OrderItem> orderItems){

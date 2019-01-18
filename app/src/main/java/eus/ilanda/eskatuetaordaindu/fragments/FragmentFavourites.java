@@ -58,7 +58,6 @@ public class FragmentFavourites extends Fragment implements DBManager.CallbackUs
                 user.getFavourites().remove(itemMenu.getId());
                 manager.updateUser(user);
                 favouriteAdapter.notifyDataSetChanged();
-
             }
 
             @Override

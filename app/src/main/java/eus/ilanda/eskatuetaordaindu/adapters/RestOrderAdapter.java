@@ -22,11 +22,6 @@ public class RestOrderAdapter extends RecyclerView.Adapter<RestOrderAdapter.View
     public CallbackRestClick callbackRestClick;
 
 
-    public RestOrderAdapter(int layout, List<Order> orders){
-        this.layout = layout;
-        this.orders = orders;
-    }
-
     public RestOrderAdapter(int layout, List<Order> orders, CallbackRestClick c){
         this.layout = layout;
         this.orders = orders;
@@ -83,7 +78,7 @@ public class RestOrderAdapter extends RecyclerView.Adapter<RestOrderAdapter.View
             recyclerView.setAdapter(adapter);
 
             //txtOrderDate.setText(order.getTimestamp().toString());
-            txtOrderPrice.setText(Double.toString(order.calculateTotalPrice()));
+            txtOrderPrice.setText("€ "+ Double.toString(order.calculateTotalPrice()));
             txtTableNumber.setText("Table : " + Integer.toString(order.getTableNumber()));
 
             DBManager manager = new DBManager(this);

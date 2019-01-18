@@ -13,7 +13,7 @@ import eus.ilanda.eskatuetaordaindu.R;
 import eus.ilanda.eskatuetaordaindu.manager.StatManager;
 import eus.ilanda.eskatuetaordaindu.models.ItemMenu;
 
-public class FragmentRestaurantStats extends Fragment implements StatManager.CallbackStats {
+public class FragmentRestStats extends Fragment implements StatManager.CallbackStats {
 
     private TextView txtTopDish, txtTopdishHowmany;
     StatManager statManager = new StatManager(this);

@@ -16,12 +16,9 @@ import eus.ilanda.eskatuetaordaindu.models.Category;
 public class DialogFragmentCategory extends  android.support.v4.app.DialogFragment {
 
 
-    private EditText text;
-
+    private EditText cateogryEditText;
     private Category category;
-
     public final String ACTION_NEW = "new";
-
     public final String ACTION_EDIT = "edit";
 
 
@@ -46,16 +43,15 @@ public class DialogFragmentCategory extends  android.support.v4.app.DialogFragme
             @Override
             public void onClick(View view) {
 
-                if(text.getText().toString().trim().isEmpty()) {
+                if(cateogryEditText.getText().toString().trim().isEmpty()) {
                     Toast.makeText(getContext(), "Please insert a category name", Toast.LENGTH_SHORT).show();
                 }else {
-                    category.setCategoryName(text.getText().toString());
+                    category.setCategoryName(cateogryEditText.getText().toString());
                     dismiss();
                     clickListener.onPositiveClick(category);
                 }
             }
         });
-
         return dialog;
     }
 
@@ -63,7 +59,7 @@ public class DialogFragmentCategory extends  android.support.v4.app.DialogFragme
         clickListener = onDialogClick;
     }
     private void setUpControls(View v) {
-        text = (EditText) v.findViewById(R.id.txt_new_category);
+        cateogryEditText = (EditText) v.findViewById(R.id.txt_new_category);
     }
     public void setCategory(Category category){
         this.category = category;

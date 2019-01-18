@@ -71,7 +71,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
             recyclerView.setAdapter(adapter);
 
             //txtOrderDate.setText(order.getTimestamp().toString());
-            txtOrderPrice.setText(Double.toString(order.calculateTotalPrice()));
+            txtOrderPrice.setText("€ " + Double.toString(order.calculateTotalPrice()));
 
         }
     }

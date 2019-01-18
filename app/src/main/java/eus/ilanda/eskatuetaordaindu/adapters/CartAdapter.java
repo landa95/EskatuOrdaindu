@@ -52,7 +52,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
         private TextView txtCartName;
         private ImageButton btnLess;
-        private  ImageButton btnAdd;
+        private ImageButton btnAdd;
         private TextView txtItemQuantity;
         private TextView txtItemCartPrize;
         private ImageButton btnRemoveItem;
@@ -71,7 +71,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         public void bind(final OrderItem orderItem, final CartAdapterListener listener){
             txtCartName.setText(orderItem.getItem().getItemName().toString());
             txtItemQuantity.setText(Integer.toString(orderItem.getQuantity()));
-            txtItemCartPrize.setText(Double.toString(orderItem.getQuantity() * orderItem.getItem().getPrize()));
+            txtItemCartPrize.setText("€" +Double.toString(orderItem.getQuantity() * orderItem.getItem().getPrize()));
 
             btnLess.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -84,7 +84,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                         txtItemQuantity.setText(Integer.toString(i));
                         double d = orderItem.getItem().getPrize();
                         d = i * d;
-                        txtItemCartPrize.setText(Double.toString(d));
+                        txtItemCartPrize.setText("€"+ Double.toString(d));
                         listener.updateTotalPrize();
                     }
 
@@ -102,7 +102,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                         orderItem.setQuantity(i);
                         double d = orderItem.getItem().getPrize();
                         d = i * d;
-                        txtItemCartPrize.setText(Double.toString(d));
+                        txtItemCartPrize.setText("€ "+Double.toString(d));
                         listener.updateTotalPrize();
                     }
 

@@ -17,7 +17,7 @@ import eus.ilanda.eskatuetaordaindu.adapters.RestOrderAdapter;
 import eus.ilanda.eskatuetaordaindu.manager.DBManager;
 import eus.ilanda.eskatuetaordaindu.models.Order;
 
-public class FragmentRestServedOrders extends Fragment implements DBManager.CallbackOrderRestaurant{
+public class FragmentRestServedOrders extends Fragment implements DBManager.CallbackOrderRestaurant, RestOrderAdapter.CallbackRestClick{
 
     private RecyclerView list_served_orders;
     RecyclerView.LayoutManager layoutManager;
@@ -48,7 +48,7 @@ public class FragmentRestServedOrders extends Fragment implements DBManager.Call
         layoutManager = new LinearLayoutManager(v.getContext());
         ((LinearLayoutManager) layoutManager).setReverseLayout(true);
         ((LinearLayoutManager) layoutManager).setStackFromEnd(true);
-        restOrderAdapter = new RestOrderAdapter(R.layout.list_rest_order, orders);
+        restOrderAdapter = new RestOrderAdapter(R.layout.list_rest_order, orders, this);
         list_served_orders = v.findViewById(R.id.list_served_orders);
 
     }
@@ -59,4 +59,8 @@ public class FragmentRestServedOrders extends Fragment implements DBManager.Call
         restOrderAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void onClickListener(Order order) {
+
+    }
 }

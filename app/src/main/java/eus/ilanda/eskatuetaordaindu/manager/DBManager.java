@@ -166,23 +166,22 @@ public class DBManager {
     //Check what kind of user is logged inm and start activity
     public void userType(String uid, final Context context) {
 
-        final String userType = "client";
+
         DatabaseReference dbRef = database.getReference("users").child(uid);
         dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
                 if (user.getPermission().isOwner()) {
-                    ((Activity) context).startActivity(OwnerActivity.createIntent(context));
-
+                    (context).startActivity(OwnerActivity.createIntent(context));
                     ((Activity) context).finish();
                 } else if (user.getPermission().isAdmin()) {
-                    ((Activity) context).startActivity(AdminActivity.createIntent(context));
+                    ( context).startActivity(AdminActivity.createIntent(context));
 
                     ((Activity) context).finish();
 
                 } else if (!user.getPermission().isOwner() && !user.getPermission().isAdmin()) {
-                    ((Activity) context).startActivity(ClientActivity.createIntent(context));
+                    ( context).startActivity(ClientActivity.createIntent(context));
                     ((Activity) context).finish();
                 }
                 Log.w("DATABASE", "uid: " + user.getUid() + " isOwner: " + user.getPermission().isOwner() + " isAdmin: " + user.getPermission().isAdmin());
@@ -199,7 +198,6 @@ public class DBManager {
     //delete user
     //CALL dbManager.deleteUser(FirebaseAuth.getInstance().getCurrentUser().getUid(),this);
     public void deleteUser(String uid, final Context context) {
-
         final DatabaseReference dbRef = database.getReference("users");
         Query query = dbRef.orderByChild("uid").equalTo(uid);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -207,7 +205,6 @@ public class DBManager {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 DataSnapshot nodeShot = dataSnapshot.getChildren().iterator().next();
                 final String key = nodeShot.getKey();
-
                 try {
                     if (auth.getCurrentUser() != null) {
                         auth.getCurrentUser().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -226,7 +223,6 @@ public class DBManager {
                     Log.wtf("DELETE USER", "Null Pointer exception");
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
@@ -298,8 +294,8 @@ public class DBManager {
 
     }
 
-    public boolean hasSubItemMenu(final Category category){
-        final boolean answer;
+    public boolean hasSubItemMenu(final Category category)
+    {
         final DatabaseReference dbRef = database.getReference("menu").child("menuItems");
         Query query = dbRef.orderByChild("category").equalTo(category.getId());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -317,7 +313,6 @@ public class DBManager {
 
             }
         });
-
         return true;
     }
 
@@ -512,7 +507,6 @@ public class DBManager {
 
             }
         });
-
     }
 
     public void getOrdersInRestaurant(final boolean isServed){
@@ -530,9 +524,7 @@ public class DBManager {
                     }
                 }
                 callbackOrderRestaurant.getOrders(orders);
-
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 

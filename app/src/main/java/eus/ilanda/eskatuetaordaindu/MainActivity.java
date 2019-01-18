@@ -28,9 +28,9 @@ import eus.ilanda.eskatuetaordaindu.models.ItemMenu;
 public class MainActivity extends AppCompatActivity {
 
     //Sign in button
-    Button btnsignIn;
+    Button btnsignInWithmail;
     TextView dataTextview;
-    Button btnTest;
+    Button btnSignInWithGoogle;
 
 
     //Authentication manager
@@ -56,8 +56,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUpControls(){ 
         //Button sign in
-        btnsignIn = (Button)findViewById(R.id.btnSignIn);
-        btnsignIn.setOnClickListener(new View.OnClickListener() {
+        btnsignInWithmail = (Button)findViewById(R.id.btnSignIn);
+        btnsignInWithmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
@@ -69,8 +69,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Testing
-        btnTest =  findViewById(R.id.btnTest);
-        btnTest.setOnClickListener(new View.OnClickListener() {
+        btnSignInWithGoogle =  findViewById(R.id.btnTest);
+        btnSignInWithGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
@@ -108,18 +108,12 @@ public class MainActivity extends AppCompatActivity {
 
             if (metadata.getCreationTimestamp() == metadata.getLastSignInTimestamp()){
                 //Datu Basean erregistratu (owner, client)
-               Log.w("LOG_IN:","New User");
-               Log.w("RESPONSE", " \n email: "+ response.getEmail().toString() + "\n name: " + auth.getCurrentUser().getDisplayName().toString() + " \n providerType: " + response.getProviderType() + " uid: " + auth.getUid().toString());
-               dbManager.newUser();
+                dbManager.newUser();
                dbManager.userType(auth.getUid(),this);
 
             }else{
                 //Log-in egin, erabiltzaile motaren arabera
-                Log.w("LOG_IN", "Old User");
-                Log.w("RESPONSE", " \n email: "+ response.getEmail().toString() + "\n name: " + FirebaseAuth.getInstance().getCurrentUser().getDisplayName().toString() + " \n providerType: " + response.getProviderType() + " uid: " + FirebaseAuth.getInstance().getUid().toString());
                 dbManager.userType(auth.getUid(),this);
-
-
             }
             return;
         }else{

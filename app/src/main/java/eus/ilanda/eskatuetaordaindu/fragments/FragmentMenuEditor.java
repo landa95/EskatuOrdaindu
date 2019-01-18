@@ -115,7 +115,7 @@ public class FragmentMenuEditor extends Fragment implements DBManager.CallbackCa
             Toast.makeText(getContext(), " Unable to delete: this category has Item Menus", Toast.LENGTH_SHORT).show();
         }else {
             manager.deleteCategory(category);
-        }
+    }
     }
 
 

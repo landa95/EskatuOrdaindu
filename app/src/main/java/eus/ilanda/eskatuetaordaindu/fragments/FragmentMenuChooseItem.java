@@ -63,25 +63,24 @@ public class FragmentMenuChooseItem extends Fragment implements DBManager.Callba
         boolean exists = false;
         int position = 0;
 
-
         for (int i =0; i< activity.getCart().size();i++ ){
             if (activity.getCart().get(i).getItem().getId().equals(orderItem.getItem().getId())){
                 exists = true;
                 position = i;
             }
         }
-        Log.w("MISTERIOBAT", Boolean.toString(exists) + " Position" + Integer.toString(position) );
+
         if (exists == true){
             this.orderItem = activity.getCart().get(position);
             itemQuantity.setText(Integer.toString(orderItem.getQuantity()));
-            itemPrize.setText(Double.toString(orderItem.getQuantity() * orderItem.getItem().getPrize()));
+            itemPrize.setText("€ "+ Double.toString(orderItem.getQuantity() * orderItem.getItem().getPrize()));
         }else {
             this.orderItem.setItem(item);
         }
-       imageURL = item.getImageURL();
+        imageURL = item.getImageURL();
        itemName.setText(item.getItemName());
        itemDescription.setText(item.getItemDetails());
-       itemPrize.setText(Double.toString(item.getPrize()));
+       itemPrize.setText("€ "+ Double.toString(item.getPrize()));
 
        loadImageWithPicasso();
         return v;
@@ -193,21 +192,19 @@ public class FragmentMenuChooseItem extends Fragment implements DBManager.Callba
                 }else {
                     favourite.setImageResource(R.drawable.ic_favorite_white);
                     favourite.setTag(R.drawable.ic_favorite_white);
-
                 }
             }
         }else{
             favourite.setImageResource(R.drawable.ic_favorite_white);
             favourite.setTag(R.drawable.ic_favorite_white);
         }
-
     }
 
     private void setItemPrize(){
         double d = orderItem.getItem().getPrize();
         int i = Integer.parseInt(itemQuantity.getText().toString());
         d = i*d;
-        itemPrize.setText(Double.toString(d));
+        itemPrize.setText("€ "+ Double.toString(d));
     }
 
 

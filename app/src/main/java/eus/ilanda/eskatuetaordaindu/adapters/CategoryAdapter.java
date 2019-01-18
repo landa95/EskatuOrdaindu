@@ -41,11 +41,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             public int getItemCount() {
                 return this.categories.size();
             }
-
             public void setCategories(List<Category> categories){
                 this.categories = categories;
             }
-
             public List<Category> getCategories(){
                 return this.categories;
             }

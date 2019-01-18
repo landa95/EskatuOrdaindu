@@ -3,6 +3,5 @@
 
     <Preference android:title="Open Fragment"
                 android:summary="On Click open Activity">
-
     </Preference>
 </PreferenceScreen>
