@@ -2,14 +2,14 @@
 <resources>
     <string name="app_name">Eskatu eta Ordaindu</string>
     <string name="nav_menu3">Acerca de</string>
-        <string name="navigation_drawer_open">Open navigation drawer</string>
-        <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="dialog_category_new">Nombre de la categoría</string>
     <string name="dialog_options">Opciones</string>
-        <string-array name="dialog_options_list">
-            <item name="dialog_list_edit">Editar</item>
-            <item name="dialog_list_delete">Eliminar</item>
-        </string-array>
+    <string-array name="dialog_options_list">
+        <item name="dialog_list_edit">Editar</item>
+        <item name="dialog_list_delete">Eliminar</item>
+    </string-array>
     <string name="dialog_item_name">Nombre de el elemento</string>
     <string name="dialog_item_description">Descripción de el elemento</string>
     <string name="dialog_item_prize">Precio de el elemento</string>
@@ -19,14 +19,14 @@
     <string name="menu_client_icon_favourites">Favoritos</string>
     <string name="menu_client_icon_history">Historia</string>
     <string name="menu_owner_orders">Pedidos</string>
-    <string name="menu_owner_icon_editor">Edito del menu</string>
+    <string name="menu_owner_icon_editor">Editor del menu</string>
     <string name="menu_owner_icon_stats">Estadísticas</string>
     <string name="menu_drawer_settings">Ajustes</string>
     <string name="menu_drawer_sign_out">Cerrar sesión</string>
     <string name="menu_cart">Carro</string>
     <string name="text_total_pay">Total a pagar</string>
     <string name="text_ed_num_table">Insertar el número de la mesa</string>
-    <string name="btn_sign_in">Iniciar seseión</string>
+    <string name="btn_sign_in">Iniciar sesión</string>
     <string name="btn_sign_in_google">Iniciar sesión con Google</string>
     <string name="text_price">Precio</string>
     <string name="text_add_to_cart">Añadir al carro</string>
