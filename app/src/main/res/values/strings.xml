@@ -54,4 +54,7 @@
     <string name="tab_served">served</string>
     <string name="text_category">Category</string>
     <string name="text_new_item">New item</string>
+
+    <string name="dialog_un_served">Serve order</string>
+    <string name="dialog_un_served_question">Has this order been served?</string>
 </resources>

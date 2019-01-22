@@ -64,10 +64,10 @@ public class FragmentRestUnServedOrders extends Fragment implements  DBManager.C
     @Override
     public void onClickListener(final Order order) {
        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-       builder.setTitle("Serve order");
-       builder.setMessage("Has this order been served?");
+       builder.setTitle(getResources().getString(R.string.dialog_un_served));
+       builder.setMessage(getResources().getString(R.string.dialog_un_served_question));
 
-       builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+       builder.setPositiveButton(getResources().getString(R.string.dialog_ok), new DialogInterface.OnClickListener() {
            @Override
            public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
@@ -78,7 +78,7 @@ public class FragmentRestUnServedOrders extends Fragment implements  DBManager.C
            }
        });
 
-       builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+       builder.setNegativeButton(getResources().getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
            @Override
            public void onClick(DialogInterface dialogInterface, int i) {
                dialogInterface.dismiss();

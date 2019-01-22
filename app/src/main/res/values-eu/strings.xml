@@ -48,4 +48,7 @@
 
     <string name="text_category">Kategoria</string>
     <string name="text_new_item">Item berria</string>
+
+    <string name="dialog_un_served">Eskaera zerbitzatu</string>
+    <string name="dialog_un_served_question">Eskaera zerbitzatu da?</string>
 </resources>
