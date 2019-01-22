@@ -530,8 +530,5 @@ public class DBManager {
 
             }
         });
-
     }
-
-
 }
