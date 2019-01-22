@@ -12,7 +12,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"
         android:gravity="left"
-        android:text="Item Text"
+        android:text="@string/text_item_name"
         android:textSize="8pt" />
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="5dp"
-            android:text="Ingredients" />
+            android:text="@string/text_item_ingredients" />
 
         <TextView
             android:id="@+id/txt__fav_item_prize"
@@ -35,7 +35,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="right"
             android:layout_marginRight="10dp"
-            android:text="Prize" />
+            android:text="@string/text_item_prize" />
         <ImageButton
             android:id="@+id/btnFavourite"
             android:layout_width="40dp"

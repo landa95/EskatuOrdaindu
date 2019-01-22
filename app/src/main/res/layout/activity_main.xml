@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="250dp"
-        android:text="Iniciar sesion"
+        android:text="@string/btn_sign_in"
         android:paddingLeft="16dp"
         android:drawableLeft="@drawable/ic_email"
         android:textAllCaps="false"
@@ -27,7 +27,7 @@
         android:layout_marginTop="15dp"
         android:paddingLeft="16dp"
         android:drawableLeft="@drawable/ic_google_icon"
-        android:text="Iniciar sesion"
+        android:text="@string/btn_sign_in_google"
         android:textAllCaps="false"
         android:background="@drawable/sign_in_button"/>
 </LinearLayout>

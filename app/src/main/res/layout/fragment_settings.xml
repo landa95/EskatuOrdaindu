@@ -19,14 +19,14 @@
         android:id="@+id/btn_edit_name"
         android:layout_width="match_parent"
         android:layout_height="42dp"
-        android:text="Accept"
+        android:text="@string/dialog_ok"
         android:layout_gravity="center_horizontal"/>
 
     <Button
         android:id="@+id/btn_Owner_SignOut"
         android:layout_width="match_parent"
         android:layout_height="42dp"
-        android:text="DELETE ACCOUNT"
+        android:text="@string/text_delete_account"
         android:layout_gravity="center_horizontal"
         android:backgroundTint="#ff0000"/>
 

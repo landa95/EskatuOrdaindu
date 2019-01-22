@@ -5,16 +5,16 @@
         <item
             android:id="@+id/bottom_nav_owner_orders"
             android:icon="@drawable/ic_orders"
-            android:title="Orders" />
+            android:title="@string/menu_owner_orders" />
         <item
             android:id="@+id/bottom_nav_owner_menu_edit"
             android:icon="@drawable/ic_restaurant_black_24dp"
-            android:title="Menu editor" />
+            android:title="@string/menu_owner_icon_editor" />
 
         <item
             android:id="@+id/bottom_nav_owner_menu_stats"
             android:icon="@drawable/ic_whatshot_black"
-            android:title="Statistics">
+            android:title="@string/menu_owner_icon_stats">
 
         </item>
     </group>

@@ -24,7 +24,7 @@
                 android:id="@+id/txt_order_history_totalPrize"
                 android:layout_width="150dp"
                 android:layout_height="30dp"
-                android:text="total price"/>
+                android:text="@string/text_item_prize"/>
         </LinearLayout>
 
         <LinearLayout
