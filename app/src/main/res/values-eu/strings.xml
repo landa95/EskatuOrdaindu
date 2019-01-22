@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+    <string name="app_name">Eta Ordaindu Eskatu</string>
+    <string name="nav_menu3"></string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="dialog_category_new">Kategoria izena</string>
+    <string name="dialog_options">Opzioak</string>
+    <string-array name="dialog_options_list">
+        <item name="dialog_list_edit">Editatu</item>
+        <item name="dialog_list_delete">Ezabatu</item>
+    </string-array>
+    <string name="dialog_item_name">Elementuaren izena</string>
+    <string name="dialog_item_description">Elementuaren deskribapena</string>
+    <string name="dialog_item_prize">Elementuaren prezioa</string>
+    <string name="dialog_item_txt_prize">Prezioa jarri</string>
+    <string name="dialog_item_image">Irudia kargatu</string>
+    <string name="menu_client_icon_menu">Menua</string>
+    <string name="menu_client_icon_favourites">Gustukoenak</string>
+    <string name="menu_client_icon_history">Historia</string>
+    <string name="menu_owner_orders">Eskaerak</string>
+    <string name="menu_owner_icon_editor">Menuaren editorea</string>
+    <string name="menu_owner_icon_stats">Estatistikak</string>
+    <string name="menu_drawer_settings">Ezarpenak</string>
+    <string name="menu_drawer_sign_out">Saioa itxi</string>
+    <string name="menu_cart">Orga</string>
+    <string name="text_total_pay">Ordaindu beharrekoa</string>
+    <string name="text_ed_num_table">Mahairen zenbakia sar ezazu</string>
+    <string name="btn_sign_in">Saioa hasi</string>
+    <string name="btn_sign_in_google">Saioa hasi Googlerekin</string>
+    <string name="text_price">Prezioa</string>
+    <string name="text_add_to_cart">Orgara gehitu</string>
+    <string name="text_statistics_fragment">ESTATISTIKAK</string>
+    <string name="text_top_dish">Plater eskatuena</string>
+    <string name="text_stats_how_many">Zenbat aldiz eskatua</string>
+    <string name="text_change_name">Erabiltzaile-izena aldatu</string>
+    <string name="text_delete_account">ELIMINAR CUENTA</string>
+    <string name="text_category_name">Kategoriarem izena</string>
+    <string name="text_item_name">Elementuaren izena</string>
+    <string name="text_item_ingredients">Osagaiak</string>
+    <string name="text_item_prize">Prezioa</string>
+    <string name="dialog_ok">Onartu</string>
+    <string name="dialog_cancel">Ezeztatu</string>
+    <string name="btn_cart_pay">Ordaindu</string>
+</resources>
