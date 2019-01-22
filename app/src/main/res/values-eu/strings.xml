@@ -42,4 +42,10 @@
     <string name="dialog_ok">Onartu</string>
     <string name="dialog_cancel">Ezeztatu</string>
     <string name="btn_cart_pay">Ordaindu</string>
+
+    <string name="tab_un_served">Zerbitzatzeko</string>
+    <string name="tab_served">Zerbitzatuak</string>
+
+    <string name="text_category">Kategoria</string>
+    <string name="text_new_item">Item berria</string>
 </resources>

@@ -72,7 +72,7 @@ public class DialogFragmentItem extends DialogFragment {
         View v = inflater.inflate(R.layout.dialog_item_menu, null);
         setUpControls(v);
 
-        builder.setView(v).setTitle("New Item").setPositiveButton(R.string.dialog_ok, null).setNegativeButton(R.string.dialog_cancel, null);
+        builder.setView(v).setTitle(getString(R.string.text_new_item)).setPositiveButton(R.string.dialog_ok, null).setNegativeButton(R.string.dialog_cancel, null);
         AlertDialog dialog = builder.create();
         dialog.show();
 

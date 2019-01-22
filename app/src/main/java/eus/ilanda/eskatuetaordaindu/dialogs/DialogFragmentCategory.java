@@ -32,7 +32,7 @@ public class DialogFragmentCategory extends  android.support.v4.app.DialogFragme
         //inflate category layout
         View v  = inflater.inflate(R.layout.dialog_category,null);
         setUpControls(v);
-        builder.setView(v).setTitle("Category").setPositiveButton(R.string.dialog_ok, null).setNegativeButton(R.string.dialog_cancel, null);
+        builder.setView(v).setTitle(getString(R.string.text_category)).setPositiveButton(R.string.dialog_ok, null).setNegativeButton(R.string.dialog_cancel, null);
         AlertDialog dialog = builder.create();
         dialog.show();
 

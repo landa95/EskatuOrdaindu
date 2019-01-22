@@ -31,8 +31,8 @@ public class FragmentRestOrderTab extends Fragment {
         final ViewPager viewPager = v.findViewById(R.id.pager);
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
-        adapter.addFragment(new FragmentRestUnServedOrders(), "Unserved");
-        adapter.addFragment(new FragmentRestServedOrders(), "Served");
+        adapter.addFragment(new FragmentRestUnServedOrders(), getString(R.string.tab_un_served));
+        adapter.addFragment(new FragmentRestServedOrders(), getString(R.string.tab_served));
 
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));

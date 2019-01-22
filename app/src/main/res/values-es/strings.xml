@@ -42,4 +42,9 @@
     <string name="dialog_ok">Aceptar</string>
     <string name="dialog_cancel">Cancelar</string>
     <string name="btn_cart_pay">Proceder al pago</string>
+
+    <string name="tab_un_served">Sin servir</string>
+    <string name="tab_served">servidos</string>
+    <string name="text_category">Categoria</string>
+    <string name="text_new_item">Nuevo item</string>
 </resources>
