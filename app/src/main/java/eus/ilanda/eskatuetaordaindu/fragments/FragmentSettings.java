@@ -22,18 +22,20 @@ import com.google.firebase.database.FirebaseDatabase;
 import eus.ilanda.eskatuetaordaindu.MainActivity;
 import eus.ilanda.eskatuetaordaindu.R;
 import eus.ilanda.eskatuetaordaindu.manager.DBManager;
+import eus.ilanda.eskatuetaordaindu.models.User;
 
 /**
  * Created by landa on 04/07/2018.
  */
 
-public class FragmentSettings extends android.support.v4.app.Fragment
+public class FragmentSettings extends android.support.v4.app.Fragment implements DBManager.CallbackUser
 {
 
     private Button btnSignOut, btnAcceptChange;
 
     private EditText editUserName;
-
+    private User dbuser;
+    private DBManager manager = new DBManager(this);
 
     final FirebaseDatabase database  = FirebaseDatabase.getInstance();
     final DatabaseReference myRef = database.getReference("message");
@@ -45,26 +47,32 @@ public class FragmentSettings extends android.support.v4.app.Fragment
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_settings, container, false);
         setUpControls(v);
+        manager.getUser(FirebaseAuth.getInstance().getCurrentUser().getUid());
         return v;
     }
 
     public void setUpControls(View v){
         editUserName = v.findViewById(R.id.settings_name_edit);
         btnAcceptChange = v.findViewById(R.id.btn_edit_name);
-
         btnAcceptChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(editUserName.getText().toString()).build();
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                user.updateProfile(profileChangeRequest).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()){
-                            Toast.makeText(getContext(), "User display name updated", Toast.LENGTH_SHORT);
+                if (editUserName.getText().toString().trim().isEmpty()){
+                    Toast.makeText(getContext(), "Enter the user name" , Toast.LENGTH_SHORT).show();
+                }else{
+                    UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(editUserName.getText().toString()).build();
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    user.updateProfile(profileChangeRequest).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()){
+                                dbuser.setName(editUserName.getText().toString());
+                                Toast.makeText(getContext(), "User display name updated", Toast.LENGTH_SHORT).show();
+                                manager.updateUser(dbuser);
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         });
 
@@ -78,4 +86,8 @@ public class FragmentSettings extends android.support.v4.app.Fragment
        });
     }
 
+    @Override
+    public void getUser(User user) {
+        dbuser = user;
+    }
 }

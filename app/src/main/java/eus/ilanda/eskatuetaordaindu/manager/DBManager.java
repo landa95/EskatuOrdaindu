@@ -163,6 +163,23 @@ public class DBManager {
         });
     }
 
+    public void getUpdatableUser(String uid) {
+        DatabaseReference dbRef = database.getReference("users").child(uid);
+        dbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                callbackUser.getUser(user);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
     //Check what kind of user is logged inm and start activity
     public void userType(String uid, final Context context) {
 

@@ -26,8 +26,9 @@ import eus.ilanda.eskatuetaordaindu.fragments.FragmentBottomNav;
 import eus.ilanda.eskatuetaordaindu.fragments.FragmentSettings;
 import eus.ilanda.eskatuetaordaindu.manager.DBManager;
 import eus.ilanda.eskatuetaordaindu.models.OrderItem;
+import eus.ilanda.eskatuetaordaindu.models.User;
 
-public class ClientActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class ClientActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, DBManager.CallbackUser {
 
     //user info
     TextView text,email;
@@ -41,7 +42,7 @@ public class ClientActivity extends AppCompatActivity implements NavigationView.
     private ArrayList<OrderItem> cart = new ArrayList<OrderItem>();
 
     private FirebaseAuth auth = FirebaseAuth.getInstance();
-    private DBManager dbManager = new DBManager();
+    private DBManager dbManager = new DBManager(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +61,7 @@ public class ClientActivity extends AppCompatActivity implements NavigationView.
             }
         }
 
-
+        dbManager.getUpdatableUser(auth.getCurrentUser().getUid());
     }
 
     public void setUpControls(){
@@ -72,10 +73,6 @@ public class ClientActivity extends AppCompatActivity implements NavigationView.
         //Change name and email texts from the header view
         text = (TextView) header_view.findViewById(R.id.nav_txt_name);
         email = (TextView) header_view.findViewById(R.id.nav_txt_email);
-
-        text.setText(auth.getCurrentUser().getDisplayName().toString());
-
-        email.setText(auth.getCurrentUser().getEmail().toString());
 
         //Use our  own toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -171,6 +168,9 @@ public class ClientActivity extends AppCompatActivity implements NavigationView.
         this.cart = cart;
     }
 
-
-
+    @Override
+    public void getUser(User user) {
+        text.setText(user.getName());
+        email.setText(user.getEmail());
+    }
 }

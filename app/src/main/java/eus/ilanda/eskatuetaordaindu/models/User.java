@@ -44,6 +44,11 @@ public class User {
         this.email = email;
     }
 
+    public String getNameOnly() {
+        String[] nameOnly = name.split(" ");
+        return " " + nameOnly[0];
+    }
+
     public String getName() {
         return name;
     }
