@@ -149,6 +149,7 @@ public class CartActivity extends AppCompatActivity  implements CartAdapter.Cart
                         if (response.getString(PAYMENT_STATE).equals("approved")){
                             order.setPaid(true);
                             manager.addOrder(order);
+                            emptyCart();
                         }
 
                         //Payment id not saved
@@ -165,6 +166,13 @@ public class CartActivity extends AppCompatActivity  implements CartAdapter.Cart
             Toast.makeText(this, "Invalid payment", Toast.LENGTH_LONG).show();
 
         }
+    }
+
+    private void emptyCart(){
+        for (int i = 0; i< cart.size(); i++){
+            cart.remove(i);
+        }
+        txtTotal.setText("€ 0.0");
     }
 
     private String getCurrentDateTime(){

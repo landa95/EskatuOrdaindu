@@ -24,8 +24,8 @@ public class FragmentRestOrderTab extends Fragment {
 
         TabLayout tabLayout = v.findViewById(R.id.tab_layout);
 
-        tabLayout.addTab(tabLayout.newTab().setText("To Serve"));
-        tabLayout.addTab(tabLayout.newTab().setText("Served"));
+        tabLayout.addTab(tabLayout.newTab().setText(getResources().getString(R.string.tab_un_served)));
+        tabLayout.addTab(tabLayout.newTab().setText(getResources().getString(R.string.tab_served)));
         tabLayout.setTabGravity(tabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = v.findViewById(R.id.pager);

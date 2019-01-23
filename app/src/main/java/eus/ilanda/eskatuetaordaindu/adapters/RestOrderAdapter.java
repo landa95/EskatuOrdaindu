@@ -95,7 +95,7 @@ public class RestOrderAdapter extends RecyclerView.Adapter<RestOrderAdapter.View
 
         @Override
         public void getUser(User user) {
-            txtClientName.setText(user.getName().toString());
+            txtClientName.setText(user.getNameOnly().toString());
         }
     }
 

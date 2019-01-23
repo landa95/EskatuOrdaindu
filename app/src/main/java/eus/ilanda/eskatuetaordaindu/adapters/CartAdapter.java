@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import eus.ilanda.eskatuetaordaindu.R;
@@ -113,10 +114,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                 @Override
                 public void onClick(View view) {
                     listener.removeItem(orderItem, getAdapterPosition());
+                    listener.updateTotalPrize();
                 }
             });
         }
-
 
         @Override
         public String toString() {
