@@ -50,8 +50,8 @@
 
     <string name="btn_cart_pay">Proceed to payment</string>
 
-    <string name="tab_un_served">un-served</string>
-    <string name="tab_served">served</string>
+    <string name="tab_un_served">Un-served</string>
+    <string name="tab_served">Served</string>
     <string name="text_category">Category</string>
     <string name="text_new_item">New item</string>
 
