@@ -172,6 +172,7 @@ public class CartActivity extends AppCompatActivity  implements CartAdapter.Cart
         for (int i = 0; i< cart.size(); i++){
             cart.remove(i);
         }
+        cartAdapter.notifyDataSetChanged();
         txtTotal.setText("€ 0.0");
     }
 

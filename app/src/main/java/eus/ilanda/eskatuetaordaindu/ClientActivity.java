@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -56,7 +55,7 @@ public class ClientActivity extends AppCompatActivity implements NavigationView.
             cart = new ArrayList<OrderItem>();
             setUpControls();
             if (getIntent().getExtras()!= null){
-                Toast.makeText(this, "not null", Toast.LENGTH_LONG).show();
+
                 cart = getIntent().getParcelableArrayListExtra("cart");
             }
         }
@@ -91,7 +90,7 @@ public class ClientActivity extends AppCompatActivity implements NavigationView.
 
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragmentBottomNav()).commit();
-        Toast.makeText(this, "On create", Toast.LENGTH_LONG);
+
 
     }
 
@@ -100,7 +99,7 @@ public class ClientActivity extends AppCompatActivity implements NavigationView.
         switch ( item.getItemId()){
             case R.id.nav_settings:
                 //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FragmentBottomNav()).commit();
-                Toast.makeText(this, "Settings press", Toast.LENGTH_LONG).show();
+
                 openSettings();
                 break;
             case R.id.nav_exit:

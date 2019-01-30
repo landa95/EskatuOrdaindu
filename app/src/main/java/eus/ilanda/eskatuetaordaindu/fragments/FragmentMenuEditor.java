@@ -69,7 +69,6 @@ public class FragmentMenuEditor extends Fragment implements DBManager.CallbackCa
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "Floating botton clicked " , Toast.LENGTH_SHORT).show();
                 showCategoryDialog(dialogFragmentCategory.ACTION_NEW, null);
 
 

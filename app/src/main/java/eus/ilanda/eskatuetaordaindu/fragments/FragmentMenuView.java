@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +44,7 @@ public class FragmentMenuView extends Fragment implements CategoryAdapter.OnItem
         View v = inflater.inflate(R.layout.fragment_menu_viewer, container, false);
         clientActivity =(ClientActivity) getActivity();
 
-        Toast.makeText(getContext(), Integer.toString(clientActivity.getCart().size()), Toast.LENGTH_SHORT).show();
+
         setUpControls(v,getContext());
         menu.setLayoutManager(mLayoutManager);
         menu.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
