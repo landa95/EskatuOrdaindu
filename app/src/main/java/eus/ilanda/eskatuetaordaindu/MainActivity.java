@@ -16,6 +16,7 @@ import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.firebase.auth.AdditionalUserInfo;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUserMetadata;
 
@@ -106,14 +107,16 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK){
             FirebaseUserMetadata metadata = auth.getCurrentUser().getMetadata();
 
-            if (metadata.getCreationTimestamp() == metadata.getLastSignInTimestamp()){
+            long signUpInterval = 3000L;
+            boolean isNewUser = Math.abs(metadata.getCreationTimestamp() - metadata.getLastSignInTimestamp()) < signUpInterval;
+            if (isNewUser){
                 //Datu Basean erregistratu (owner, client)
-                dbManager.newUser();
+               dbManager.newUser();
                dbManager.userType(auth.getUid(),this);
-
             }else{
                 //Log-in egin, erabiltzaile motaren arabera
                 dbManager.userType(auth.getUid(),this);
+                boolean isTrue  = metadata.getCreationTimestamp() == metadata.getLastSignInTimestamp();
             }
             return;
         }else{
@@ -123,14 +126,11 @@ public class MainActivity extends AppCompatActivity {
                 toast = Toast.makeText(this, "Sign in was cancelled", Toast.LENGTH_LONG);
                 toast.show();
 
-            }
-            if (response.getErrorCode() == ErrorCodes.NO_NETWORK){
+            }else if (response.getErrorCode() == ErrorCodes.NO_NETWORK){
                 toast = Toast.makeText(this, "You have no internet connection", Toast.LENGTH_LONG);
                 toast.show();
 
-            }
-
-            if (response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR){
+            }else if (response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR){
                 toast = Toast.makeText(this, "Unkonwn Error!", Toast.LENGTH_LONG);
                 toast.show();
 
